@@ -2,27 +2,12 @@ import React from 'react';
 import {StyleSheet, View, Text, TextInput, TouchableOpacity, StatusBar} from 'react-native';
 
 export default class LoginForm extends React.Component {
-    state = {
-        email: null,
-        password: null
-    };
-
-    login = () => {
-        fetch('http://192.168.8.101:8080/login', {
-            method: 'POST',
-            headers: {
-                Accept: 'application/json',
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                username: this.state.email,
-                password: this.state.password,
-            })
-        })
-            .then(res => console.log(res.headers.map.bearer))
-            .catch(err => console.log(err))
-    };
-
+    setEmail(value) {
+        this.props.getEmail(value);
+    }
+    setPassword(value){
+        this.props.getPassword(value);
+    }
     render() {
         return (
             <View style={styles.container}>
@@ -36,7 +21,7 @@ export default class LoginForm extends React.Component {
                            keyboardType="email-address"
                            autoCapitalize="none"
                            autoCorrect={false}
-                           onChangeText={(email) => this.setState({email})}
+                           onChangeText={(email) => this.setEmail(email)}
                 />
 
                 <TextInput style={styles.input}
@@ -44,9 +29,9 @@ export default class LoginForm extends React.Component {
                            secureTextEntry
                            placeholderTextColor="rgba(255,255,255,0.3)"
                            ref={(input) => this.passwordInput = input}
-                           onChangeText={(password) => this.setState({password})}
+                           onChangeText={(password) => this.setPassword(password)}
                 />
-                <TouchableOpacity style={styles.buttonContainer} onPress={this.login}>
+                <TouchableOpacity style={styles.buttonContainer} onPress={this.props.loginAction}>
                     <Text style={styles.buttonText}>Login</Text>
                 </TouchableOpacity>
             </View>

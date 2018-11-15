@@ -2,18 +2,24 @@ import React from 'react';
 import {StyleSheet, View} from 'react-native';
 import Home from './components/HomeMap/Home'
 import Login from './components/LoginPages/Login'
-import { StackNavigator } from 'react-navigation'
-
-
+import {createStackNavigator} from 'react-navigation'
 
 export default class App extends React.Component {
     render() {
         return (
-            <Login/>
+            <AppStackNavigator/>
         );
     }
 }
-const styles = StyleSheet.create({
-    container: {
+
+const AppStackNavigator = createStackNavigator({
+    loginPage: {
+        screen: Login
+    },
+    homePage: {
+        screen: Home
     }
+});
+const styles = StyleSheet.create({
+    container: {}
 });

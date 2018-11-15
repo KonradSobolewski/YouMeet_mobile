@@ -4,6 +4,10 @@ import FetchLocation from "./FetchLocation";
 import UsersMap from "./UsersMap";
 
 export default class Home extends React.Component {
+    static navigationOptions = {
+        header: null
+    };
+
     state = {
         latitude: 37.78825,
         longitude: -122.4324,
