@@ -26,6 +26,10 @@ export default class Home extends React.Component {
     };
 
     render() {
+        const { navigation } = this.props;
+        if (navigation.getParam('auth') === null){
+            navigation.navigate('loginPage');
+        }
         return (
             <View style={styles.container}>
                 <FetchLocation onGetLocation={this.getUserLocationHandler}/>

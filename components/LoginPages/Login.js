@@ -1,9 +1,16 @@
 import React from 'react';
-import {StyleSheet, View, Image, Text, KeyboardAvoidingView} from 'react-native';
+import {StyleSheet, View, Image, Text, KeyboardAvoidingView, TouchableOpacity, Alert} from 'react-native';
 import LoginForm from './LoginForm'
-import {LinearGradient} from 'expo';
+import {Font, LinearGradient} from 'expo';
+import ConstKeys from '../config/app.consts'
 
 export default class Login extends React.Component {
+    async componentDidMount() {
+        await Font.loadAsync({
+            'Courgette': require('../../assets/fonts/Courgette-Regular.ttf'),
+        });
+        this.setState({ fontLoaded: true });
+    }
 
     static navigationOptions = {
         header: null
@@ -11,7 +18,8 @@ export default class Login extends React.Component {
 
     state = {
         email: null,
-        password: null
+        password: null,
+        fontLoaded: false
     };
 
     setEmail = email => {
@@ -22,43 +30,69 @@ export default class Login extends React.Component {
         this.state.password = password;
     };
 
-    login = () => {
-        console.log(this.state.email + ' ' + this.state.password);
-        fetch('http://192.168.8.101:8080/login', {
-            method: 'POST',
-            headers: {
-                Accept: 'application/json',
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                username: this.state.email,
-                password: this.state.password,
-            })
-        })
-            .then(res => {
-                if (res.status === 200) {
-                    console.log(res);
-                    this.props.navigation.navigate('homePage');
-                }
+    goToRegister = () => {
+        this.props.navigation.navigate('registerPage');
+    };
 
+    validateFields = () => {
+        let reg = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/ ;
+        if (this.state.email === null || this.state.password === null) {
+            return false;
+        } else if ( !reg.test(this.state.email) ) {
+            return false;
+        }
+        return true;
+    };
+
+    login = () => {
+        if (this.validateFields()) {
+            fetch(ConstKeys.apiUrl + '/login', {
+                method: 'POST',
+                headers: {
+                    Accept: 'application/json',
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    username: this.state.email,
+                    password: this.state.password,
+                })
             })
-            .catch(err => console.log(err))
+                .then(res => {
+                    if (res.status === 200 && res.headers.map.bearer) {
+                        console.log(res);
+                        this.props.navigation.navigate('homePage', {
+                            auth: res.headers.map.bearer
+                        });
+                    }
+                })
+                .catch(err => console.log(err))
+        } else {
+            Alert.alert('Invalid data.');
+        }
     };
 
     render() {
+        let title = null;
+        let description = null;
+        if (this.state.fontLoaded ) {
+            title =  <Text style={styles.title}> YouMeet </Text>;
+            description =  <Text style={styles.description}>Meet new people in interesting places</Text>;
+        }
         return (
             <KeyboardAvoidingView behavior="padding" style={styles.container}>
-                <LinearGradient colors={['#d05ce3', '#9c27b0', '#6a0080']} style={styles.gradient}>
+                <LinearGradient colors={['#9C27B0', '#B39DDB', '#4527A0']} style={styles.gradient} start={[0.2, 0]} end={[0.8, 1.2]}>
                     <View style={styles.logoContainer}>
                         <Image style={styles.logo} source={require('../../assets/logo.png')}/>
-                        <Text style={styles.title}>
-                            YouMeet
-                        </Text>
-                        <Text style={styles.description}>
-                            Meet new people in interesting places
-                        </Text>
+                        {title}
+                        {description}
                         <LoginForm loginAction={this.login} getEmail={(data) => this.setEmail(data)}
                                    getPassword={(data) => this.setPassword(data)}/>
+                        <TouchableOpacity style={styles.registerBtn} onPress={this.goToRegister}>
+                           <Text style={styles.registerText}>Register here</Text>
+                        </TouchableOpacity>
+                        <Text style={styles.footer}>
+                            Version 0.1 © 2018 All Rights Reserved
+                        </Text>
                     </View>
                 </LinearGradient>
             </KeyboardAvoidingView>
@@ -87,10 +121,33 @@ const styles = StyleSheet.create({
         height: 200
     },
     title: {
+        marginTop: 20,
         fontSize: 20,
         color: '#FFF',
+        fontFamily: 'Courgette'
     },
     description: {
-        fontSize: 10
+        marginTop: 5,
+        fontSize: 10,
+        fontFamily: 'Courgette'
+    },
+    registerBtn: {
+        borderRadius: 15,
+        marginTop: 15,
+        backgroundColor: 'rgba(255,255,255,0.3)',
+        padding: 10,
+        width: 120
+    },
+    registerText: {
+        fontSize: 10,
+        color: 'white',
+        textAlign: 'center'
+    },
+    footer: {
+        color: 'white',
+        fontSize: 10,
+        padding: 10,
+        position: 'absolute',
+        bottom: 0
     }
 });
