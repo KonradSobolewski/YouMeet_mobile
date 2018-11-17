@@ -14,9 +14,6 @@ import {LinearGradient} from 'expo';
 import ConstKeys from '../../config/app.consts'
 
 export default class App extends React.Component {
-    static navigationOptions = {
-        header: null
-    };
     state = {
         firstName: null,
         lastName: null,

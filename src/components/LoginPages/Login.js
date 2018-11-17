@@ -11,9 +11,6 @@ export default class Login extends React.Component {
         });
         this.setState({ fontLoaded: true });
     }
-    static navigationOptions = {
-        header: null
-    };
 
     state = {
         email: null,
