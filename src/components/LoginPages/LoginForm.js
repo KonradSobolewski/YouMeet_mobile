@@ -16,7 +16,7 @@ export default class LoginForm extends React.Component {
                 />
                 <TextInput style={styles.input}
                            placeholder="Email"
-                           placeholderTextColor="rgba(255,255,255,0.5)"
+                           placeholderTextColor="rgba(255,255,255,0.3)"
                            onSubmitEditing={() => this.passwordInput.focus()}
                            keyboardType="email-address"
                            autoCapitalize="none"
@@ -27,7 +27,7 @@ export default class LoginForm extends React.Component {
                 <TextInput style={styles.input}
                            placeholder="Password"
                            secureTextEntry
-                           placeholderTextColor="rgba(255,255,255,0.5)"
+                           placeholderTextColor="rgba(255,255,255,0.3)"
                            ref={(input) => this.passwordInput = input}
                            onChangeText={(password) => this.setPassword(password)}
                 />

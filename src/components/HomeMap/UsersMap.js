@@ -1,7 +1,6 @@
 import React from 'react'
 import { StyleSheet, View } from 'react-native';
 import {MapView} from 'expo'
-
 const usersMap = props => {
     let userLocationMarker = null;
 

@@ -11,7 +11,7 @@ import {
     View
 } from 'react-native';
 import {LinearGradient} from 'expo';
-import ConstKeys from '../config/app.consts'
+import ConstKeys from '../../config/app.consts'
 
 export default class App extends React.Component {
     static navigationOptions = {
@@ -85,7 +85,7 @@ export default class App extends React.Component {
                         <StatusBar
                             barStyle="light-content"
                         />
-                        <Image style={styles.logo} source={require('../../assets/logo.png')}/>
+                        <Image style={styles.logo} source={require('../../../assets/logo.png')}/>
                         <TextInput style={styles.input}
                                    placeholder="First name"
                                    placeholderTextColor="rgba(255,255,255,0.5)"

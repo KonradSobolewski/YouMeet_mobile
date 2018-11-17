@@ -1,10 +1,11 @@
 import React from 'react';
 import {StyleSheet, View} from 'react-native';
-import Home from './components/HomeMap/Home'
-import Login from './components/LoginPages/Login'
-import Register from './components/RegistrationPages/reigster'
-import {createStackNavigator} from 'react-navigation'
+import Home from './src/components/HomeMap/Home'
+import Login from './src/components/LoginPages/Login'
+import Register from './src/components/RegistrationPages/reigster'
+import {createMaterialTopTabNavigator} from 'react-navigation'
 import {Font} from "expo";
+import Ionicons from 'react-native-vector-icons/Ionicons';
 
 export default class App extends React.Component {
     render() {
@@ -14,17 +15,38 @@ export default class App extends React.Component {
     }
 }
 
-const AppStackNavigator = createStackNavigator({
+const AppStackNavigator = createMaterialTopTabNavigator({
     loginPage: {
-        screen: Login
-    },
-    homePage: {
-        screen: Home
+        screen: Login,
+        navigationOptions: {
+          tabBarLabel: 'Login',
+          showIcon: true,
+          tabBarIcon: () => {
+            return <Ionicons name="md-contact" size={20} color={"white"} />
+          }
+        }
     },
     registerPage: {
-        screen: Register
+        screen: Register,
+        navigationOptions: {
+          tabBarLabel: 'Register',
+          showIcon: true,
+          tabBarIcon: () => {
+            return <Ionicons name="md-create" size={20} color={"white"} />
+          }
+        }
     }
-});
+  },
+    {
+    tabBarOptions: {
+      showLabel: true, // hide labels
+      showIcon: true,
+      style: {
+          backgroundColor: '#9C27B0' // TabBar background
+      }
+    }
+    }
+);
 const styles = StyleSheet.create({
     container: {}
 });

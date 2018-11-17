@@ -2,12 +2,12 @@ import React from 'react';
 import {StyleSheet, View, Image, Text, KeyboardAvoidingView, TouchableOpacity, Alert} from 'react-native';
 import LoginForm from './LoginForm'
 import {Font, LinearGradient} from 'expo';
-import ConstKeys from '../config/app.consts'
+import ConstKeys from '../../config/app.consts'
 
 export default class Login extends React.Component {
     async componentDidMount() {
         await Font.loadAsync({
-            'Courgette': require('../../assets/fonts/Courgette-Regular.ttf'),
+            'Courgette': require('../../../assets/fonts/Courgette-Regular.ttf'),
         });
         this.setState({ fontLoaded: true });
     }
@@ -72,27 +72,13 @@ export default class Login extends React.Component {
     };
 
     render() {
-        let title = null;
-        let description = null;
-        if (this.state.fontLoaded ) {
-            title =  <Text style={styles.title}> YouMeet </Text>;
-            description =  <Text style={styles.description}>Meet new people in interesting places</Text>;
-        }
         return (
             <KeyboardAvoidingView behavior="padding" style={styles.container}>
                 <LinearGradient colors={['#9C27B0', '#B39DDB', '#4527A0']} style={styles.gradient} start={[0.2, 0]} end={[0.8, 1.2]}>
                     <View style={styles.logoContainer}>
-                        <Image style={styles.logo} source={require('../../assets/logo.png')}/>
-                        {title}
-                        {description}
+                        <Image style={styles.logo} source={require('../../../assets/logo.png')}/>
                         <LoginForm loginAction={this.login} getEmail={(data) => this.setEmail(data)}
                                    getPassword={(data) => this.setPassword(data)}/>
-                        <TouchableOpacity style={styles.registerBtn} onPress={this.goToRegister}>
-                           <Text style={styles.registerText}>Register here</Text>
-                        </TouchableOpacity>
-                        <Text style={styles.footer}>
-                            Version 0.1 © 2018 All Rights Reserved
-                        </Text>
                     </View>
                 </LinearGradient>
             </KeyboardAvoidingView>
