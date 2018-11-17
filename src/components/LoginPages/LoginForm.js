@@ -1,5 +1,5 @@
 import React from 'react';
-import {StyleSheet, View, Text, TextInput, TouchableOpacity, StatusBar} from 'react-native';
+import {StyleSheet, View, Text, TextInput, TouchableOpacity} from 'react-native';
 
 export default class LoginForm extends React.Component {
     setEmail(value) {
@@ -11,9 +11,6 @@ export default class LoginForm extends React.Component {
     render() {
         return (
             <View style={styles.container}>
-                <StatusBar
-                    barStyle="light-content"
-                />
                 <TextInput style={styles.input}
                            placeholder="Email"
                            placeholderTextColor="rgba(255,255,255,0.3)"
