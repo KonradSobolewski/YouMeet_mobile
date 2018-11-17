@@ -3,7 +3,7 @@ import {StyleSheet, View} from 'react-native';
 import Home from './src/components/HomeMap/Home'
 import Login from './src/components/LoginPages/Login'
 import Register from './src/components/RegistrationPages/reigster'
-import {createMaterialTopTabNavigator} from 'react-navigation'
+import {createMaterialTopTabNavigator, createStackNavigator} from 'react-navigation'
 import {Font} from "expo";
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
@@ -15,9 +15,19 @@ export default class App extends React.Component {
     }
 }
 
+const MainNav = createStackNavigator({
+    loginPage: {
+        screen: Login
+    },
+    homePage: {
+        screen: Home
+},
+});
+
+
 const AppStackNavigator = createMaterialTopTabNavigator({
     loginPage: {
-        screen: Login,
+        screen: MainNav,
         navigationOptions: {
           tabBarLabel: 'Login',
           showIcon: true,
@@ -50,3 +60,4 @@ const AppStackNavigator = createMaterialTopTabNavigator({
 const styles = StyleSheet.create({
     container: {}
 });
+
