@@ -1,5 +1,5 @@
 import React from 'react';
-import {StyleSheet, View} from 'react-native';
+import {StyleSheet, View, StatusBar} from 'react-native';
 import Home from './src/components/HomeMap/Home'
 import Login from './src/components/LoginPages/Login'
 import Register from './src/components/RegistrationPages/reigster'
@@ -8,6 +8,9 @@ import {Font} from "expo";
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
 export default class App extends React.Component {
+    componentDidMount() {
+        StatusBar.setHidden(true);
+    }
     render() {
         return (
             <MainNav/>
