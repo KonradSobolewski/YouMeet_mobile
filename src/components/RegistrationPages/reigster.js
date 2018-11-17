@@ -24,19 +24,6 @@ export default class App extends React.Component {
         password: null
     };
 
-    setFirstName = (value) =>{
-        this.state.firstName = value;
-    };
-    setLastName = (value) => {
-        this.state.lastName = value;
-    };
-    setEmail = (value) => {
-        this.state.email = value;
-    };
-    setPassword = (value) => {
-        this.state.password = value;
-    };
-
     validateFields = () => {
         let reg = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/ ;
         if (this.state.firstName === null || this.state.lastName === null || this.state.email === null || this.state.password === null) {
@@ -85,20 +72,20 @@ export default class App extends React.Component {
                         <StatusBar
                             barStyle="light-content"
                         />
-                        <Image style={styles.logo} source={require('../../../assets/logo.png')}/>
+                        <Image style={styles.logo} source={require('../../../assets/logo.gif')}/>
                         <TextInput style={styles.input}
                                    placeholder="First name"
                                    placeholderTextColor="rgba(255,255,255,0.5)"
                                    onSubmitEditing={() => this.lastNameInput.focus()}
                                    autoCorrect={false}
-                                   onChangeText={(value) => this.setFirstName(value)}
+                                   onChangeText={(value) => this.setState({firstName: value})}
                         />
                         <TextInput style={styles.input}
                                    placeholder="Last name"
                                    placeholderTextColor="rgba(255,255,255,0.5)"
                                    onSubmitEditing={() => this.emailInput.focus()}
                                    autoCorrect={false}
-                                   onChangeText={(value) => this.setLastName(value)}
+                                   onChangeText={(value) => this.setState({lastName: value})}
                                    ref={(input) => this.lastNameInput = input}
                         />
                         <TextInput style={styles.input}
@@ -108,7 +95,7 @@ export default class App extends React.Component {
                                    keyboardType="email-address"
                                    autoCapitalize="none"
                                    autoCorrect={false}
-                                   onChangeText={(value) => this.setEmail(value)}
+                                   onChangeText={(value) => this.setState({email: value})}
                                    ref={(input) => this.emailInput = input}
                         />
 
@@ -117,7 +104,7 @@ export default class App extends React.Component {
                                    secureTextEntry
                                    placeholderTextColor="rgba(255,255,255,0.5)"
                                    ref={(input) => this.passwordInput = input}
-                                   onChangeText={(value) => this.setPassword(value)}
+                                   onChangeText={(value) => this.setState({password: value})}
                         />
                         <TouchableOpacity style={styles.registerBtn} onPress={this.register}>
                             <Text style={styles.registerText}>Register</Text>

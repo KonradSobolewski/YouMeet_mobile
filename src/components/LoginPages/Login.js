@@ -11,7 +11,6 @@ export default class Login extends React.Component {
         });
         this.setState({ fontLoaded: true });
     }
-
     static navigationOptions = {
         header: null
     };
@@ -20,18 +19,6 @@ export default class Login extends React.Component {
         email: null,
         password: null,
         fontLoaded: false
-    };
-
-    setEmail = email => {
-        this.state.email = email;
-    };
-
-    setPassword = password => {
-        this.state.password = password;
-    };
-
-    goToRegister = () => {
-        this.props.navigation.navigate('registerPage');
     };
 
     validateFields = () => {
@@ -72,13 +59,24 @@ export default class Login extends React.Component {
     };
 
     render() {
+        let title = null;
+        let description = null;
+        if (this.state.fontLoaded ) {
+            title =  <Text style={styles.title}> YouMeet </Text>;
+            description =  <Text style={styles.description}>Meet new people in interesting places</Text>;
+        }
         return (
             <KeyboardAvoidingView behavior="padding" style={styles.container}>
                 <LinearGradient colors={['#9C27B0', '#B39DDB', '#4527A0']} style={styles.gradient} start={[0.2, 0]} end={[0.8, 1.2]}>
                     <View style={styles.logoContainer}>
-                        <Image style={styles.logo} source={require('../../../assets/logo.png')}/>
-                        <LoginForm loginAction={this.login} getEmail={(data) => this.setEmail(data)}
-                                   getPassword={(data) => this.setPassword(data)}/>
+                        <Image style={styles.logo} source={require('../../../assets/logo.gif')}/>
+                        {title}
+                        {description}
+                        <LoginForm loginAction={this.login} getEmail={(data) => this.setState({email: data})}
+                                   getPassword={(data) => this.setState({password: data})}/>
+                        <Text style={styles.footer}>
+                            Version 0.1 © 2018 All Rights Reserved
+                        </Text>
                     </View>
                 </LinearGradient>
             </KeyboardAvoidingView>
