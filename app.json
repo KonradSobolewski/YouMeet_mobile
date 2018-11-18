@@ -21,10 +21,11 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "wpam.youmeet.front"
     },
     "android": {
-      "package": "wpam.konradSobolewski.youmeet",
+      "package": "wpam.youmeet.front",
       "versionCode": 1,
       "permissions" : [
         "ACCESS_COARSE_LOCATION",
@@ -32,9 +33,10 @@
       ],
       "config" : {
         "googleMaps": {
-          "apiKey": "AIzaSyBkgFuA0j4nnCmqtOyJCqii6bnmSDCgprU"
+          "apiKey": "xxx"
         }
       }
-    }
+    },
+    "facebookScheme": "fb269068230632241"
   }
 }
