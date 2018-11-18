@@ -23,6 +23,7 @@ export default class Login extends React.Component {
         this.setState({fontLoaded: true});
     }
 
+
     state = {
         email: null,
         password: null,
@@ -105,11 +106,16 @@ export default class Login extends React.Component {
 
     renderFbLogin = () => {
         return (
-            <TouchableOpacity style={styles.facebookBtn} onPress={this.logInFb}>
-                <Text style={styles.facebookTxt}>
-                    <Ionicons name="logo-facebook" size={30} color={"white"}/>
-                </Text>
-            </TouchableOpacity>
+            <View style={{flexDirection: 'row'}}>
+              <Text style={styles.facebookQuestions}>
+                Got?
+              </Text>
+              <TouchableOpacity style={styles.facebookBtn} onPress={this.logInFb}>
+                  <Text style={styles.facebookTxt}>
+                      <Ionicons name="logo-facebook" size={30} color={"white"}/>
+                  </Text>
+              </TouchableOpacity>
+            </View>
         );
     };
 
@@ -124,18 +130,23 @@ export default class Login extends React.Component {
             <Text style={styles.errorMessage}> There was an error during loging.
             </Text>
         ) : null;
+        let informationalText = this.props.navigation.getParam('regInfo') === true ? (
+            <Text style={styles.infoMessage}> You have successfully registered!
+            </Text>
+        ) : null;
         return (
             <KeyboardAvoidingView behavior="padding" style={styles.container}>
                 <LinearGradient colors={['#7b258e', '#B39DDB', '#3b2281']} style={styles.gradient}
                                 locations={[0, 0.4, 1]} start={[0.2, 0]} end={[0.8, 1.2]}>
                     <View style={styles.logoContainer}>
                         {errorDuringUpload}
-
+                        {informationalText}
                         <Image style={styles.logo} source={require('../../../assets/logo.gif')}/>
                         {title}
                         {description}
-                        <LoginForm loginAction={this.login} getEmail={(data) => this.setState({email: data})}
-                                   getPassword={(data) => this.setState({password: data})}/>
+                        <LoginForm loginAction={this.login} getEmail={(data) => {this.setState({errorDuringLog: false}); this.setState({email: data})}}
+                                   getPassword={(data) => {this.setState({password: data}); this.setState({errorDuringLog: false})}}/>
+
                         {this.renderFbLogin()}
                     </View>
                 </LinearGradient>
@@ -198,7 +209,9 @@ const styles = StyleSheet.create({
         padding: 10,
         borderRadius: 10,
         backgroundColor: '#3B5998',
-        opacity: 0.9
+        opacity: 0.9,
+        borderTopLeftRadius: 0,
+        borderBottomLeftRadius: 0,
     },
     facebookTxt: {
         color: '#FFF'
@@ -210,5 +223,28 @@ const styles = StyleSheet.create({
         fontSize: 15,
         padding: 15,
         marginTop: 25
+    },
+    infoMessage: {
+        backgroundColor: '#7b258e',
+        opacity: 0.3,
+        borderRadius: 10,
+        color: 'rgba(255,255,255,1)',
+        fontSize: 15,
+        padding: 15,
+        marginTop: 25
+    },
+    facebookQuestions: {
+      backgroundColor: '#3B5998',
+      borderRadius: 10,
+      borderTopRightRadius: 0,
+      borderBottomRightRadius: 0,
+      paddingTop: 6,
+      paddingLeft: 10,
+      color: 'white',
+      marginRight: 0,
+      fontSize: 26,
+      justifyContent: 'center',
+      alignItems: 'center',
+      fontWeight: '600'
     }
 });

@@ -2,7 +2,7 @@ import React from 'react';
 import {StyleSheet, View, StatusBar} from 'react-native';
 import Home from './src/components/HomeMap/Home'
 import Login from './src/components/LoginPages/Login'
-import Register from './src/components/RegistrationPages/reigster'
+import Register from './src/components/RegistrationPages/Register'
 import {createMaterialTopTabNavigator, createStackNavigator} from 'react-navigation'
 import {Font} from "expo";
 import Ionicons from 'react-native-vector-icons/Ionicons';
