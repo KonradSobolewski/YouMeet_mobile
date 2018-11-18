@@ -89,11 +89,7 @@ export default class Login extends React.Component {
         return (
             <TouchableOpacity style={styles.facebookBtn} onPress={this.logInFb}>
                 <Text style={styles.facebookTxt}>
-<<<<<<< HEAD
                       <Ionicons name="logo-facebook" size={30} color={"white"}/>
-=======
-                    Connect with Facebook
->>>>>>> 4e4874950ba4d39e696f0be322b3bf2ce863bafa
                 </Text>
             </TouchableOpacity>
         );
@@ -116,12 +112,6 @@ export default class Login extends React.Component {
                         {description}
                         <LoginForm loginAction={this.login} getEmail={(data) => this.setState({email: data})}
                                    getPassword={(data) => this.setState({password: data})}/>
-<<<<<<< HEAD
-=======
-                        <Text style={styles.footer}>
-                            Version 0.1 © 2018 All Rights Reserved
-                        </Text>
->>>>>>> 4e4874950ba4d39e696f0be322b3bf2ce863bafa
                         {this.renderFbLogin()}
                     </View>
                 </LinearGradient>
@@ -182,14 +172,9 @@ const styles = StyleSheet.create({
     },
     facebookBtn: {
         padding: 10,
-<<<<<<< HEAD
         borderRadius: 10,
         backgroundColor: '#3B5998',
         opacity: 0.9
-=======
-        borderRadius: 5,
-        backgroundColor: '#3B5998'
->>>>>>> 4e4874950ba4d39e696f0be322b3bf2ce863bafa
     },
     facebookTxt: {
         color: '#FFF'
