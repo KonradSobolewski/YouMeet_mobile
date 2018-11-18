@@ -3,7 +3,6 @@ import {
     Alert,
     Image,
     KeyboardAvoidingView,
-    StatusBar,
     StyleSheet,
     Text,
     TextInput,
@@ -14,27 +13,11 @@ import {LinearGradient} from 'expo';
 import ConstKeys from '../../config/app.consts'
 
 export default class App extends React.Component {
-    static navigationOptions = {
-        header: null
-    };
     state = {
         firstName: null,
         lastName: null,
         email: null,
         password: null
-    };
-
-    setFirstName = (value) =>{
-        this.state.firstName = value;
-    };
-    setLastName = (value) => {
-        this.state.lastName = value;
-    };
-    setEmail = (value) => {
-        this.state.email = value;
-    };
-    setPassword = (value) => {
-        this.state.password = value;
     };
 
     validateFields = () => {
@@ -80,25 +63,22 @@ export default class App extends React.Component {
     render() {
         return (
             <KeyboardAvoidingView behavior="padding" style={styles.container}>
-                <LinearGradient colors={['#9C27B0', '#B39DDB', '#4527A0']} style={styles.gradient} start={[0.2, 0]} end={[0.8, 1.2]}>
+                <LinearGradient colors={['#7b258e', '#B39DDB', '#3b2281']} style={styles.gradient} locations={[0 , 0.4 , 1 ]} start={[0.2, 0]} end={[0.8, 1.2]}>
                     <View style={styles.fieldsContainer}>
-                        <StatusBar
-                            barStyle="light-content"
-                        />
-                        <Image style={styles.logo} source={require('../../../assets/logo.png')}/>
+                        <Image style={styles.logo} source={require('../../../assets/logo.gif')}/>
                         <TextInput style={styles.input}
                                    placeholder="First name"
                                    placeholderTextColor="rgba(255,255,255,0.5)"
                                    onSubmitEditing={() => this.lastNameInput.focus()}
                                    autoCorrect={false}
-                                   onChangeText={(value) => this.setFirstName(value)}
+                                   onChangeText={(value) => this.setState({firstName: value})}
                         />
                         <TextInput style={styles.input}
                                    placeholder="Last name"
                                    placeholderTextColor="rgba(255,255,255,0.5)"
                                    onSubmitEditing={() => this.emailInput.focus()}
                                    autoCorrect={false}
-                                   onChangeText={(value) => this.setLastName(value)}
+                                   onChangeText={(value) => this.setState({lastName: value})}
                                    ref={(input) => this.lastNameInput = input}
                         />
                         <TextInput style={styles.input}
@@ -108,7 +88,7 @@ export default class App extends React.Component {
                                    keyboardType="email-address"
                                    autoCapitalize="none"
                                    autoCorrect={false}
-                                   onChangeText={(value) => this.setEmail(value)}
+                                   onChangeText={(value) => this.setState({email: value})}
                                    ref={(input) => this.emailInput = input}
                         />
 
@@ -117,7 +97,7 @@ export default class App extends React.Component {
                                    secureTextEntry
                                    placeholderTextColor="rgba(255,255,255,0.5)"
                                    ref={(input) => this.passwordInput = input}
-                                   onChangeText={(value) => this.setPassword(value)}
+                                   onChangeText={(value) => this.setState({password: value})}
                         />
                         <TouchableOpacity style={styles.registerBtn} onPress={this.register}>
                             <Text style={styles.registerText}>Register</Text>

@@ -1,44 +1,30 @@
 import React from 'react';
-import {StyleSheet, View, Image, Text, KeyboardAvoidingView, TouchableOpacity, Alert} from 'react-native';
+import {StyleSheet, View, Image, Text, KeyboardAvoidingView, Alert, TouchableOpacity} from 'react-native';
 import LoginForm from './LoginForm'
 import {Font, LinearGradient} from 'expo';
 import ConstKeys from '../../config/app.consts'
+import Ionicons from 'react-native-vector-icons/Ionicons';
 
 export default class Login extends React.Component {
     async componentDidMount() {
         await Font.loadAsync({
             'Courgette': require('../../../assets/fonts/Courgette-Regular.ttf'),
         });
-        this.setState({ fontLoaded: true });
+        this.setState({fontLoaded: true});
     }
-
-    static navigationOptions = {
-        header: null
-    };
 
     state = {
         email: null,
         password: null,
-        fontLoaded: false
-    };
-
-    setEmail = email => {
-        this.state.email = email;
-    };
-
-    setPassword = password => {
-        this.state.password = password;
-    };
-
-    goToRegister = () => {
-        this.props.navigation.navigate('registerPage');
+        fontLoaded: false,
+        userInfo: null
     };
 
     validateFields = () => {
-        let reg = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/ ;
+        let reg = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
         if (this.state.email === null || this.state.password === null) {
             return false;
-        } else if ( !reg.test(this.state.email) ) {
+        } else if (!reg.test(this.state.email)) {
             return false;
         }
         return true;
@@ -71,14 +57,62 @@ export default class Login extends React.Component {
         }
     };
 
+     logInFb = async() => {
+        const {
+            type,
+            token,
+            expires,
+            permissions,
+            declinedPermissions,
+        } = await Expo.Facebook.logInWithReadPermissionsAsync('269068230632241', {
+            permissions: ['public_profile', 'email'],
+        });
+        if (type === 'success') {
+            await fetch(`https://graph.facebook.com/me?access_token=${token}&fields=id,name,picture.type(large)`)
+                .then(async res => {
+                    let userInfo = await res.json();
+                    if (userInfo.error === null) {
+                        this.props.navigation.navigate('homePage', {
+                            fbInfo: userInfo
+                        });
+                    } else {
+                        alert('Fb error');
+                    }
+                })
+                .catch(err => console.log(err));
+        } else {
+            console.log('error')
+        }
+    }
+
+    renderFbLogin = () => {
+        return (
+            <TouchableOpacity style={styles.facebookBtn} onPress={this.logInFb}>
+                <Text style={styles.facebookTxt}>
+                      <Ionicons name="logo-facebook" size={30} color={"white"}/>
+                </Text>
+            </TouchableOpacity>
+        );
+    };
+
     render() {
+        let title = null;
+        let description = null;
+        if (this.state.fontLoaded) {
+            title = <Text style={styles.title}> YouMeet </Text>;
+            description = <Text style={styles.description}>Meet new people in entertaining places</Text>;
+        }
         return (
             <KeyboardAvoidingView behavior="padding" style={styles.container}>
-                <LinearGradient colors={['#9C27B0', '#B39DDB', '#4527A0']} style={styles.gradient} start={[0.2, 0]} end={[0.8, 1.2]}>
+                <LinearGradient colors={['#7b258e', '#B39DDB', '#3b2281']} style={styles.gradient}
+                                locations={[0, 0.4, 1]} start={[0.2, 0]} end={[0.8, 1.2]}>
                     <View style={styles.logoContainer}>
-                        <Image style={styles.logo} source={require('../../../assets/logo.png')}/>
-                        <LoginForm loginAction={this.login} getEmail={(data) => this.setEmail(data)}
-                                   getPassword={(data) => this.setPassword(data)}/>
+                        <Image style={styles.logo} source={require('../../../assets/logo.gif')}/>
+                        {title}
+                        {description}
+                        <LoginForm loginAction={this.login} getEmail={(data) => this.setState({email: data})}
+                                   getPassword={(data) => this.setState({password: data})}/>
+                        {this.renderFbLogin()}
                     </View>
                 </LinearGradient>
             </KeyboardAvoidingView>
@@ -135,5 +169,14 @@ const styles = StyleSheet.create({
         padding: 10,
         position: 'absolute',
         bottom: 0
+    },
+    facebookBtn: {
+        padding: 10,
+        borderRadius: 10,
+        backgroundColor: '#3B5998',
+        opacity: 0.9
+    },
+    facebookTxt: {
+        color: '#FFF'
     }
 });
