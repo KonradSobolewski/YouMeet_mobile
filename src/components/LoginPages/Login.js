@@ -1,5 +1,15 @@
 import React from 'react';
-import {StyleSheet, View, Image, Text, KeyboardAvoidingView, Alert, TouchableOpacity, Modal, TouchableHighlight} from 'react-native';
+import {
+    StyleSheet,
+    View,
+    Image,
+    Text,
+    KeyboardAvoidingView,
+    Alert,
+    TouchableOpacity,
+    Modal,
+    TouchableHighlight
+} from 'react-native';
 import LoginForm from './LoginForm'
 import {Font, LinearGradient} from 'expo';
 import ConstKeys from '../../config/app.consts'
@@ -53,17 +63,17 @@ export default class Login extends React.Component {
                         });
                     }
                     else {
-                      this.setState({errorDuringLog: true});
+                        this.setState({errorDuringLog: true});
                     }
                 })
                 .catch(err => this.setState({errorDuringLog: true})
-              );
+                );
         } else {
             this.setState({errorDuringLog: true});
         }
     };
 
-     logInFb = async() => {
+    logInFb = async () => {
         const {
             type,
             token,
@@ -77,9 +87,11 @@ export default class Login extends React.Component {
             await fetch(`https://graph.facebook.com/me?access_token=${token}&fields=id,name,picture.type(large)`)
                 .then(async res => {
                     let userInfo = await res.json();
-                    if (userInfo.error === null) {
+                    console.log(userInfo);
+                    if (userInfo.error === undefined) {
                         this.props.navigation.navigate('homePage', {
-                            fbInfo: userInfo
+                            fbInfo: userInfo,
+                            auth: 'lol'
                         });
                     } else {
                         alert('Fb error');
@@ -89,13 +101,13 @@ export default class Login extends React.Component {
         } else {
             console.log('error')
         }
-    }
+    };
 
     renderFbLogin = () => {
         return (
             <TouchableOpacity style={styles.facebookBtn} onPress={this.logInFb}>
                 <Text style={styles.facebookTxt}>
-                      <Ionicons name="logo-facebook" size={30} color={"white"}/>
+                    <Ionicons name="logo-facebook" size={30} color={"white"}/>
                 </Text>
             </TouchableOpacity>
         );
@@ -109,8 +121,8 @@ export default class Login extends React.Component {
             description = <Text style={styles.description}>Meet new people in entertaining places</Text>;
         }
         let errorDuringUpload = this.state.errorDuringLog ? (
-          <Text style={styles.errorMessage}> There was an error during loging.
-          </Text>
+            <Text style={styles.errorMessage}> There was an error during loging.
+            </Text>
         ) : null;
         return (
             <KeyboardAvoidingView behavior="padding" style={styles.container}>
