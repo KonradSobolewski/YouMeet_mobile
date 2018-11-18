@@ -11,6 +11,7 @@ export default class App extends React.Component {
     componentDidMount() {
         StatusBar.setHidden(true);
     }
+
     render() {
         return (
             <MainNav/>
@@ -20,50 +21,50 @@ export default class App extends React.Component {
 
 
 const AppStackNavigator = createMaterialTopTabNavigator({
-    loginPage: {
-        screen: Login,
-        navigationOptions: {
-          tabBarLabel: 'Login',
-          showIcon: true,
-          tabBarIcon: () => {
-            return <Ionicons name="md-contact" size={20} color={"white"} />
-          }
+        loginPage: {
+            screen: Login,
+            navigationOptions: {
+                tabBarLabel: 'Login',
+                showIcon: true,
+                tabBarIcon: () => {
+                    return <Ionicons name="md-contact" size={20} color={"white"}/>
+                }
+            }
+        },
+        registerPage: {
+            screen: Register,
+            navigationOptions: {
+                tabBarLabel: 'Register',
+                showIcon: true,
+                tabBarIcon: () => {
+                    return <Ionicons name="md-create" size={20} color={"white"}/>
+                }
+            }
         }
     },
-    registerPage: {
-        screen: Register,
-        navigationOptions: {
-          tabBarLabel: 'Register',
-          showIcon: true,
-          tabBarIcon: () => {
-            return <Ionicons name="md-create" size={20} color={"white"} />
-          }
-        }
-    }
-  },
     {
-    tabBarOptions: {
-      showLabel: true, // hide labels
-      showIcon: true,
-      style: {
-          backgroundColor: '#9C27B0' // TabBar background
-      }
-    }
+        tabBarOptions: {
+            showLabel: true, // hide labels
+            showIcon: true,
+            style: {
+                backgroundColor: '#7b258e' // TabBar background
+            }
+        }
     }
 );
 
 const MainNav = createStackNavigator({
-    loginPage: {
-        screen: AppStackNavigator
-    },
-    homePage: {
-        screen: Home
-    },
+        loginPage: {
+            screen: AppStackNavigator
+        },
+        homePage: {
+            screen: Home
+        },
     },
     {
-    	mode: 'modal',
-  	headerMode: 'none',
-});
+        mode: 'modal',
+        headerMode: 'none',
+    });
 
 const styles = StyleSheet.create({
     container: {}

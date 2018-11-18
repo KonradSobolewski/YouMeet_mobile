@@ -63,7 +63,7 @@ export default class App extends React.Component {
     render() {
         return (
             <KeyboardAvoidingView behavior="padding" style={styles.container}>
-                <LinearGradient colors={['#9C27B0', '#B39DDB', '#4527A0']} style={styles.gradient} start={[0.2, 0]} end={[0.8, 1.2]}>
+                <LinearGradient colors={['#7b258e', '#B39DDB', '#3b2281']} style={styles.gradient} locations={[0 , 0.4 , 1 ]} start={[0.2, 0]} end={[0.8, 1.2]}>
                     <View style={styles.fieldsContainer}>
                         <Image style={styles.logo} source={require('../../../assets/logo.gif')}/>
                         <TextInput style={styles.input}
