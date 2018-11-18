@@ -1,5 +1,5 @@
 import React from 'react';
-import {StyleSheet, View} from 'react-native';
+import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import FetchLocation from "./FetchLocation";
 import UsersMap from "./UsersMap";
 import UserInfo from "./UserInfo";
@@ -9,7 +9,7 @@ export default class Home extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            userInfo: props.navigation.getParam('fbInfo'),
+            userInfo: props.navigation.getParam('userInfo'),
             auth: props.navigation.getParam('auth'),
             location: {
                 latitude: 37.78825,
@@ -40,9 +40,9 @@ export default class Home extends React.Component {
         }
         return (
             <View style={styles.container}>
-                {this.state.userInfo !== undefined ? (<UserInfo onLoad={this.state.userInfo}/>) : (null)}
+                <UserInfo onLoad={this.state.userInfo}/>
                 <FetchLocation onGetLocation={this.getUserLocationHandler}/>
-                <UsersMap userLocation={this.state.location}/>
+                <UsersMap userLocation={this.state.location} userInfo={this.state.userInfo}/>
             </View>
         );
     }

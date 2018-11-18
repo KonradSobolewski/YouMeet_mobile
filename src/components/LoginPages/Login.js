@@ -13,6 +13,7 @@ import {
 import LoginForm from './LoginForm'
 import {Font, LinearGradient} from 'expo';
 import ConstKeys from '../../config/app.consts'
+import {onSignIn , USER_KEY , isSignedIn} from '../../config/authorization'
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
 export default class Login extends React.Component {
@@ -21,8 +22,14 @@ export default class Login extends React.Component {
             'Courgette': require('../../../assets/fonts/Courgette-Regular.ttf'),
         });
         this.setState({fontLoaded: true});
+        isSignedIn()
+            .then(res => {
+                console.log(res);
+                if(res !== false)
+                    this.props.navigation.navigate('homePage', JSON.parse(res));
+            })
+            .catch(err => alert("An error occurred"));
     }
-
 
     state = {
         email: null,
@@ -58,10 +65,18 @@ export default class Login extends React.Component {
                 .then(res => {
                     if (res.status === 200 && res.headers.map.bearer) {
                         console.log(res);
-                        this.setState({errorDuringLog: false});
-                        this.props.navigation.navigate('homePage', {
+                        let data = {
+                            userInfo: {
+                                picture: '',
+                                id: '',
+                                name: this.state.email
+                            },
                             auth: res.headers.map.bearer
-                        });
+                        };
+                        this.setState({errorDuringLog: false});
+                        onSignIn(JSON.stringify(data))
+                            .then(() => this.props.navigation.navigate('homePage', data))
+                            .catch(err => console.log(err));
                     }
                     else {
                         this.setState({errorDuringLog: true});
@@ -88,12 +103,14 @@ export default class Login extends React.Component {
             await fetch(`https://graph.facebook.com/me?access_token=${token}&fields=id,name,picture.type(large)`)
                 .then(async res => {
                     let userInfo = await res.json();
-                    console.log(userInfo);
+                    let data = {
+                        userInfo: userInfo,
+                        auth: 'lol'
+                    };
                     if (userInfo.error === undefined) {
-                        this.props.navigation.navigate('homePage', {
-                            fbInfo: userInfo,
-                            auth: 'lol'
-                        });
+                        onSignIn(JSON.stringify(data))
+                            .then(() => this.props.navigation.navigate('homePage', data))
+                            .catch(err => console.log(err));
                     } else {
                         alert('Fb error');
                     }
@@ -106,16 +123,14 @@ export default class Login extends React.Component {
 
     renderFbLogin = () => {
         return (
-            <View style={{flexDirection: 'row'}}>
-              <Text style={styles.facebookQuestions}>
-                Got?
-              </Text>
-              <TouchableOpacity style={styles.facebookBtn} onPress={this.logInFb}>
-                  <Text style={styles.facebookTxt}>
-                      <Ionicons name="logo-facebook" size={30} color={"white"}/>
-                  </Text>
-              </TouchableOpacity>
-            </View>
+            <TouchableOpacity style={styles.facebookBtn} onPress={this.logInFb}>
+                <Text style={styles.facebookQuestions}>
+                    Got?
+                </Text>
+                <Text style={styles.facebookTxt}>
+                    <Ionicons name="logo-facebook" size={30} color={"white"}/>
+                </Text>
+            </TouchableOpacity>
         );
     };
 
@@ -144,8 +159,14 @@ export default class Login extends React.Component {
                         <Image style={styles.logo} source={require('../../../assets/logo.gif')}/>
                         {title}
                         {description}
-                        <LoginForm loginAction={this.login} getEmail={(data) => {this.setState({errorDuringLog: false}); this.setState({email: data})}}
-                                   getPassword={(data) => {this.setState({password: data}); this.setState({errorDuringLog: false})}}/>
+                        <LoginForm loginAction={this.login} getEmail={(data) => {
+                            this.setState({errorDuringLog: false});
+                            this.setState({email: data})
+                        }}
+                                   getPassword={(data) => {
+                                       this.setState({password: data});
+                                       this.setState({errorDuringLog: false})
+                                   }}/>
 
                         {this.renderFbLogin()}
                     </View>
@@ -206,15 +227,15 @@ const styles = StyleSheet.create({
         bottom: 0
     },
     facebookBtn: {
+        flexDirection: 'row',
         padding: 10,
         borderRadius: 10,
         backgroundColor: '#3B5998',
-        opacity: 0.9,
-        borderTopLeftRadius: 0,
-        borderBottomLeftRadius: 0,
+        opacity: 0.9
     },
     facebookTxt: {
-        color: '#FFF'
+        color: '#FFF',
+        padding: 5
     },
     errorMessage: {
         backgroundColor: 'rgba(255,51,0,0.1)',
@@ -234,17 +255,10 @@ const styles = StyleSheet.create({
         marginTop: 25
     },
     facebookQuestions: {
-      backgroundColor: '#3B5998',
-      borderRadius: 10,
-      borderTopRightRadius: 0,
-      borderBottomRightRadius: 0,
-      paddingTop: 6,
-      paddingLeft: 10,
-      color: 'white',
-      marginRight: 0,
-      fontSize: 26,
-      justifyContent: 'center',
-      alignItems: 'center',
-      fontWeight: '600'
+        padding: 5,
+        backgroundColor: '#3B5998',
+        color: 'white',
+        fontSize: 20,
+        fontWeight: '600'
     }
 });

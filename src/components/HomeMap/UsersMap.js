@@ -1,11 +1,18 @@
 import React from 'react'
-import { StyleSheet, View } from 'react-native';
+import {Image, StyleSheet, View} from 'react-native';
 import {MapView} from 'expo'
+
 const usersMap = props => {
     let userLocationMarker = null;
 
     if (props.userLocation) {
-        userLocationMarker = <MapView.Marker coordinate={props.userLocation} />;
+        userLocationMarker = props.userInfo.picture !== '' ?
+            ( <MapView.Marker coordinate={props.userLocation}>
+                <Image source={{uri: props.userInfo.picture.data.url}} style={styles.userIcon}/>
+            </MapView.Marker> )
+            :
+            ( <MapView.Marker coordinate={props.userLocation}>
+            </MapView.Marker> );
     }
 
     return (
@@ -33,9 +40,14 @@ const styles = StyleSheet.create({
         width: '100%',
         height: 200
     },
-    map : {
+    map: {
         marginTop: 10,
-        width : '100%',
+        width: '100%',
         height: '100%'
-    }
+    },
+    userIcon: {
+        width: 50, height: 50, borderRadius: 25,
+        borderWidth: 2,
+        borderColor: 'white'
+    },
 });

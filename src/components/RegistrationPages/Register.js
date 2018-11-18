@@ -25,16 +25,6 @@ export default class App extends React.Component {
         isTouched: false
     };
 
-    validateFields = () => {
-        let reg = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
-        if (this.state.firstName === null || this.state.lastName === null || this.state.email === null || this.state.password === null) {
-            return false;
-        } else if (!reg.test(this.state.email)) {
-            return false;
-        }
-        return true;
-    };
-
     updateState = (key, value) => {
         let result = this.validateLength(value);
         this.setState({isTouched: true});
@@ -48,26 +38,26 @@ export default class App extends React.Component {
             this.setState({password: value, passwordValid: result});
         }
         else if (key === 'email') {
-            result = result && this.validateEmail(value);
+            result = result && this.validateEmail();
             this.setState({email: value, emailValid: result});
         }
     };
 
     validateLength = (value) => {
-        if (value.length < ConstKeys.minLength)
-            return false;
-        return true;
+        return value.length >= ConstKeys.minLength;
     };
 
-    validateEmail = (value) => {
+    validateEmail = () => {
         let reg = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
-        if (!reg.test(this.state.email))
-            return false;
-        return true;
+        return reg.test(this.state.email);
+    };
+
+    areFieldsValid = () => {
+        return this.state.firstNameValid && this.state.lastNameValid && this.state.passwordValid && this.state.emailValid;
     };
 
     register = () => {
-        if (this.validateFields()) {
+        if (this.areFieldsValid()) {
             fetch(ConstKeys.apiUrl + '/createUser', {
                 method: 'POST',
                 headers: {

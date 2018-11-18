@@ -4,12 +4,8 @@ import {Image, StyleSheet, Text, View} from 'react-native';
 const userInfo = props => {
     return (
         <View style={styles.userView}>
-            <Image source={{uri: props.onLoad.picture.data.url}} style={styles.userIcon}/>
             <Text style={styles.userNick}>
                 {props.onLoad.name}
-            </Text>
-            <Text>
-                ID: {props.onLoad.id}
             </Text>
         </View>
     );
