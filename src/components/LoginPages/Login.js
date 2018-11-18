@@ -1,5 +1,5 @@
 import React from 'react';
-import {StyleSheet, View, Image, Text, KeyboardAvoidingView, Alert, TouchableOpacity} from 'react-native';
+import {StyleSheet, View, Image, Text, KeyboardAvoidingView, Alert, TouchableOpacity, Modal, TouchableHighlight} from 'react-native';
 import LoginForm from './LoginForm'
 import {Font, LinearGradient} from 'expo';
 import ConstKeys from '../../config/app.consts'
@@ -17,7 +17,8 @@ export default class Login extends React.Component {
         email: null,
         password: null,
         fontLoaded: false,
-        userInfo: null
+        userInfo: null,
+        errorDuringLog: false
     };
 
     validateFields = () => {
@@ -46,14 +47,19 @@ export default class Login extends React.Component {
                 .then(res => {
                     if (res.status === 200 && res.headers.map.bearer) {
                         console.log(res);
+                        this.setState({errorDuringLog: false});
                         this.props.navigation.navigate('homePage', {
                             auth: res.headers.map.bearer
                         });
                     }
+                    else {
+                      this.setState({errorDuringLog: true});
+                    }
                 })
-                .catch(err => console.log(err))
+                .catch(err => this.setState({errorDuringLog: true})
+              );
         } else {
-            Alert.alert('Invalid data.');
+            this.setState({errorDuringLog: true});
         }
     };
 
@@ -102,11 +108,17 @@ export default class Login extends React.Component {
             title = <Text style={styles.title}> YouMeet </Text>;
             description = <Text style={styles.description}>Meet new people in entertaining places</Text>;
         }
+        let errorDuringUpload = this.state.errorDuringLog ? (
+          <Text style={styles.errorMessage}> There was an error during loging.
+          </Text>
+        ) : null;
         return (
             <KeyboardAvoidingView behavior="padding" style={styles.container}>
                 <LinearGradient colors={['#7b258e', '#B39DDB', '#3b2281']} style={styles.gradient}
                                 locations={[0, 0.4, 1]} start={[0.2, 0]} end={[0.8, 1.2]}>
                     <View style={styles.logoContainer}>
+                        {errorDuringUpload}
+
                         <Image style={styles.logo} source={require('../../../assets/logo.gif')}/>
                         {title}
                         {description}
@@ -141,7 +153,7 @@ const styles = StyleSheet.create({
         height: 200
     },
     title: {
-        marginTop: 20,
+        marginTop: 5,
         fontSize: 20,
         color: '#FFF',
         fontFamily: 'Courgette'
@@ -178,5 +190,13 @@ const styles = StyleSheet.create({
     },
     facebookTxt: {
         color: '#FFF'
+    },
+    errorMessage: {
+        backgroundColor: 'rgba(255,51,0,0.1)',
+        borderRadius: 10,
+        color: 'rgba(255,77,77,0.9)',
+        fontSize: 15,
+        padding: 15,
+        marginTop: 25
     }
 });
