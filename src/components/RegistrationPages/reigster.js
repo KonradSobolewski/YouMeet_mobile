@@ -17,7 +17,11 @@ export default class App extends React.Component {
         firstName: null,
         lastName: null,
         email: null,
-        password: null
+        password: null,
+        firstNameValid: true,
+        lastNameValid: true,
+        passwordValid: true,
+        emailValid: true
     };
 
     validateFields = () => {
@@ -29,6 +33,37 @@ export default class App extends React.Component {
         }
         return true;
     };
+
+    updateState = (key, value) => {
+      let result = this.validateLength(value);
+      if(key === 'firstName') {
+        this.setState({firstName: value, firstNameValid: result});
+      }
+      else if(key === 'lastName'){
+        this.setState({lastName: value, lastNameValid: result});
+      }
+      else if(key === 'password'){
+        this.setState({password: value, passwordValid: result});
+      }
+      else if(key === 'email'){
+        result = result && this.validateEmail(value);
+        this.setState({email: value, emailValid: result});
+      }
+
+    }
+
+    validateLength = (value) => {
+      if(value.length < ConstKeys.minLength)
+        return false;
+      return true;
+    }
+
+    validateEmail = (value) => {
+      let reg = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/ ;
+      if ( !reg.test(this.state.email) )
+          return false;
+      return true;
+    }
 
     register = () => {
         if (this.validateFields()) {
@@ -66,40 +101,42 @@ export default class App extends React.Component {
                 <LinearGradient colors={['#7b258e', '#B39DDB', '#3b2281']} style={styles.gradient} locations={[0 , 0.4 , 1 ]} start={[0.2, 0]} end={[0.8, 1.2]}>
                     <View style={styles.fieldsContainer}>
                         <Image style={styles.logo} source={require('../../../assets/logo.gif')}/>
-                        <TextInput style={styles.input}
+                        <TextInput style={[styles.input, this.state.firstNameValid === true ? null: styles.inputInvalid]}
                                    placeholder="First name"
                                    placeholderTextColor="rgba(255,255,255,0.5)"
                                    onSubmitEditing={() => this.lastNameInput.focus()}
                                    autoCorrect={false}
-                                   onChangeText={(value) => this.setState({firstName: value})}
+                                   onChangeText={(value) => this.updateState('firstName', value)}
                         />
-                        <TextInput style={styles.input}
+                        <TextInput style={[styles.input, this.state.lastNameValid === true ? null: styles.inputInvalid]}
                                    placeholder="Last name"
                                    placeholderTextColor="rgba(255,255,255,0.5)"
                                    onSubmitEditing={() => this.emailInput.focus()}
                                    autoCorrect={false}
-                                   onChangeText={(value) => this.setState({lastName: value})}
+                                   onChangeText={(value) => this.updateState('lastName', value)}
                                    ref={(input) => this.lastNameInput = input}
                         />
-                        <TextInput style={styles.input}
+                        <TextInput style={[styles.input, this.state.emailValid === true ? null: styles.inputInvalid]}
                                    placeholder="Email"
                                    placeholderTextColor="rgba(255,255,255,0.5)"
                                    onSubmitEditing={() => this.passwordInput.focus()}
                                    keyboardType="email-address"
                                    autoCapitalize="none"
                                    autoCorrect={false}
-                                   onChangeText={(value) => this.setState({email: value})}
+                                   onChangeText={(value) => this.updateState('email', value)}
                                    ref={(input) => this.emailInput = input}
                         />
 
-                        <TextInput style={styles.input}
+                        <TextInput style={[styles.input, this.state.passwordValid === true ? null: styles.inputInvalid]}
                                    placeholder="Password"
                                    secureTextEntry
                                    placeholderTextColor="rgba(255,255,255,0.5)"
                                    ref={(input) => this.passwordInput = input}
-                                   onChangeText={(value) => this.setState({password: value})}
+                                   onChangeText={(value) => this.updateState('password', value)}
                         />
-                        <TouchableOpacity style={styles.registerBtn} onPress={this.register}>
+                        <TouchableOpacity style={styles.registerBtn} onPress={this.register}
+                                          disabled={!(this.state.firstNameValid && this.state.lastNameValid &&
+                                                    this.state.passwordValid && this.state.emailValid)}>
                             <Text style={styles.registerText}>Register</Text>
                         </TouchableOpacity>
                     </View>
@@ -136,6 +173,9 @@ const styles = StyleSheet.create({
         height: 40,
         color: '#FFF',
         padding: 10
+    },
+    inputInvalid: {
+      backgroundColor: 'rgba(255,51,0,0.2)'
     },
     registerBtn: {
         borderRadius: 15,
