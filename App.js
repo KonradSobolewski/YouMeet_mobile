@@ -1,6 +1,6 @@
 import React from 'react';
 import {StatusBar} from 'react-native';
-import {createRootNavigator} from './src/components/router'
+import {createRootNavigator} from './src/config/router'
 import {isSignedIn} from "./src/config/authorization";
 
 export default class App extends React.Component {

@@ -38,7 +38,7 @@ export default usersMap;
 const styles = StyleSheet.create({
     mapContainer: {
         width: '100%',
-        height: 200
+        height: '80%'
     },
     map: {
         marginTop: 10,

@@ -1,8 +1,8 @@
 import React from 'react';
 import {createMaterialTopTabNavigator, createStackNavigator} from "react-navigation";
-import Login from "./LoginPages/Login";
-import Register from "./RegistrationPages/Register";
-import Home from "./HomeMap/Home";
+import Login from "../components/LoginPages/Login";
+import Register from "../components/RegistrationPages/Register";
+import Home from "../components/HomeMap/Home";
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
 export const createRootNavigator = (signedIn = false, userInfo) => {
