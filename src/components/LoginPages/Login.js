@@ -22,13 +22,6 @@ export default class Login extends React.Component {
             'Courgette': require('../../../assets/fonts/Courgette-Regular.ttf'),
         });
         this.setState({fontLoaded: true});
-        isSignedIn()
-            .then(res => {
-                console.log(res);
-                if(res !== false)
-                    this.props.navigation.navigate('homePage', JSON.parse(res));
-            })
-            .catch(err => alert("An error occurred"));
     }
 
     state = {

@@ -1,71 +1,36 @@
 import React from 'react';
-import {StyleSheet, View, StatusBar} from 'react-native';
-import Home from './src/components/HomeMap/Home'
-import Login from './src/components/LoginPages/Login'
-import Register from './src/components/RegistrationPages/Register'
-import {createMaterialTopTabNavigator, createStackNavigator} from 'react-navigation'
-import {Font} from "expo";
-import Ionicons from 'react-native-vector-icons/Ionicons';
+import {StatusBar} from 'react-native';
+import {createRootNavigator} from './src/components/router'
+import {isSignedIn} from "./src/config/authorization";
 
 export default class App extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            signedIn: false,
+            userInfo: null,
+            checkedSignIn: false,
+        };
+    }
+
     componentDidMount() {
         StatusBar.setHidden(true);
+        isSignedIn()
+            .then(res => {
+                if(res !== false)
+                    this.setState({signedIn: true, userInfo: JSON.parse(res), checkedSignIn: true});
+                this.setState({checkedSignIn: true});
+            })
+            .catch(err => alert("An error occurred"));
     }
 
     render() {
+        if (!this.state.checkedSignIn) {
+            return null;
+        }
+        const Layout = createRootNavigator(this.state.signedIn, this.state.userInfo);
         return (
-            <MainNav/>
+            <Layout/>
         );
     }
 }
-
-
-const AppStackNavigator = createMaterialTopTabNavigator({
-        loginPage: {
-            screen: Login,
-            navigationOptions: {
-                tabBarLabel: 'Login',
-                showIcon: true,
-                tabBarIcon: () => {
-                    return <Ionicons name="md-contact" size={20} color={"white"}/>
-                }
-            }
-        },
-        registerPage: {
-            screen: Register,
-            navigationOptions: {
-                tabBarLabel: 'Register',
-                showIcon: true,
-                tabBarIcon: () => {
-                    return <Ionicons name="md-create" size={20} color={"white"}/>
-                }
-            }
-        }
-    },
-    {
-        tabBarOptions: {
-            showLabel: true, // hide labels
-            showIcon: true,
-            style: {
-                backgroundColor: '#7b258e' // TabBar background
-            }
-        }
-    }
-);
-
-const MainNav = createStackNavigator({
-        loginPage: {
-            screen: AppStackNavigator
-        },
-        homePage: {
-            screen: Home
-        },
-    },
-    {
-        mode: 'modal',
-        headerMode: 'none',
-    });
-
-const styles = StyleSheet.create({
-    container: {}
-});
