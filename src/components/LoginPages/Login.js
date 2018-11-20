@@ -13,7 +13,7 @@ import {
 import LoginForm from './LoginForm'
 import {Font, LinearGradient} from 'expo';
 import ConstKeys from '../../config/app.consts'
-import {onSignIn , USER_KEY , isSignedIn} from '../../config/authorization'
+import {onSignIn, USER_KEY, isSignedIn} from '../../config/authorization'
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
 export default class Login extends React.Component {
@@ -82,6 +82,69 @@ export default class Login extends React.Component {
         }
     };
 
+    getUserNameAndLastName = (name) => {
+        let index = name.indexOf(' ');
+        let firstName = name.substring(0, index);
+        let lastName = name.substr(index + 1, name.length);
+        return {
+            firstName: firstName,
+            lastName: lastName
+        }
+    };
+
+    createFbUserAccount = (userInfo) => {
+        const {firstName, lastName} = this.getUserNameAndLastName(userInfo.name);
+        fetch(ConstKeys.apiUrl + '/createFbUserAccount', {
+            method: 'POST',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                email: userInfo.email,
+                firstName: firstName,
+                lastName: lastName,
+                password: 'fbLogger'
+            })
+        })
+            .then(res => {
+                return this.getTokenForFb(userInfo);
+            })
+            .catch(err => {
+                    this.setState({errorDuringLog: true});
+                    return 'error';
+                }
+            );
+    };
+
+    getTokenForFb = (userInfo) => {
+        fetch(ConstKeys.apiUrl + '/generateToken?email=' + userInfo.email, {
+            method: 'GET',
+        })
+            .then(res => {
+                console.log(res);
+                if (res.status === 200) {
+                    let data = {
+                        userInfo: userInfo,
+                        auth: res._bodyInit
+                    };
+                    onSignIn(JSON.stringify(data))
+                        .then(() => this.props.navigation.navigate('homePage', data))
+                        .catch(err => console.log(err));
+                }
+                else {
+                    this.setState({errorDuringLog: true});
+                }
+
+            })
+            .catch(err => {
+                    this.setState({errorDuringLog: true});
+                    console.log(err);
+                    return 'error';
+                }
+            );
+    };
+
     logInFb = async () => {
         const {
             type,
@@ -93,17 +156,12 @@ export default class Login extends React.Component {
             permissions: ['public_profile', 'email'],
         });
         if (type === 'success') {
-            await fetch(`https://graph.facebook.com/me?access_token=${token}&fields=id,name,picture.type(large)`)
+            await fetch(`https://graph.facebook.com/me?access_token=${token}&fields=id,email,name,picture.type(large)`)
                 .then(async res => {
                     let userInfo = await res.json();
-                    let data = {
-                        userInfo: userInfo,
-                        auth: 'lol'
-                    };
                     if (userInfo.error === undefined) {
-                        onSignIn(JSON.stringify(data))
-                            .then(() => this.props.navigation.navigate('homePage', data))
-                            .catch(err => console.log(err));
+                        console.log(userInfo);
+                        this.createFbUserAccount(userInfo, userInfo.email, userInfo.name);
                     } else {
                         alert('Fb error');
                     }
