@@ -8,7 +8,8 @@ import {
     Alert,
     TouchableOpacity,
     Modal,
-    TouchableHighlight
+    TouchableHighlight,
+    ScrollView
 } from 'react-native';
 import LoginForm from './LoginForm'
 import {Font, LinearGradient} from 'expo';
@@ -202,8 +203,10 @@ export default class Login extends React.Component {
         ) : null;
         return (
             <KeyboardAvoidingView behavior="padding" style={styles.container}>
+
                 <LinearGradient colors={['#7b258e', '#B39DDB', '#3b2281']} style={styles.gradient}
                                 locations={[0, 0.4, 1]} start={[0.2, 0]} end={[0.8, 1.2]}>
+		<ScrollView>
                     <View style={styles.logoContainer}>
                         {errorDuringUpload}
                         {informationalText}
@@ -221,8 +224,11 @@ export default class Login extends React.Component {
 
                         {this.renderFbLogin()}
                     </View>
+		</ScrollView>
                 </LinearGradient>
+
             </KeyboardAvoidingView>
+
         );
     }
 }

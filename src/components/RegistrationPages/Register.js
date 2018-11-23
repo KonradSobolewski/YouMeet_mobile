@@ -7,7 +7,8 @@ import {
     Text,
     TextInput,
     TouchableOpacity,
-    View
+    View,
+    ScrollView
 } from 'react-native';
 import {LinearGradient} from 'expo';
 import ConstKeys from '../../config/app.consts'
@@ -89,8 +90,10 @@ export default class App extends React.Component {
     render() {
         return (
             <KeyboardAvoidingView behavior="padding" style={styles.container}>
+
                 <LinearGradient colors={['#7b258e', '#B39DDB', '#3b2281']} style={styles.gradient}
                                 locations={[0, 0.4, 1]} start={[0.2, 0]} end={[0.8, 1.2]}>
+	        <ScrollView>
                     <View style={styles.fieldsContainer}>
                         <Image style={styles.logo} source={require('../../../assets/logo.gif')}/>
                         <TextInput
@@ -135,6 +138,7 @@ export default class App extends React.Component {
                             <Text style={styles.registerText}>Register</Text>
                         </TouchableOpacity>
                     </View>
+		</ScrollView>
                 </LinearGradient>
             </KeyboardAvoidingView>
         );
