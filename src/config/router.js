@@ -1,5 +1,6 @@
 import React from 'react';
-import {createMaterialTopTabNavigator, createStackNavigator} from "react-navigation";
+import {createMaterialTopTabNavigator, createStackNavigator,
+createDrawerNavigator} from "react-navigation";
 import Login from "../components/LoginPages/Login";
 import Register from "../components/RegistrationPages/Register";
 import Home from "../components/HomeMap/Home";
@@ -42,7 +43,11 @@ export const createRootNavigator = (signedIn = false, userInfo) => {
                 )
             },
             homePage: {
-                screen: Home
+                screen: createDrawerNavigator({
+		    homePage: {
+		    	screen: Home
+		    }		
+		})
             },
         },
         {
