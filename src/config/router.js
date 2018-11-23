@@ -4,7 +4,10 @@ createDrawerNavigator} from "react-navigation";
 import Login from "../components/LoginPages/Login";
 import Register from "../components/RegistrationPages/Register";
 import Home from "../components/HomeMap/Home";
+import Settings from "../components/HomeMap/Settings";
+import SignOut from "../components/HomeMap/SignOut";
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import CustomDrawerContentComponent from './DrawerComponent';
 
 export const createRootNavigator = (signedIn = false, userInfo) => {
     return createStackNavigator({
@@ -44,10 +47,25 @@ export const createRootNavigator = (signedIn = false, userInfo) => {
             },
             homePage: {
                 screen: createDrawerNavigator({
-		    homePage: {
-		    	screen: Home
-		    }		
-		})
+            		    homePage: {
+            		    	screen: Home
+            		    },
+                    Settings:{
+                      screen: Settings
+                    },
+                    SignOut: {
+                      screen: SignOut
+                    }
+                    },
+                    {
+                      initialRouteName: 'homePage',
+                      drawerPosition: 'left',
+                      contentComponent: CustomDrawerContentComponent,
+                      drawerOpenRoute: 'DrawerOpen',
+                      drawerCloseRoute: 'DrawerClose',
+                      drawerToggleRoute: 'DrawerToggle'
+                     }
+            		)
             },
         },
         {

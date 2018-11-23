@@ -4,6 +4,8 @@ import FetchLocation from "./FetchLocation";
 import UsersMap from "./UsersMap";
 import UserInfo from "./UserInfo";
 import {onSignOut} from '../../config/authorization'
+import Ionicons from 'react-native-vector-icons/Ionicons';
+
 
 export default class Home extends React.Component {
 
@@ -19,6 +21,13 @@ export default class Home extends React.Component {
                 longitudeDelta: 0.0421
             }
         };
+    }
+
+    static navigationOptions = {
+      drawerLabel: 'Home',
+      drawerIcon: () => (
+          <Ionicons name="md-home" size={18}/>
+      )
     }
 
     getUserLocationHandler = () => {
