@@ -5,10 +5,7 @@ import {
     Image,
     Text,
     KeyboardAvoidingView,
-    Alert,
     TouchableOpacity,
-    Modal,
-    TouchableHighlight,
     ScrollView
 } from 'react-native';
 import LoginForm from './LoginForm'

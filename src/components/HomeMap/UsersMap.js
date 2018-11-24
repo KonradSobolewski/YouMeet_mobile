@@ -1,6 +1,8 @@
 import React from 'react'
-import {Button, Image, StyleSheet, View} from 'react-native';
+import {Button, Image, StyleSheet, View, Text} from 'react-native';
 import {MapView} from 'expo'
+
+let mapStyle = require('../../config/map.style.json');
 
 const usersMap = props => {
     let userLocationMarker = null;
@@ -17,7 +19,7 @@ const usersMap = props => {
 
     return (
         <View style={styles.mapContainer}>
-            <MapView region={props.userLocation} style={styles.map}>
+            <MapView region={props.userLocation} style={styles.map} customMapStyle={mapStyle}>
                 {userLocationMarker}
             </MapView>
         </View>
