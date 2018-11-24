@@ -90,55 +90,54 @@ export default class App extends React.Component {
     render() {
         return (
             <KeyboardAvoidingView behavior="padding" style={styles.container}>
-
                 <LinearGradient colors={['#7b258e', '#B39DDB', '#3b2281']} style={styles.gradient}
                                 locations={[0, 0.4, 1]} start={[0.2, 0]} end={[0.8, 1.2]}>
-	        <ScrollView>
-                    <View style={styles.fieldsContainer}>
-                        <Image style={styles.logo} source={require('../../../assets/logo.gif')}/>
-                        <TextInput
-                            style={[styles.input, this.state.firstNameValid === true ? null : styles.inputInvalid]}
-                            placeholder="First name"
-                            placeholderTextColor="rgba(255,255,255,0.5)"
-                            onSubmitEditing={() => this.lastNameInput.focus()}
-                            autoCorrect={false}
-                            onChangeText={(value) => this.updateState('firstName', value)}
-                        />
-                        <TextInput
-                            style={[styles.input, this.state.lastNameValid === true ? null : styles.inputInvalid]}
-                            placeholder="Last name"
-                            placeholderTextColor="rgba(255,255,255,0.5)"
-                            onSubmitEditing={() => this.emailInput.focus()}
-                            autoCorrect={false}
-                            onChangeText={(value) => this.updateState('lastName', value)}
-                            ref={(input) => this.lastNameInput = input}
-                        />
-                        <TextInput style={[styles.input, this.state.emailValid === true ? null : styles.inputInvalid]}
-                                   placeholder="Email"
-                                   placeholderTextColor="rgba(255,255,255,0.5)"
-                                   onSubmitEditing={() => this.passwordInput.focus()}
-                                   keyboardType="email-address"
-                                   autoCapitalize="none"
-                                   autoCorrect={false}
-                                   onChangeText={(value) => this.updateState('email', value)}
-                                   ref={(input) => this.emailInput = input}
-                        />
+                    <ScrollView contentContainerStyle={styles.scrollView}>
+                        <View style={styles.fieldsContainer}>
+                            <Image style={styles.logo} source={require('../../../assets/logo.gif')}/>
+                            <TextInput
+                                style={[styles.input, this.state.firstNameValid === true ? null : styles.inputInvalid]}
+                                placeholder="First name"
+                                placeholderTextColor="rgba(255,255,255,0.5)"
+                                onSubmitEditing={() => this.lastNameInput.focus()}
+                                autoCorrect={false}
+                                onChangeText={(value) => this.updateState('firstName', value)}
+                            />
+                            <TextInput
+                                style={[styles.input, this.state.lastNameValid === true ? null : styles.inputInvalid]}
+                                placeholder="Last name"
+                                placeholderTextColor="rgba(255,255,255,0.5)"
+                                onSubmitEditing={() => this.emailInput.focus()}
+                                autoCorrect={false}
+                                onChangeText={(value) => this.updateState('lastName', value)}
+                                ref={(input) => this.lastNameInput = input}
+                            />
+                            <TextInput
+                                style={[styles.input, this.state.emailValid === true ? null : styles.inputInvalid]}
+                                placeholder="Email"
+                                placeholderTextColor="rgba(255,255,255,0.5)"
+                                onSubmitEditing={() => this.passwordInput.focus()}
+                                keyboardType="email-address"
+                                autoCapitalize="none"
+                                autoCorrect={false}
+                                onChangeText={(value) => this.updateState('email', value)}
+                                ref={(input) => this.emailInput = input}
+                            />
 
-                        <TextInput
-                            style={[styles.input, this.state.passwordValid === true ? null : styles.inputInvalid]}
-                            placeholder="Password"
-                            secureTextEntry
-                            placeholderTextColor="rgba(255,255,255,0.5)"
-                            ref={(input) => this.passwordInput = input}
-                            onChangeText={(value) => this.updateState('password', value)}
-                        />
-                        <TouchableOpacity style={styles.registerBtn} onPress={this.register}
-                                          disabled={!(this.state.firstNameValid && this.state.lastNameValid &&
-                                              this.state.passwordValid && this.state.emailValid && this.state.isTouched)}>
-                            <Text style={styles.registerText}>Register</Text>
-                        </TouchableOpacity>
-                    </View>
-		</ScrollView>
+                            <TextInput
+                                style={[styles.input, this.state.passwordValid === true ? null : styles.inputInvalid]}
+                                placeholder="Password"
+                                secureTextEntry
+                                placeholderTextColor="rgba(255,255,255,0.5)"
+                                ref={(input) => this.passwordInput = input}
+                                onChangeText={(value) => this.updateState('password', value)}
+                            />
+                            <TouchableOpacity style={styles.registerBtn} onPress={this.register}
+                                              disabled={!(this.areFieldsValid && this.state.isTouched)}>
+                                <Text style={styles.registerText}>Register</Text>
+                            </TouchableOpacity>
+                        </View>
+                    </ScrollView>
                 </LinearGradient>
             </KeyboardAvoidingView>
         );
@@ -150,15 +149,15 @@ const styles = StyleSheet.create({
         flex: 1,
     },
     gradient: {
-        height: '100%',
+        height: '100%'
+    },
+    scrollView: {
         alignItems: 'center'
     },
     fieldsContainer: {
         margin: 20,
         width: '80%',
-        alignItems: 'center',
-        flexGrow: 1,
-        justifyContent: 'center'
+        alignItems: 'center'
     },
     logo: {
         width: 200,

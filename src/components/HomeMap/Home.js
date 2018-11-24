@@ -1,11 +1,8 @@
 import React from 'react';
-import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
-import FetchLocation from "./FetchLocation";
+import {Button, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import UsersMap from "./UsersMap";
 import UserInfo from "./UserInfo";
 import {onSignOut} from '../../config/authorization'
-import Ionicons from 'react-native-vector-icons/Ionicons';
-
 
 export default class Home extends React.Component {
 
@@ -15,19 +12,13 @@ export default class Home extends React.Component {
             userInfo: props.navigation.getParam('userInfo'),
             auth: props.navigation.getParam('auth'),
             location: {
-                latitude: 37.78825,
-                longitude: -122.4324,
-                latitudeDelta: 0.0622,
-                longitudeDelta: 0.0421
+                latitude: 52.22967,
+                longitude: 21.01222,
+                latitudeDelta: 0.0522,
+                longitudeDelta: 0.0321
             }
         };
-    }
-
-    static navigationOptions = {
-      drawerLabel: 'Home',
-      drawerIcon: () => (
-          <Ionicons name="md-home" size={18}/>
-      )
+        this.getUserLocationHandler();
     }
 
     getUserLocationHandler = () => {
@@ -36,14 +27,14 @@ export default class Home extends React.Component {
                 location: {
                     latitude: position.coords.latitude,
                     longitude: position.coords.longitude,
-                    latitudeDelta: 0.0622,
-                    longitudeDelta: 0.0421
+                    latitudeDelta: 0.0522,
+                    longitudeDelta: 0.0321
                 }
             });
         }, err => console.log(err));
     };
 
-    signOut = ()=> {
+    signOut = () => {
         onSignOut()
             .then(() => this.props.navigation.navigate('loginPage'))
             .catch(err => console.log(err));
@@ -57,7 +48,7 @@ export default class Home extends React.Component {
         return (
             <View style={styles.container}>
                 <UserInfo onLoad={this.state.userInfo}/>
-                <FetchLocation onGetLocation={this.getUserLocationHandler}/>
+                <Button title="Get Location" onPress={this.getUserLocationHandler}/>
                 <UsersMap userLocation={this.state.location} userInfo={this.state.userInfo}/>
                 <TouchableOpacity style={styles.buttonContainer} onPress={this.signOut}>
                     <Text style={styles.buttonText}>Logout</Text>

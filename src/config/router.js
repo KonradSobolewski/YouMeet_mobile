@@ -1,6 +1,8 @@
 import React from 'react';
-import {createMaterialTopTabNavigator, createStackNavigator,
-createDrawerNavigator} from "react-navigation";
+import {
+    createMaterialTopTabNavigator, createStackNavigator,
+    createDrawerNavigator
+} from "react-navigation";
 import Login from "../components/LoginPages/Login";
 import Register from "../components/RegistrationPages/Register";
 import Home from "../components/HomeMap/Home";
@@ -47,25 +49,43 @@ export const createRootNavigator = (signedIn = false, userInfo) => {
             },
             homePage: {
                 screen: createDrawerNavigator({
-            		    homePage: {
-            		    	screen: Home
-            		    },
-                    Settings:{
-                      screen: Settings
-                    },
-                    SignOut: {
-                      screen: SignOut
-                    }
+                        homePage: {
+                            screen: Home,
+                            navigationOptions: {
+                                drawerLabel: 'Home',
+                                drawerIcon: () => (
+                                    <Ionicons name="md-home" size={18}/>
+                                )
+                            }
+                        },
+                        Settings: {
+                            screen: Settings,
+                            navigationOptions: {
+                                drawerLabel: 'Settings',
+                                drawerIcon: () => (
+                                    <Ionicons name="md-settings" size={18}/>
+                                )
+                            }
+                        },
+                        SignOut: {
+                            screen: SignOut,
+                            navigationOptions: {
+                                drawerLabel: 'Sign Out',
+                                drawerIcon: () => (
+                                    <Ionicons name="md-log-out" size={18}/>
+                                )
+                            }
+                        }
                     },
                     {
-                      initialRouteName: 'homePage',
-                      drawerPosition: 'left',
-                      contentComponent: CustomDrawerContentComponent,
-                      drawerOpenRoute: 'DrawerOpen',
-                      drawerCloseRoute: 'DrawerClose',
-                      drawerToggleRoute: 'DrawerToggle'
-                     }
-            		)
+                        initialRouteName: 'homePage',
+                        drawerPosition: 'left',
+                        contentComponent: CustomDrawerContentComponent,
+                        drawerOpenRoute: 'DrawerOpen',
+                        drawerCloseRoute: 'DrawerClose',
+                        drawerToggleRoute: 'DrawerToggle'
+                    }
+                )
             },
         },
         {
