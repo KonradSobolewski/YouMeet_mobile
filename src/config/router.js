@@ -7,6 +7,8 @@ import Login from "../components/LoginPages/Login";
 import Register from "../components/RegistrationPages/Register";
 import Home from "../components/HomeMap/Home";
 import Settings from "../components/HomeMap/Settings";
+import AccountInfo from "../components/Settings/AccountInfo"
+import AppSettings from "../components/Settings/AppSettings"
 import SignOut from "../components/HomeMap/SignOut";
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import CustomDrawerContentComponent from './DrawerComponent';
@@ -87,6 +89,12 @@ export const createRootNavigator = (signedIn = false, userInfo) => {
                     }
                 )
             },
+            accountInfo: {
+                screen: AccountInfo
+            },
+            appSettings: {
+                screen: AppSettings
+            }
         },
         {
             initialRouteName: signedIn ? 'homePage' : 'loginPage',

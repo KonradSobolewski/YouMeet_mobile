@@ -16,7 +16,8 @@ export default class Home extends React.Component {
                 longitude: 21.01222,
                 latitudeDelta: 0.0522,
                 longitudeDelta: 0.0321
-            }
+            },
+            chosenPlace: null
         };
         this.getUserLocationHandler();
     }
@@ -40,6 +41,10 @@ export default class Home extends React.Component {
             .catch(err => console.log(err));
     };
 
+    setTapedCoordinates = (data) => {
+        this.setState({chosenPlace: data});
+    };
+
     render() {
         const {navigation} = this.props;
         if (this.state.auth === null) {
@@ -49,10 +54,7 @@ export default class Home extends React.Component {
             <View style={styles.container}>
                 <UserInfo onLoad={this.state.userInfo}/>
                 <Button title="Get Location" onPress={this.getUserLocationHandler}/>
-                <UsersMap userLocation={this.state.location} userInfo={this.state.userInfo}/>
-                <TouchableOpacity style={styles.buttonContainer} onPress={this.signOut}>
-                    <Text style={styles.buttonText}>Logout</Text>
-                </TouchableOpacity>
+                <UsersMap userLocation={this.state.location} userInfo={this.state.userInfo} getTapedLocation={(data) => this.setTapedCoordinates(data)} chosenPlace={this.state.chosenPlace}/>
             </View>
         );
     }

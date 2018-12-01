@@ -6,6 +6,7 @@ let mapStyle = require('../../config/map.style.json');
 
 const usersMap = props => {
     let userLocationMarker = null;
+    let chosenPlaceMarker = null;
 
     if (props.userLocation) {
         userLocationMarker = props.userInfo.picture !== '' ?
@@ -16,11 +17,14 @@ const usersMap = props => {
             ( <MapView.Marker coordinate={props.userLocation}>
             </MapView.Marker> );
     }
-
+    if (props.chosenPlace) {
+        chosenPlaceMarker = <MapView.Marker coordinate={props.chosenPlace}/>
+    }
     return (
         <View style={styles.mapContainer}>
-            <MapView region={props.userLocation} style={styles.map} customMapStyle={mapStyle}>
+            <MapView region={props.userLocation} style={styles.map} customMapStyle={mapStyle} onPress={(e) => props.getTapedLocation(e.nativeEvent.coordinate)}>
                 {userLocationMarker}
+                {chosenPlaceMarker}
             </MapView>
         </View>
     );
