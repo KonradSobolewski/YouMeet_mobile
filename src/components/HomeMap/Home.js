@@ -35,12 +35,6 @@ export default class Home extends React.Component {
         }, err => console.log(err));
     };
 
-    signOut = () => {
-        onSignOut()
-            .then(() => this.props.navigation.navigate('loginPage'))
-            .catch(err => console.log(err));
-    };
-
     setTapedCoordinates = (data) => {
         this.setState({chosenPlace: data});
     };
@@ -54,7 +48,10 @@ export default class Home extends React.Component {
             <View style={styles.container}>
                 <UserInfo onLoad={this.state.userInfo}/>
                 <Button title="Get Location" onPress={this.getUserLocationHandler}/>
-                <UsersMap userLocation={this.state.location} userInfo={this.state.userInfo} getTapedLocation={(data) => this.setTapedCoordinates(data)} chosenPlace={this.state.chosenPlace}/>
+                <UsersMap userLocation={this.state.location}
+                          userInfo={this.state.userInfo}
+                          getTapedLocation={(data) => this.setTapedCoordinates(data)}
+                          chosenPlace={this.state.chosenPlace}/>
             </View>
         );
     }
