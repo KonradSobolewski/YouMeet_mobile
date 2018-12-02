@@ -154,7 +154,7 @@ export default class Login extends React.Component {
             permissions: ['public_profile', 'email'],
         });
         if (type === 'success') {
-            await fetch(`https://graph.facebook.com/me?access_token=${token}&fields=id,email,name,picture.type(large)`)
+            await fetch(`https://graph.facebook.com/me?access_token=${token}&fields=id,email,likes,name,picture.type(large)`)
                 .then(async res => {
                     let userInfo = await res.json();
                     if (userInfo.error === undefined) {

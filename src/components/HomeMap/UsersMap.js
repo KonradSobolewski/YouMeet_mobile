@@ -33,10 +33,11 @@ const usersMap = props => {
     }
     return (
         <View style={styles.mapContainer}>
-            <MapView region={props.userLocation} style={styles.map} customMapStyle={mapStyle}
+            <MapView region={props.userLocation} style={styles.map} customMapStyle={mapStyle} showsBuildings showsCompass
                      onPress={(e) => {
                          props.getTapedLocation(e.nativeEvent.coordinate);
-                     }}>
+                     }}
+                     onPoiClick={(data) => console.log(data.nativeEvent)}>
                 {userLocationMarker}
                 {chosenPlaceMarker}
             </MapView>
@@ -52,6 +53,7 @@ const styles = StyleSheet.create({
         height: '80%'
     },
     map: {
+
         marginTop: 10,
         width: '100%',
         height: '100%'
@@ -62,7 +64,7 @@ const styles = StyleSheet.create({
         borderColor: 'white'
     },
     markerIcon: {
-        width: 35, height: 35
+        width: 50, height: 50
     },
     toolTip:{
         backgroundColor: 'rgba(255,255,255,0.8)',
