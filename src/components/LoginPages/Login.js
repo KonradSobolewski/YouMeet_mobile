@@ -13,6 +13,8 @@ import {Font, LinearGradient} from 'expo';
 import ConstKeys from '../../config/app.consts'
 import {onSignIn, USER_KEY, isSignedIn} from '../../config/authorization'
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import {getUserNameAndLastName} from '../../utils/StringUtils'
+import {getUserByEmail} from '../../utils/UserUtils'
 
 export default class Login extends React.Component {
     async componentDidMount() {
@@ -43,9 +45,9 @@ export default class Login extends React.Component {
     login = () => {
         if (this.validateFields()) {
             fetch(ConstKeys.apiUrl + '/login', {
+                credentials: 'include',
                 method: 'POST',
                 headers: {
-                    Accept: 'application/json',
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({
@@ -56,18 +58,28 @@ export default class Login extends React.Component {
                 .then(res => {
                     if (res.status === 200 && res.headers.map.bearer) {
                         console.log(res);
-                        let data = {
-                            userInfo: {
-                                picture: '',
-                                id: '',
-                                name: this.state.email
-                            },
-                            auth: res.headers.map.bearer
-                        };
-                        this.setState({errorDuringLog: false});
-                        onSignIn(JSON.stringify(data))
-                            .then(() => this.props.navigation.navigate('homePage', data))
-                            .catch(err => console.log(err));
+                        ConstKeys.auth = 'Bearer ' + res.headers.map.bearer;
+                        getUserByEmail(this.state.email)
+                            .then(response => {
+                                let userData = JSON.parse(response._bodyInit);
+                                let data = {
+                                    userInfo: {
+                                        picture: '',
+                                        id: userData.id,
+                                        email: userData.email,
+                                        firstName: userData.firstName,
+                                        lastName: userData.lastName,
+                                        name: userData.firstName + ' ' + userData.lastName
+                                    },
+                                    auth: ConstKeys.auth
+                                };
+                                ConstKeys.userInfo = data.userInfo;
+                                this.setState({errorDuringLog: false});
+                                onSignIn(JSON.stringify(data))
+                                    .then(() => this.props.navigation.navigate('homePage', data))
+                                    .catch(err => console.log(err));
+                            })
+                            .catch(err => this.setState({errorDuringLog: true}));
                     }
                     else {
                         this.setState({errorDuringLog: true});
@@ -80,18 +92,7 @@ export default class Login extends React.Component {
         }
     };
 
-    getUserNameAndLastName = (name) => {
-        let index = name.indexOf(' ');
-        let firstName = name.substring(0, index);
-        let lastName = name.substr(index + 1, name.length);
-        return {
-            firstName: firstName,
-            lastName: lastName
-        }
-    };
-
     createFbUserAccount = (userInfo) => {
-        const {firstName, lastName} = this.getUserNameAndLastName(userInfo.name);
         fetch(ConstKeys.apiUrl + '/createFbUserAccount', {
             method: 'POST',
             headers: {
@@ -100,8 +101,8 @@ export default class Login extends React.Component {
             },
             body: JSON.stringify({
                 email: userInfo.email,
-                firstName: firstName,
-                lastName: lastName,
+                firstName: userInfo.firstName,
+                lastName: userInfo.lastName,
                 password: 'fbLogger'
             })
         })
@@ -117,11 +118,13 @@ export default class Login extends React.Component {
 
     getTokenForFb = (userInfo) => {
         fetch(ConstKeys.apiUrl + '/generateToken?email=' + userInfo.email, {
+            credentials: 'include',
             method: 'GET',
         })
             .then(res => {
                 console.log(res);
                 if (res.status === 200) {
+                    ConstKeys.auth = res._bodyInit;
                     let data = {
                         userInfo: userInfo,
                         auth: res._bodyInit
@@ -158,8 +161,11 @@ export default class Login extends React.Component {
                 .then(async res => {
                     let userInfo = await res.json();
                     if (userInfo.error === undefined) {
-                        console.log(userInfo);
-                        this.createFbUserAccount(userInfo, userInfo.email, userInfo.name);
+                        const {firstName, lastName} = getUserNameAndLastName(userInfo.name);
+                        userInfo['firstName'] = firstName;
+                        userInfo['lastName'] = lastName;
+                        ConstKeys.userInfo = userInfo;
+                        this.createFbUserAccount(userInfo);
                     } else {
                         alert('Fb error');
                     }

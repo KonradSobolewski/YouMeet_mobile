@@ -2,6 +2,7 @@ import React from 'react'
 import {Button, Image, StyleSheet, View, Text} from 'react-native';
 import {MapView} from 'expo'
 import markerImage from '../../../assets/marker.png'
+import ConstKeys from '../../config/app.consts'
 
 let mapStyle = require('../../config/map.style.json');
 
@@ -10,9 +11,9 @@ const usersMap = props => {
     let chosenPlaceMarker = null;
 
     if (props.userLocation) {
-        userLocationMarker = props.userInfo.picture !== '' ?
+        userLocationMarker = ConstKeys.userInfo.picture !== '' ?
             (<MapView.Marker coordinate={props.userLocation}>
-                <Image source={{uri: props.userInfo.picture.data.url}} style={styles.userIcon}/>
+                <Image source={{uri: ConstKeys.userInfo.picture.data.url}} style={styles.userIcon}/>
             </MapView.Marker>)
             :
             (<MapView.Marker coordinate={props.userLocation}>

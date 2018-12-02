@@ -1,8 +1,7 @@
 import React from 'react';
-import {Button, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {Button, StyleSheet, View} from 'react-native';
 import UsersMap from "./UsersMap";
 import UserInfo from "./UserInfo";
-import {onSignOut} from '../../config/authorization'
 
 export default class Home extends React.Component {
 
@@ -53,7 +52,6 @@ export default class Home extends React.Component {
                 <UserInfo onLoad={this.state.userInfo}/>
                 <Button title="Get Location" onPress={this.getUserLocationHandler}/>
                 <UsersMap userLocation={this.state.location}
-                          userInfo={this.state.userInfo}
                           getTapedLocation={(data) => this.setTapedCoordinates(data)}
                           chosenPlace={this.state.chosenPlace}
                           getPickedPoi={(data) => this.getPickedPoi(data)}/>

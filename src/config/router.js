@@ -13,7 +13,7 @@ import SignOut from "../components/HomeMap/SignOut";
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import CustomDrawerContentComponent from './DrawerComponent';
 
-export const createRootNavigator = (signedIn = false, userInfo) => {
+export const createRootNavigator = (signedIn = false, data) => {
     return createStackNavigator({
             loginPage: {
                 screen: createMaterialTopTabNavigator({
@@ -98,7 +98,7 @@ export const createRootNavigator = (signedIn = false, userInfo) => {
         },
         {
             initialRouteName: signedIn ? 'homePage' : 'loginPage',
-            initialRouteParams: signedIn ? userInfo : null,
+            initialRouteParams: signedIn ? {userInfo: data.userInfo, auth: data.auth} : null,
             mode: 'modal',
             headerMode: 'none',
         });
