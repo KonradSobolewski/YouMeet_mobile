@@ -2,6 +2,8 @@ import React from 'react';
 import {Button, StyleSheet, View} from 'react-native';
 import UsersMap from "./UsersMap";
 import UserInfo from "./UserInfo";
+import {onSignOut} from '../../config/authorization'
+import ConstKeys from '../../config/app.consts'
 
 export default class Home extends React.Component {
 
@@ -16,9 +18,20 @@ export default class Home extends React.Component {
                 latitudeDelta: 0.0522,
                 longitudeDelta: 0.0321
             },
-            chosenPlace: null
+            chosenPlace: null,
+            meetingsLoaded: false,
+            meetings: null
         };
         this.getUserLocationHandler();
+        this.getMeetingPlaces();
+    }
+
+    getMeetingPlaces = () => {
+      fetch(ConstKeys.apiUrl + '/getMeetings').then(response => response.json().then(data => {
+        this.setState({meetings: data, meetingsLoaded: true});
+      })
+      .catch(err => console.log(err))
+    ).catch(err => console.log(err));
     }
 
     getUserLocationHandler = () => {
@@ -44,17 +57,26 @@ export default class Home extends React.Component {
 
     render() {
         const {navigation} = this.props;
+
         if (this.state.auth === null) {
             navigation.navigate('loginPage');
+        }
+        let sth = null;
+        if(this.state.meetingsLoaded === true){
+          let lat = this.state.meetings[0].place_latitude;
+          sth = <Text> {lat} </Text>
+
         }
         return (
             <View style={styles.container}>
                 <UserInfo onLoad={this.state.userInfo}/>
                 <Button title="Get Location" onPress={this.getUserLocationHandler}/>
                 <UsersMap userLocation={this.state.location}
+                          meetings={this.state.meetings}
                           getTapedLocation={(data) => this.setTapedCoordinates(data)}
                           chosenPlace={this.state.chosenPlace}
                           getPickedPoi={(data) => this.getPickedPoi(data)}/>
+                {sth}
             </View>
         );
     }

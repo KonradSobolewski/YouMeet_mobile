@@ -9,7 +9,7 @@ let mapStyle = require('../../config/map.style.json');
 const usersMap = props => {
     let userLocationMarker = null;
     let chosenPlaceMarker = null;
-
+    let meetingPlaces = null;
     if (props.userLocation) {
         userLocationMarker = ConstKeys.userInfo.picture !== '' ?
             (<MapView.Marker coordinate={props.userLocation}>
@@ -19,6 +19,16 @@ const usersMap = props => {
             (<MapView.Marker coordinate={props.userLocation}>
                 <Image source={markerImage} style={styles.markerIcon}/>
             </MapView.Marker>);
+    }
+    if(props.meetings) {
+      meetingPlaces = props.meetings.map( meeting =>{
+          return (
+          <MapView.Marker
+            coordinate={{latitude: parseFloat(meeting.place_latitude), longitude: parseFloat(meeting.place_longitude)}}
+          >
+          </MapView.Marker>
+        )
+      });
     }
     if (props.chosenPlace) {
         chosenPlaceMarker = <MapView.Marker coordinate={props.chosenPlace.coordinate}>
@@ -41,6 +51,7 @@ const usersMap = props => {
                      onPoiClick={(e) => props.getPickedPoi(e.nativeEvent)}>
                 {userLocationMarker}
                 {chosenPlaceMarker}
+                {meetingPlaces}
             </MapView>
         </View>
     );
