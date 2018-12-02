@@ -1,8 +1,7 @@
 import React from 'react';
-import {Button, StyleSheet, View} from 'react-native';
+import {Button, StyleSheet, View, Text} from 'react-native';
 import UsersMap from "./UsersMap";
 import UserInfo from "./UserInfo";
-import {onSignOut} from '../../config/authorization'
 import ConstKeys from '../../config/app.consts'
 
 export default class Home extends React.Component {
@@ -27,12 +26,19 @@ export default class Home extends React.Component {
     }
 
     getMeetingPlaces = () => {
-      fetch(ConstKeys.apiUrl + '/getMeetings').then(response => response.json().then(data => {
-        this.setState({meetings: data, meetingsLoaded: true});
-      })
-      .catch(err => console.log(err))
-    ).catch(err => console.log(err));
-    }
+        fetch(ConstKeys.apiUrl + '/api/getMeetings?user_id=' + ConstKeys.userInfo.id, {
+            credentials: 'include',
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: ConstKeys.auth
+            },
+        }).then(response => response.json().then(data => {
+                this.setState({meetings: data, meetingsLoaded: true});
+            })
+                .catch(err => console.log(err))
+        ).catch(err => console.log(err));
+    };
 
     getUserLocationHandler = () => {
         navigator.geolocation.getCurrentPosition(position => {
@@ -62,9 +68,9 @@ export default class Home extends React.Component {
             navigation.navigate('loginPage');
         }
         let sth = null;
-        if(this.state.meetingsLoaded === true){
-          let lat = this.state.meetings[0].place_latitude;
-          sth = <Text> {lat} </Text>
+        if (this.state.meetingsLoaded === true) {
+            let lat = this.state.meetings[0].place_latitude;
+            sth = <Text> {lat} </Text>
 
         }
         return (
