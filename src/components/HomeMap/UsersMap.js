@@ -20,12 +20,12 @@ const usersMap = props => {
             </MapView.Marker>);
     }
     if (props.chosenPlace) {
-        chosenPlaceMarker = <MapView.Marker coordinate={props.chosenPlace}>
+        chosenPlaceMarker = <MapView.Marker coordinate={props.chosenPlace.coordinate}>
             <Image source={markerImage} style={styles.markerIcon}/>
             <MapView.Callout tooltip>
                 <View style={styles.toolTip}>
                     <Text style={styles.toolTipText}>
-                        LOL
+                        {props.chosenPlace.name}
                     </Text>
                 </View>
             </MapView.Callout>
@@ -34,10 +34,10 @@ const usersMap = props => {
     return (
         <View style={styles.mapContainer}>
             <MapView region={props.userLocation} style={styles.map} customMapStyle={mapStyle} showsBuildings showsCompass
-                     onPress={(e) => {
-                         props.getTapedLocation(e.nativeEvent.coordinate);
-                     }}
-                     onPoiClick={(data) => console.log(data.nativeEvent)}>
+                     // onPress={(e) => {
+                     //     props.getTapedLocation(e.nativeEvent.coordinate);
+                     // }}
+                     onPoiClick={(e) => props.getPickedPoi(e.nativeEvent)}>
                 {userLocationMarker}
                 {chosenPlaceMarker}
             </MapView>

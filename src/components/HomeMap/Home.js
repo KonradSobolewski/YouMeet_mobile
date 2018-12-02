@@ -39,6 +39,10 @@ export default class Home extends React.Component {
         this.setState({chosenPlace: data});
     };
 
+    getPickedPoi = (data) => {
+        this.setState({chosenPlace: data});
+    };
+
     render() {
         const {navigation} = this.props;
         if (this.state.auth === null) {
@@ -51,7 +55,8 @@ export default class Home extends React.Component {
                 <UsersMap userLocation={this.state.location}
                           userInfo={this.state.userInfo}
                           getTapedLocation={(data) => this.setTapedCoordinates(data)}
-                          chosenPlace={this.state.chosenPlace}/>
+                          chosenPlace={this.state.chosenPlace}
+                          getPickedPoi={(data) => this.getPickedPoi(data)}/>
             </View>
         );
     }
