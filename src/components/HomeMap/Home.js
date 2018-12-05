@@ -1,5 +1,5 @@
 import React from 'react';
-import {Button, StyleSheet, View, Text} from 'react-native';
+import {StyleSheet, View, Text, TouchableOpacity} from 'react-native';
 import UsersMap from "./UsersMap";
 import UserInfo from "./UserInfo";
 import ConstKeys from '../../config/app.consts'
@@ -25,8 +25,8 @@ export default class Home extends React.Component {
         this.getMeetingPlaces();
     }
 
-    getMeetingPlaces = () => {
-        fetch(ConstKeys.apiUrl + '/api/getMeetings?user_id=' + ConstKeys.userInfo.id, {
+    getMeetingPlaces = async () => {
+        await fetch(ConstKeys.apiUrl + '/api/getMeetings?user_id=' + ConstKeys.userInfo.id, {
             credentials: 'include',
             method: 'GET',
             headers: {
@@ -71,18 +71,19 @@ export default class Home extends React.Component {
         if (this.state.meetingsLoaded === true) {
             let lat = this.state.meetings[0].place_latitude;
             sth = <Text> {lat} </Text>
-
         }
         return (
             <View style={styles.container}>
-                <UserInfo onLoad={this.state.userInfo}/>
-                <Button title="Get Location" onPress={this.getUserLocationHandler}/>
+                <UserInfo style={styles.userIcon} navigator={this.props.navigation}/>
                 <UsersMap userLocation={this.state.location}
                           meetings={this.state.meetings}
                           getTapedLocation={(data) => this.setTapedCoordinates(data)}
                           chosenPlace={this.state.chosenPlace}
-                          getPickedPoi={(data) => this.getPickedPoi(data)}/>
-                {sth}
+                          getPickedPoi={(data) => this.getPickedPoi(data)}
+                          style={styles.map}/>
+                <TouchableOpacity style={styles.buttonContainer} onPress={this.getUserLocationHandler}>
+                    <Text style={styles.buttonText}>Get Location</Text>
+                </TouchableOpacity>
             </View>
         );
     }
@@ -96,13 +97,22 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
     },
     buttonContainer: {
+        position: 'absolute',
+        bottom: 20,
         borderRadius: 15,
         marginTop: 15,
-        backgroundColor: 'rgba(0,255,255,1)',
+        backgroundColor: 'rgba(255,255,255,1)',
         padding: 15
     },
     buttonText: {
         color: 'black',
         textAlign: 'center'
+    },
+    map: {
+        height: '60%'
+    },
+    userIcon: {
+        height: '40%'
     }
+
 });

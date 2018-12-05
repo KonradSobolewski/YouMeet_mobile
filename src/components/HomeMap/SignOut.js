@@ -33,7 +33,7 @@ export default class SignOut extends React.Component {
                                 locations={[0, 1]} start={[0.2, 0]} end={[0.8, 1.2]}>
                     <View style={styles.container}>
                         <DoubleClick onClick={this.signOut}>
-                            <Image style={styles.hand} source={require('../../../assets/byebye.png')}/>
+                            <Image style={styles.hand} source={require('../../../assets/images/byebye.png')}/>
                         </DoubleClick>
                         {byebye}
                     </View>

@@ -213,7 +213,7 @@ export default class Login extends React.Component {
                         <View style={styles.logoContainer}>
                             {errorDuringUpload}
                             {informationalText}
-                            <Image style={styles.logo} source={require('../../../assets/logo.gif')}/>
+                            <Image style={styles.logo} source={require('../../../assets/images/logo.gif')}/>
                             {title}
                             {description}
                             <LoginForm loginAction={this.login} getEmail={(data) => {

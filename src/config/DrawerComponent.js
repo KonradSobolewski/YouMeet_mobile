@@ -17,7 +17,7 @@ const CustomDrawerContentComponent = (props) => (
                 <Body>
                 <Image
                     style={styles.drawerImage}
-                    source={require('../../assets/logo.gif')}/>
+                    source={require('../../assets/images/logo.gif')}/>
                 </Body>
             </LinearGradient>
         </Header>

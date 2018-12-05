@@ -94,7 +94,7 @@ export default class App extends React.Component {
                                 locations={[0, 0.4, 1]} start={[0.2, 0]} end={[0.8, 1.2]}>
                     <ScrollView contentContainerStyle={styles.scrollView}>
                         <View style={styles.fieldsContainer}>
-                            <Image style={styles.logo} source={require('../../../assets/logo.gif')}/>
+                            <Image style={styles.logo} source={require('../../../assets/images/logo.gif')}/>
                             <TextInput
                                 style={[styles.input, this.state.firstNameValid === true ? null : styles.inputInvalid]}
                                 placeholder="First name"
