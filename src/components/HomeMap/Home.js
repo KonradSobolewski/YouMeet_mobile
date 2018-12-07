@@ -2,7 +2,7 @@ import React from 'react';
 import {StyleSheet, View, Text, TouchableOpacity} from 'react-native';
 import UsersMap from "./UsersMap";
 import UserInfo from "./UserInfo";
-import ConstKeys from '../../config/app.consts'
+import {signOut, getMeetingPlaces} from '../../services/user.service'
 
 export default class Home extends React.Component {
 
@@ -22,22 +22,14 @@ export default class Home extends React.Component {
             meetings: null
         };
         this.getUserLocationHandler();
-        this.getMeetingPlaces();
+        this.getPlaces();
     }
 
-    getMeetingPlaces = async () => {
-        await fetch(ConstKeys.apiUrl + '/api/getMeetings?user_id=' + ConstKeys.userInfo.id, {
-            credentials: 'include',
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-                Authorization: ConstKeys.auth
-            },
-        }).then(response => response.json().then(data => {
+    getPlaces = () => {
+        getMeetingPlaces().then(response => response.json().then(data => {
                 this.setState({meetings: data, meetingsLoaded: true});
-            })
-                .catch(err => console.log(err))
-        ).catch(err => console.log(err));
+            }).catch(err => signOut(this.props.navigation))
+        ).catch(err => signOut(this.props.navigation));
     };
 
     getUserLocationHandler = () => {
@@ -74,7 +66,7 @@ export default class Home extends React.Component {
         }
         return (
             <View style={styles.container}>
-                <UserInfo style={styles.userIcon} navigator={this.props.navigation}/>
+                <UserInfo navigator={this.props.navigation}/>
                 <UsersMap userLocation={this.state.location}
                           meetings={this.state.meetings}
                           getTapedLocation={(data) => this.setTapedCoordinates(data)}
@@ -92,15 +84,13 @@ export default class Home extends React.Component {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#fff',
-        alignItems: 'center',
-        justifyContent: 'center',
     },
     buttonContainer: {
         position: 'absolute',
         bottom: 20,
+        left: 120, right: 120,
+        justifyContent: 'center',
         borderRadius: 15,
-        marginTop: 15,
         backgroundColor: 'rgba(255,255,255,1)',
         padding: 15
     },
@@ -109,10 +99,7 @@ const styles = StyleSheet.create({
         textAlign: 'center'
     },
     map: {
-        height: '60%'
-    },
-    userIcon: {
-        height: '40%'
+        position: 'absolute',
+        bottom: 0
     }
-
 });

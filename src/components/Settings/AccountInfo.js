@@ -10,7 +10,7 @@ import {
 } from "react-native";
 import {LinearGradient} from "expo";
 import {isSignedIn} from "../../config/authorization";
-import {getUserNameAndLastName} from '../../utils/StringUtils'
+import {getUserNameAndLastName} from '../../services/string.service'
 
 export default class AccountInfo extends React.Component {
     constructor(props) {

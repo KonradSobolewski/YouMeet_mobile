@@ -1,8 +1,8 @@
 import React from 'react';
 import {StyleSheet, Text, View, Image} from 'react-native';
-import {onSignOut} from '../../config/authorization'
 import {Font, LinearGradient} from 'expo';
 import DoubleClick from 'react-native-double-click';
+import {signOut} from '../../services/user.service'
 
 export default class SignOut extends React.Component {
     state = {
@@ -16,12 +16,6 @@ export default class SignOut extends React.Component {
         this.setState({fontLoaded: true});
     }
 
-    signOut = () => {
-        onSignOut()
-            .then(() => this.props.navigation.navigate('loginPage'))
-            .catch(err => console.log(err));
-    };
-
     render() {
         let byebye = null;
         if (this.state.fontLoaded) {
@@ -32,7 +26,7 @@ export default class SignOut extends React.Component {
                 <LinearGradient colors={['#ebc0fd', '#d9ded8']} style={styles.gradient}
                                 locations={[0, 1]} start={[0.2, 0]} end={[0.8, 1.2]}>
                     <View style={styles.container}>
-                        <DoubleClick onClick={this.signOut}>
+                        <DoubleClick onClick={() => signOut(this.props.navigation)}>
                             <Image style={styles.hand} source={require('../../../assets/images/byebye.png')}/>
                         </DoubleClick>
                         {byebye}

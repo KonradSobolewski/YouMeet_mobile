@@ -1,20 +1,25 @@
 import React from 'react'
-import {Image, StyleSheet, Text, View, TouchableOpacity} from 'react-native';
+import {Image, StyleSheet, Text, View, TouchableOpacity, KeyboardAvoidingView} from 'react-native';
 import ConstKeys from '../../config/app.consts'
 import userIcon from '../../../assets/images/user.png'
 import humburger from '../../../assets/images/humburger.png'
-import {MapView} from "expo";
+import {LinearGradient} from "expo";
 
 const userInfo = props => {
     return (
         <View style={styles.userView}>
-            <TouchableOpacity style={styles.humburgerContainer} onPress={ () => props.navigator.toggleDrawer()}>
-                <Image source={humburger} style={styles.humburger}/>
-            </TouchableOpacity>
-            <Text style={styles.userNick}>
-                {ConstKeys.userInfo.name}
-            </Text>
-            {ConstKeys.userInfo.picture ? ( <Image source={{uri: ConstKeys.userInfo.picture.data.url }} style={styles.userIcon}/>) : (<Image source={userIcon} style={styles.userIcon}/>)}
+            <LinearGradient colors={['#ffffff', '#89279a']} style={styles.gradient}>
+                <TouchableOpacity style={styles.humburgerContainer} onPress={() => props.navigator.toggleDrawer()}>
+                    <Image source={humburger} style={styles.humburger}/>
+                </TouchableOpacity>
+                <Text style={styles.userNick}>
+                    {ConstKeys.userInfo.name}
+                </Text>
+                {ConstKeys.userInfo.picture ? (
+                    <Image source={{uri: ConstKeys.userInfo.picture.data.url}} style={styles.userIcon}/>) : (
+                    <Image source={userIcon} style={styles.userIcon}/>)
+                }
+            </LinearGradient>
         </View>
     );
 };
@@ -23,34 +28,40 @@ export default userInfo;
 
 const styles = StyleSheet.create({
     userView: {
-        width:'100%',
+        height: 110
+    },
+    gradient: {
+        position: 'absolute',
+        left: 0,
+        right: 0,
+        top: 0,
+        height: 110,
+        width: '100%',
         alignItems: 'flex-end',
         flexDirection: 'row',
-        position: 'absolute',
-        top: 0,
-        flex: 2
     },
     humburgerContainer: {
-        position: 'absolute',
-        top: 0,
-        left: 0,
+        position: 'absolute', top: 0, left: 0
     },
     humburger: {
         padding: 10,
         margin: 10,
-        width: 40, height: 40, borderRadius: 20,
+        width: 40, height: 40,
     },
     userIcon: {
         padding: 10,
         margin: 10,
         marginRight: 15,
-        width: 80, height: 80, borderRadius: 40,
-        marginLeft: 'auto'
+        marginBottom: 20,
+        width: 60, height: 60, borderRadius: 30,
+        marginLeft: 'auto',
+        borderWidth: 2,
+        borderColor: 'white'
     },
     userNick: {
         padding: 10,
-        marginLeft: 120,
-        marginBottom: 10,
+        marginLeft: 130,
+        marginBottom: 20,
         fontSize: 20,
         borderBottomColor: 'black',
         borderBottomWidth: 1,

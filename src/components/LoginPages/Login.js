@@ -11,10 +11,9 @@ import {
 import LoginForm from './LoginForm'
 import {Font, LinearGradient} from 'expo';
 import ConstKeys from '../../config/app.consts'
-import {onSignIn, USER_KEY, isSignedIn} from '../../config/authorization'
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import {getUserNameAndLastName} from '../../utils/StringUtils'
-import {getUserByEmail} from '../../utils/UserUtils'
+import {getUserNameAndLastName} from '../../services/string.service'
+import {getUserByEmail, signIn} from '../../services/user.service'
 
 export default class Login extends React.Component {
     async componentDidMount() {
@@ -75,9 +74,7 @@ export default class Login extends React.Component {
                                 };
                                 ConstKeys.userInfo = data.userInfo;
                                 this.setState({errorDuringLog: false});
-                                onSignIn(JSON.stringify(data))
-                                    .then(() => this.props.navigation.navigate('homePage', data))
-                                    .catch(err => console.log(err));
+                                signIn(data, this.props.navigation);
                             })
                             .catch(err => this.setState({errorDuringLog: true}));
                     }
@@ -129,9 +126,7 @@ export default class Login extends React.Component {
                         userInfo: userInfo,
                         auth: res._bodyInit
                     };
-                    onSignIn(JSON.stringify(data))
-                        .then(() => this.props.navigation.navigate('homePage', data))
-                        .catch(err => console.log(err));
+                    signIn(data, this.props.navigation);
                 }
                 else {
                     this.setState({errorDuringLog: true});

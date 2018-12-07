@@ -2,6 +2,7 @@ import React from 'react'
 import {StyleSheet, Text, View, TouchableOpacity, ScrollView, KeyboardAvoidingView,} from 'react-native'
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {LinearGradient} from "expo";
+import UserInfo from "./UserInfo";
 
 export default class Settings extends React.Component {
 
@@ -18,6 +19,7 @@ export default class Settings extends React.Component {
             <KeyboardAvoidingView behavior="padding" style={styles.container}>
                 <LinearGradient colors={['#7b258e', '#B39DDB']} style={styles.gradient} start={[0.2, 0]} end={[0.4, 1]}>
                     <ScrollView>
+                        <UserInfo style={styles.userIcon} navigator={this.props.navigation}/>
                         <View>
                             <TouchableOpacity style={styles.button} onPress={this.goToAccountInfo}>
                                 <Text style={styles.text}>
@@ -34,7 +36,6 @@ export default class Settings extends React.Component {
                         </View>
                     </ScrollView>
                 </LinearGradient>
-
             </KeyboardAvoidingView>
         )
     }
