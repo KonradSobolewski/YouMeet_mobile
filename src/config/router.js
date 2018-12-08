@@ -12,6 +12,9 @@ import AppSettings from "../components/Settings/AppSettings"
 import SignOut from "../components/HomeMap/SignOut";
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import CustomDrawerContentComponent from './DrawerComponent';
+import MeetingScreen from "../components/MeetingCreator/MeetingScreen"
+import MeetingForm from "../components/MeetingCreator/MeetingForm"
+
 
 export const createRootNavigator = (signedIn = false, data) => {
     return createStackNavigator({
@@ -61,7 +64,7 @@ export const createRootNavigator = (signedIn = false, data) => {
                             }
                         },
                         createMeeting: {
-                            screen: Home,
+                            screen: MeetingScreen,
                             navigationOptions: {
                                 drawerLabel: 'Create meeting',
                                 drawerIcon: () => (
@@ -97,6 +100,9 @@ export const createRootNavigator = (signedIn = false, data) => {
                         drawerToggleRoute: 'DrawerToggle'
                     }
                 )
+            },
+            meetingForm: {
+                screen: MeetingForm
             },
             accountInfo: {
                 screen: AccountInfo
