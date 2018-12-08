@@ -16,6 +16,7 @@ export default class MeetingScreen extends React.Component {
 
     getAllCategories = () => {
         getCategories().then(response => response.json().then(data => {
+                console.log(data);
                 this.setState({categories: data});
             }).catch(err => signOut(this.props.navigation))
         ).catch(err => signOut(this.props.navigation));

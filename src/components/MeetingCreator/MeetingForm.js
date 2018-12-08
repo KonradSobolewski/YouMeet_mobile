@@ -1,5 +1,5 @@
 import React from 'react'
-import {StyleSheet,Image, Text, View, TextInput, TouchableOpacity, ScrollView, KeyboardAvoidingView, CheckBox} from 'react-native';
+import {StyleSheet,Image, Picker, Text, View, TextInput, TouchableOpacity, ScrollView, KeyboardAvoidingView, CheckBox} from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {LinearGradient} from "expo";
 import DoubleClick from 'react-native-double-click';
@@ -7,11 +7,24 @@ import DoubleClick from 'react-native-double-click';
 export default class MeetingForm extends React.Component {
 
     state = {
-      isChecked: true
+      isChecked: true,
+      language: null
     }
 
 
+
     render() {
+        let categories = null;
+        console.log('\n\n' + this.props.navigation.getParam('categories') + '\n\n hej');
+        if(this.props.navigation.getParam('categories')) {
+          categories = this.props.navigation.getParam('categories').map( category =>{
+            console.log('\n' + category + '\n');
+              return (
+                <Picker.Item label={category.type} value={category.id} />
+            )
+          });
+        }
+
         return (
 
           <View style={styles.wrapper}>
@@ -36,6 +49,13 @@ export default class MeetingForm extends React.Component {
                       />
 
                       <Text style={styles.textStyle}> Select the category </Text>
+                      <Picker
+                        selectedValue={this.state.language}
+                        style={{ height: 50, width: 100 }}
+                        mode="dropdown"
+                        onValueChange={(itemValue, itemIndex) => this.setState({language: itemValue})}>
+                        {categories}
+                      </Picker>
                       <TouchableOpacity style={styles.buttonContainer} >
                           <Text style={styles.buttonText}>Submit!</Text>
                       </TouchableOpacity>
