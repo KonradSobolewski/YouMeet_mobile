@@ -8,7 +8,7 @@ import {LinearGradient} from "expo";
 const userInfo = props => {
     return (
         <View style={styles.userView}>
-            <LinearGradient colors={['#ffffff', '#89279a']} style={styles.gradient}>
+            <LinearGradient colors={['#ebc0fd', '#d9ded8']} style={styles.gradient}>
                 <TouchableOpacity style={styles.humburgerContainer} onPress={() => props.navigator.toggleDrawer()}>
                     <Image source={humburger} style={styles.humburger}/>
                 </TouchableOpacity>
