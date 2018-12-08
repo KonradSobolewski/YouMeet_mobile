@@ -24,7 +24,7 @@ export default class MeetingForm extends React.Component {
                       <Text style={styles.textStyle}>Description of the meeting</Text>
                       <TextInput style={styles.input}
                                  placeholder="Enter description of your meeting"
-                                 placeholderTextColor="rgba(255,255,255,0.3)"
+                                 placeholderTextColor="rgba(0,0,0,0.3)"
                                  autoCapitalize="none"
                                  autoCorrect={false}
                                  multinline={true}
@@ -34,6 +34,11 @@ export default class MeetingForm extends React.Component {
                         value={this.state.isChecked}
                         style={styles.checkbox}
                       />
+
+                      <Text style={styles.textStyle}> Select the category </Text>
+                      <TouchableOpacity style={styles.buttonContainer} >
+                          <Text style={styles.buttonText}>Submit!</Text>
+                      </TouchableOpacity>
                   </View>
               </LinearGradient>
           </View>
@@ -89,7 +94,7 @@ const styles = StyleSheet.create({
         marginTop: 15,
         borderRadius: 15,
         backgroundColor: 'rgba(255,255,255,0.2)',
-        height: 60,
+        height: 40,
         color: 'black',
         padding: 10,
         width:'80%'
@@ -107,9 +112,21 @@ const styles = StyleSheet.create({
         paddingRight: 20
     },
     textStyle: {
-      marginTop: 5,
+      marginTop: 35,
       fontSize: 20,
       color: 'black',
       fontFamily: 'Courgette'
+    },
+    buttonContainer: {
+        borderRadius: 15,
+        borderColor: 'black',
+        marginTop: 60,
+        backgroundColor: 'rgba(255,255,255,0.5)',
+        padding: 15
+    },
+    buttonText: {
+        color: 'black',
+        textAlign: 'center',
+        fontFamily: 'Courgette'
     }
 });

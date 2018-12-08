@@ -3,6 +3,7 @@ import {StyleSheet, View, Text, TouchableOpacity} from 'react-native';
 import UsersMap from "./UsersMap";
 import UserInfo from "./UserInfo";
 import {signOut, getMeetingPlaces} from '../../services/user.service'
+import ConstKeys from '../../config/app.consts'
 
 export default class Home extends React.Component {
 
@@ -67,6 +68,7 @@ export default class Home extends React.Component {
         return (
             <View style={styles.container}>
                 <UserInfo navigator={this.props.navigation}/>
+                <Text>{ConstKeys.userInfo.user_id}</Text>
                 <UsersMap userLocation={this.state.location}
                           meetings={this.state.meetings}
                           getTapedLocation={(data) => this.setTapedCoordinates(data)}

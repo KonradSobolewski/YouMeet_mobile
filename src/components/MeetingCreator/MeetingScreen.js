@@ -2,10 +2,23 @@ import React from 'react';
 import {StyleSheet, Text, View, Image} from 'react-native';
 import {Font, LinearGradient} from 'expo';
 import DoubleClick from 'react-native-double-click';
-import {signOut} from '../../services/user.service'
+import {signOut, getCategories} from '../../services/user.service'
 export default class MeetingScreen extends React.Component {
-    state = {
-        fontLoaded: false
+
+  constructor(props) {
+      super(props);
+      this.state = {
+          categories: null
+      };
+      this.getAllCategories();
+  }
+
+
+    getAllCategories = () => {
+        getCategories().then(response => response.json().then(data => {
+                this.setState({categories: data});
+            }).catch(err => signOut(this.props.navigation))
+        ).catch(err => signOut(this.props.navigation));
     };
 
     async componentDidMount() {
@@ -25,7 +38,7 @@ export default class MeetingScreen extends React.Component {
                 <LinearGradient colors={['#ebc0fd', '#d9ded8']} style={styles.gradient}
                                 locations={[0, 1]} start={[0.2, 0]} end={[0.8, 1.2]}>
                     <View style={styles.container}>
-                        <DoubleClick onClick={() => this.props.navigation.navigate('meetingForm')}>
+                        <DoubleClick onClick={() => this.props.navigation.navigate('meetingForm', this.state)}>
                             <Image style={styles.hand} source={require('../../../assets/images/people.png')}/>
                         </DoubleClick>
                         {byebye}
