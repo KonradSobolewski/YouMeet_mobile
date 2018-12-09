@@ -1,13 +1,5 @@
 import React from 'react';
-import {
-    StyleSheet,
-    View,
-    Image,
-    Text,
-    KeyboardAvoidingView,
-    TouchableOpacity,
-    ScrollView
-} from 'react-native';
+import {Image, KeyboardAvoidingView, ScrollView, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import LoginForm from './LoginForm'
 import {Font, LinearGradient} from 'expo';
 import ConstKeys from '../../config/app.consts'
@@ -63,12 +55,12 @@ export default class Login extends React.Component {
                                 let userData = JSON.parse(response._bodyInit);
                                 let data = {
                                     userInfo: {
-                                        picture: '',
                                         id: userData.id,
                                         email: userData.email,
                                         firstName: userData.firstName,
                                         lastName: userData.lastName,
-                                        name: userData.firstName + ' ' + userData.lastName
+                                        name: userData.firstName + ' ' + userData.lastName,
+                                        photo: userData.params.photo
                                     },
                                     auth: ConstKeys.auth
                                 };
@@ -100,11 +92,23 @@ export default class Login extends React.Component {
                 email: userInfo.email,
                 firstName: userInfo.firstName,
                 lastName: userInfo.lastName,
-                password: 'fbLogger'
+                password: 'fbLogger',
+                params: {
+                    photo: userInfo.picture.data.url
+                }
             })
         })
             .then(res => {
-                return this.getTokenForFb(userInfo);
+                let responseBody = JSON.parse(res._bodyInit);
+                ConstKeys.userInfo = {
+                    id: responseBody.id,
+                    email: responseBody.email,
+                    firstName: responseBody.firstName,
+                    lastName: responseBody.lastName,
+                    name: responseBody.firstName + ' ' + responseBody.lastName,
+                    photo: responseBody.params.photo
+                };
+                return this.getTokenForFb(ConstKeys.userInfo);
             })
             .catch(err => {
                     this.setState({errorDuringLog: true});
@@ -159,7 +163,6 @@ export default class Login extends React.Component {
                         const {firstName, lastName} = getUserNameAndLastName(userInfo.name);
                         userInfo['firstName'] = firstName;
                         userInfo['lastName'] = lastName;
-                        ConstKeys.userInfo = userInfo;
                         this.createFbUserAccount(userInfo);
                     } else {
                         alert('Fb error');

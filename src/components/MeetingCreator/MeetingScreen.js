@@ -1,27 +1,15 @@
 import React from 'react';
 import {StyleSheet, Text, View, Image} from 'react-native';
 import {Font, LinearGradient} from 'expo';
-import DoubleClick from 'react-native-double-click';
-import {signOut, getCategories} from '../../services/user.service'
 import {DoubleClickLogo} from './DoubleClickLogo'
+
 export default class MeetingScreen extends React.Component {
-
-  constructor(props) {
-      super(props);
-      this.state = {
-          categories: null
-      };
-      this.getAllCategories();
-  }
-
-
-    getAllCategories = () => {
-        getCategories().then(response => response.json().then(data => {
-                console.log(data);
-                this.setState({categories: data});
-            }).catch(err => signOut(this.props.navigation))
-        ).catch(err => signOut(this.props.navigation));
-    };
+    constructor(props) {
+        super(props);
+        this.state = {
+            fontLoaded: false
+        };
+    }
 
     async componentDidMount() {
         await Font.loadAsync({
@@ -33,9 +21,9 @@ export default class MeetingScreen extends React.Component {
     render() {
         let aboveImageText = null;
         let underImageText = null;
-        if (this.state.fontLoaded ) {
-            if(this.props.navigation.getParam('isSuccessfullCreate') === true)
-              aboveImageText = <Text style={styles.goodByeText}>Thank you for creating a meeting!</Text>;
+        if (this.state.fontLoaded) {
+            if (this.props.navigation.getParam('isSuccessfullCreate') === true)
+                aboveImageText = <Text style={styles.goodByeText}>Thank you for creating a meeting!</Text>;
             underImageText = <Text style={styles.goodByeText}>Double-Click to start a meeting</Text>;
         }
         return (
@@ -44,7 +32,8 @@ export default class MeetingScreen extends React.Component {
                                 locations={[0, 1]} start={[0.2, 0]} end={[0.8, 1.2]}>
                     <View style={styles.container}>
                         {aboveImageText}
-                        <DoubleClickLogo style={{width: 250, height: 250}} nagivateMe = {() => this.props.navigation.navigate('meetingForm', this.state)}
+                        <DoubleClickLogo style={{width: 250, height: 250}}
+                                         nagivateMe={() => this.props.navigation.navigate('meetingForm')}
                         />
                         {underImageText}
                     </View>

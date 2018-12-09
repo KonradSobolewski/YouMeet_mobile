@@ -12,9 +12,9 @@ const usersMap = props => {
     let chosenPlaceMarker = null;
     let meetingPlaces = null;
     if (props.userLocation) {
-        userLocationMarker = ConstKeys.userInfo.picture !== '' ?
+        userLocationMarker = ConstKeys.userInfo.photo !== '' ?
             (<MapView.Marker coordinate={props.userLocation}>
-                <Image source={{uri: ConstKeys.userInfo.picture.data.url }} style={styles.userIcon}/>
+                <Image source={{uri: ConstKeys.userInfo.photo }} style={styles.userIcon}/>
             </MapView.Marker>)
             :
             (<MapView.Marker coordinate={props.userLocation}>

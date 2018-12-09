@@ -15,8 +15,8 @@ const userInfo = props => {
                 <Text style={styles.userNick}>
                     {ConstKeys.userInfo.name}
                 </Text>
-                {ConstKeys.userInfo.picture ? (
-                    <Image source={{uri: ConstKeys.userInfo.picture.data.url}} style={styles.userIcon}/>) : (
+                {ConstKeys.userInfo.photo ? (
+                    <Image source={{uri: ConstKeys.userInfo.photo}} style={styles.userIcon}/>) : (
                     <Image source={userIcon} style={styles.userIcon}/>)
                 }
             </LinearGradient>

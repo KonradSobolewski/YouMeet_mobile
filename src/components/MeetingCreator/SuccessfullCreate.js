@@ -5,12 +5,11 @@ import DoubleClick from 'react-native-double-click';
 
 export default class SuccessfullCreate extends React.Component {
 
-    constructor(props){
-       super(props);
-
-       this.state = {
-          fontLoaded: false,
-       }
+    constructor(props) {
+        super(props);
+        this.state = {
+            fontLoaded: false,
+        }
     }
 
     async componentDidMount() {
@@ -23,7 +22,7 @@ export default class SuccessfullCreate extends React.Component {
     render() {
         let aboveImageText = null;
         let underImageText = null;
-        if (this.state.fontLoaded ) {
+        if (this.state.fontLoaded) {
             aboveImageText = <Text style={styles.goodByeText}>Thank you for creating a meeting!</Text>;
             underImageText = <Text style={styles.goodByeText}>Double-Click to go back to main screen</Text>;
         }
@@ -32,11 +31,12 @@ export default class SuccessfullCreate extends React.Component {
                 <LinearGradient colors={['#ebc0fd', '#d9ded8']} style={styles.gradient}
                                 locations={[0, 1]} start={[0.2, 0]} end={[0.8, 1.2]}>
                     <View style={styles.container}>
-                    {aboveImageText}
-                    <DoubleClick onClick={() => this.props.navigation.navigate('homePage', {isSuccessfullCreate: true})}>
+                        {aboveImageText}
+                        <DoubleClick
+                            onClick={() => this.props.navigation.navigate('homePage', {isSuccessfullCreate: true})}>
                             <Image style={styles.hand} source={require('../../../assets/images/thumbsUp.png')}/>
-                    </DoubleClick>
-                    {underImageText}
+                        </DoubleClick>
+                        {underImageText}
                     </View>
                 </LinearGradient>
             </View>

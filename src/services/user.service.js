@@ -21,50 +21,50 @@ export const getUserByEmail = (email) => {
 };
 
 export const getCategories = () => {
-  return new Promise((resolve, reject) => {
-    fetch(ConstKeys.apiUrl + '/api/getCategories', {
-      credentials: 'include',
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: ConstKeys.auth
-      },
-    })
-        .then(res => {
-            if(res.status === 200) {
-              resolve(res);
-            }
-            reject(res);
+    return new Promise((resolve, reject) => {
+        fetch(ConstKeys.apiUrl + '/api/getCategories', {
+            credentials: 'include',
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: ConstKeys.auth
+            },
         })
-        .catch(err => reject(err))
-  });
+            .then(res => {
+                if (res.status === 200) {
+                    resolve(res);
+                }
+                reject(res);
+            })
+            .catch(err => reject(err))
+    });
 };
 
 export const createMeeting = (oneToOne, category, description) => {
-  console.log(oneToOne + typeof oneToOne);
-  console.log(category + typeof category);
-  console.log(ConstKeys.userInfo.id + typeof ConstKeys.userInfo.id);
-  console.log(oneToOne + typeof oneToOne);
-  return new Promise((resolve, reject) => {
-    fetch(ConstKeys.apiUrl + '/createMeeting', {
-        credentials: 'include',
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-            inviter_id: parseInt(ConstKeys.userInfo.id),
-            is_one_to_one: oneToOne,
-            category: parseInt(category)
+    return new Promise((resolve, reject) => {
+        fetch(ConstKeys.apiUrl + '/api/createMeeting', {
+            credentials: 'include',
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: ConstKeys.auth
+            },
+            body: JSON.stringify({
+                inviter_id: parseInt(ConstKeys.userInfo.id),
+                is_one_to_one: oneToOne,
+                category: parseInt(category),
+                params: {
+                    description: description
+                }
+            })
         })
-    })
-    .then(res => {
-        if (res.status === 200)
-            resolve(res);
-        reject(res);
-    })
-    .catch(err => reject(err))
-  });
+            .then(res => {
+                if (res.status === 200)
+                    resolve(res);
+                reject(res);
+            })
+            .catch(err => reject(err))
+    });
 };
 
 export const getMeetingPlaces = () => {
@@ -89,7 +89,11 @@ export const getMeetingPlaces = () => {
 
 export const signOut = (navigator) => {
     onSignOut()
-        .then(() => navigator.navigate('loginPage'))
+        .then(() => {
+            ConstKeys.auth = '';
+            ConstKeys.userInfo = '';
+            navigator.navigate('loginPage')
+        })
         .catch(err => console.log(err));
 };
 
