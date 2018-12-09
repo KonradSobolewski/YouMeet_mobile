@@ -56,8 +56,10 @@ export default class Home extends React.Component {
 
     render() {
         const {navigation} = this.props;
-
-        if (this.state.auth === null) {
+        console.log(this.props.navigation.getParam('isSuccessfullCreate'));
+        console.log('\n\n\n' + this.state.auth + '\n\n\n');
+        if (this.state.auth === null && !this.props.navigation.getParam('isSuccessfullCreate')) {
+            console.log('\n\n\n wy pierdolone kurwyyy!!!!!  \n\n\n');
             navigation.navigate('loginPage');
         }
         let sth = null;

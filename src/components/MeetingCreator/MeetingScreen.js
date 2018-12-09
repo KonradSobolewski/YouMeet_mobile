@@ -3,6 +3,7 @@ import {StyleSheet, Text, View, Image} from 'react-native';
 import {Font, LinearGradient} from 'expo';
 import DoubleClick from 'react-native-double-click';
 import {signOut, getCategories} from '../../services/user.service'
+import {DoubleClickLogo} from './DoubleClickLogo'
 export default class MeetingScreen extends React.Component {
 
   constructor(props) {
@@ -43,9 +44,8 @@ export default class MeetingScreen extends React.Component {
                                 locations={[0, 1]} start={[0.2, 0]} end={[0.8, 1.2]}>
                     <View style={styles.container}>
                         {aboveImageText}
-                        <DoubleClick onClick={() => this.props.navigation.navigate('meetingForm', this.state)}>
-                            <Image style={styles.hand} source={require('../../../assets/images/people.png')}/>
-                        </DoubleClick>
+                        <DoubleClickLogo style={{width: 250, height: 250}} nagivateMe = {() => this.props.navigation.navigate('meetingForm', this.state)}
+                        />
                         {underImageText}
                     </View>
                 </LinearGradient>
