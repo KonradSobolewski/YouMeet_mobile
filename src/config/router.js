@@ -14,7 +14,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import CustomDrawerContentComponent from './DrawerComponent';
 import MeetingScreen from "../components/MeetingCreator/MeetingScreen"
 import MeetingForm from "../components/MeetingCreator/MeetingForm"
-
+import SuccessfullCreate from "../components/MeetingCreator/SuccessfullCreate"
 
 export const createRootNavigator = (signedIn = false, data) => {
     return createStackNavigator({
@@ -51,6 +51,9 @@ export const createRootNavigator = (signedIn = false, data) => {
                         }
                     }
                 )
+            },
+            meetingCreated: {
+                screen: SuccessfullCreate
             },
             homePage: {
                 screen: createDrawerNavigator({

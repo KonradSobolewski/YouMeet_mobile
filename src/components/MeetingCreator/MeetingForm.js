@@ -2,13 +2,23 @@ import React from 'react'
 import {StyleSheet,Image, Picker, Text, View, TextInput, TouchableOpacity, ScrollView, KeyboardAvoidingView, CheckBox} from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {LinearGradient} from "expo";
+import {createMeeting} from '../../services/user.service'
 import DoubleClick from 'react-native-double-click';
 
 export default class MeetingForm extends React.Component {
 
     state = {
       isChecked: true,
-      language: null
+      language: null,
+      description: null,
+      isOneToOne: true,
+      category: 1
+    }
+
+    createMyMeeting = () => {
+      createMeeting(this.state.isOneToOne, this.state.category, this.state.description)
+      .then(res => this.props.navigation.navigate('meetingCreated'))
+      .catch(err => console.log(err));
     }
 
 
@@ -40,23 +50,27 @@ export default class MeetingForm extends React.Component {
                                  placeholderTextColor="rgba(0,0,0,0.3)"
                                  autoCapitalize="none"
                                  autoCorrect={false}
-                                 multinline={true}
-                      />
-                      <Text style={styles.textStyle}> One-to-one meeting? </Text>
-                      <CheckBox
-                        value={this.state.isChecked}
-                        style={styles.checkbox}
+                                 multiline={true}
+                                 onChangeText={(descriptionText) => this.setState({description: descriptionText})}
                       />
 
                       <Text style={styles.textStyle}> Select the category </Text>
                       <Picker
                         selectedValue={this.state.language}
-                        style={{ height: 50, width: 100 }}
-                        mode="dropdown"
-                        onValueChange={(itemValue, itemIndex) => this.setState({language: itemValue})}>
+                        style={styles.input}
+                        itemStyle={styles.input}
+                        onValueChange={(itemValue, itemIndex) => this.setState({category: itemValue})}>
                         {categories}
                       </Picker>
-                      <TouchableOpacity style={styles.buttonContainer} >
+
+                      <Text style={styles.textStyle}> One-to-one meeting? </Text>
+                      <CheckBox
+                        value={this.state.isOneToOne}
+                        style={styles.checkbox}
+                        onChange={() => this.setState({isOneToOne: !this.state.isOneToOne})}
+                      />
+
+                      <TouchableOpacity style={styles.buttonContainer} onPress={this.createMyMeeting}>
                           <Text style={styles.buttonText}>Submit!</Text>
                       </TouchableOpacity>
                   </View>
@@ -117,7 +131,8 @@ const styles = StyleSheet.create({
         height: 40,
         color: 'black',
         padding: 10,
-        width:'80%'
+        width:'80%',
+        textAlign: 'center'
     },
     checkboxTitle: {
         fontSize: 15,

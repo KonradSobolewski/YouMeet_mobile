@@ -2,25 +2,16 @@ import React from 'react';
 import {StyleSheet, Text, View, Image} from 'react-native';
 import {Font, LinearGradient} from 'expo';
 import DoubleClick from 'react-native-double-click';
-import {signOut, getCategories} from '../../services/user.service'
-export default class MeetingScreen extends React.Component {
 
-  constructor(props) {
-      super(props);
-      this.state = {
-          categories: null
-      };
-      this.getAllCategories();
-  }
+export default class SuccessfullCreate extends React.Component {
 
+    constructor(props){
+       super(props);
 
-    getAllCategories = () => {
-        getCategories().then(response => response.json().then(data => {
-                console.log(data);
-                this.setState({categories: data});
-            }).catch(err => signOut(this.props.navigation))
-        ).catch(err => signOut(this.props.navigation));
-    };
+       this.state = {
+          fontLoaded: false,
+       }
+    }
 
     async componentDidMount() {
         await Font.loadAsync({
@@ -33,20 +24,19 @@ export default class MeetingScreen extends React.Component {
         let aboveImageText = null;
         let underImageText = null;
         if (this.state.fontLoaded ) {
-            if(this.props.navigation.getParam('isSuccessfullCreate') === true)
-              aboveImageText = <Text style={styles.goodByeText}>Thank you for creating a meeting!</Text>;
-            underImageText = <Text style={styles.goodByeText}>Double-Click to start a meeting</Text>;
+            aboveImageText = <Text style={styles.goodByeText}>Thank you for creating a meeting!</Text>;
+            underImageText = <Text style={styles.goodByeText}>Double-Click to go back to main screen</Text>;
         }
         return (
             <View style={styles.wrapper}>
                 <LinearGradient colors={['#ebc0fd', '#d9ded8']} style={styles.gradient}
                                 locations={[0, 1]} start={[0.2, 0]} end={[0.8, 1.2]}>
                     <View style={styles.container}>
-                        {aboveImageText}
-                        <DoubleClick onClick={() => this.props.navigation.navigate('meetingForm', this.state)}>
-                            <Image style={styles.hand} source={require('../../../assets/images/people.png')}/>
-                        </DoubleClick>
-                        {underImageText}
+                    {aboveImageText}
+                    <DoubleClick onClick={() => this.props.navigation.navigate('homePage')}>
+                            <Image style={styles.hand} source={require('../../../assets/images/thumbsUp.png')}/>
+                    </DoubleClick>
+                    {underImageText}
                     </View>
                 </LinearGradient>
             </View>
@@ -74,8 +64,8 @@ const styles = StyleSheet.create({
         textAlign: 'center'
     },
     hand: {
-        width: 200,
-        height: 200
+        width: 250,
+        height: 250
     },
     goodByeText: {
         marginTop: 5,

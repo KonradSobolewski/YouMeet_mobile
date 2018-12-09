@@ -40,6 +40,33 @@ export const getCategories = () => {
   });
 };
 
+export const createMeeting = (oneToOne, category, description) => {
+  console.log(oneToOne + typeof oneToOne);
+  console.log(category + typeof category);
+  console.log(ConstKeys.userInfo.id + typeof ConstKeys.userInfo.id);
+  console.log(oneToOne + typeof oneToOne);
+  return new Promise((resolve, reject) => {
+    fetch(ConstKeys.apiUrl + '/createMeeting', {
+        credentials: 'include',
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            inviter_id: parseInt(ConstKeys.userInfo.id),
+            is_one_to_one: oneToOne,
+            category: parseInt(category)
+        })
+    })
+    .then(res => {
+        if (res.status === 200)
+            resolve(res);
+        reject(res);
+    })
+    .catch(err => reject(err))
+  });
+};
+
 export const getMeetingPlaces = () => {
     return new Promise((resolve, reject) => {
         fetch(ConstKeys.apiUrl + '/api/getMeetings?user_id=' + ConstKeys.userInfo.id, {
