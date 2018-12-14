@@ -53,9 +53,9 @@ export const createMeeting = (oneToOne, category, description) => {
                 inviter_id: parseInt(ConstKeys.userInfo.id),
                 is_one_to_one: oneToOne,
                 category: parseInt(category),
-                params: {
-                    description: description
-                }
+                place_longitude: "0",
+                place_latitude: "0",
+                description: description
             })
         })
             .then(res => {

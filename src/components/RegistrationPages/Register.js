@@ -69,7 +69,7 @@ export default class App extends React.Component {
                     firstName: this.state.firstName,
                     lastName: this.state.lastName,
                     email: this.state.email,
-                    password: this.state.password,
+                    password: this.state.password
                 })
             })
                 .then(res => {
