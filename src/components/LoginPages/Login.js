@@ -4,8 +4,8 @@ import LoginForm from './LoginForm'
 import {Font, LinearGradient} from 'expo';
 import ConstKeys from '../../config/app.consts'
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import {getUserNameAndLastName} from '../../services/string.service'
-import {getUserByEmail, signIn} from '../../services/user.service'
+import {getUserNameAndLastName, validateEmail} from '../../services/string.service'
+import {getUserByEmail, signIn, matchResponseToUserInfo} from '../../services/user.service'
 
 export default class Login extends React.Component {
     async componentDidMount() {
@@ -24,10 +24,9 @@ export default class Login extends React.Component {
     };
 
     validateFields = () => {
-        let reg = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
         if (this.state.email === null || this.state.password === null) {
             return false;
-        } else if (!reg.test(this.state.email)) {
+        } else if (!validateEmail(this.state.email)) {
             return false;
         }
         return true;
@@ -54,14 +53,7 @@ export default class Login extends React.Component {
                             .then(response => {
                                 let userData = JSON.parse(response._bodyInit);
                                 let data = {
-                                    userInfo: {
-                                        id: userData.id,
-                                        email: userData.email,
-                                        firstName: userData.firstName,
-                                        lastName: userData.lastName,
-                                        name: userData.firstName + ' ' + userData.lastName,
-                                        photo: userData.params.photo
-                                    },
+                                    userInfo: matchResponseToUserInfo(userData),
                                     auth: ConstKeys.auth
                                 };
                                 ConstKeys.userInfo = data.userInfo;
@@ -100,14 +92,7 @@ export default class Login extends React.Component {
         })
             .then(res => {
                 let responseBody = JSON.parse(res._bodyInit);
-                ConstKeys.userInfo = {
-                    id: responseBody.id,
-                    email: responseBody.email,
-                    firstName: responseBody.firstName,
-                    lastName: responseBody.lastName,
-                    name: responseBody.firstName + ' ' + responseBody.lastName,
-                    photo: responseBody.params.photo
-                };
+                ConstKeys.userInfo = matchResponseToUserInfo(responseBody);
                 return this.getTokenForFb(ConstKeys.userInfo);
             })
             .catch(err => {

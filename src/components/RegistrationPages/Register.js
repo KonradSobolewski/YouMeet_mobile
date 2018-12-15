@@ -12,6 +12,7 @@ import {
 } from 'react-native';
 import {LinearGradient} from 'expo';
 import ConstKeys from '../../config/app.consts'
+import {validateEmail, validateLength} from "../../services/string.service";
 
 export default class App extends React.Component {
     state = {
@@ -27,7 +28,7 @@ export default class App extends React.Component {
     };
 
     updateState = (key, value) => {
-        let result = this.validateLength(value);
+        let result = validateLength(value);
         this.setState({isTouched: true});
         if (key === 'firstName') {
             this.setState({firstName: value, firstNameValid: result});
@@ -39,18 +40,9 @@ export default class App extends React.Component {
             this.setState({password: value, passwordValid: result});
         }
         else if (key === 'email') {
-            result = result && this.validateEmail();
+            result = result && validateEmail(this.state.email);
             this.setState({email: value, emailValid: result});
         }
-    };
-
-    validateLength = (value) => {
-        return value.length >= ConstKeys.minLength;
-    };
-
-    validateEmail = () => {
-        let reg = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
-        return reg.test(this.state.email);
     };
 
     areFieldsValid = () => {

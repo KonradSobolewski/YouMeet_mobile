@@ -1,3 +1,4 @@
+import ConstKeys from "../config/app.consts";
 
 export const getUserNameAndLastName = (name) => {
     console.log(name);
@@ -8,4 +9,13 @@ export const getUserNameAndLastName = (name) => {
         firstName: firstName,
         lastName: lastName
     }
+};
+
+export const validateLength = (value) => {
+    return value.length >= ConstKeys.minLength;
+};
+
+export const validateEmail = (email) => {
+    let reg = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
+    return reg.test(email);
 };

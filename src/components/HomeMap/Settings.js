@@ -19,7 +19,7 @@ export default class Settings extends React.Component {
             <KeyboardAvoidingView behavior="padding" style={styles.container}>
                 <LinearGradient colors={['#7b258e', '#B39DDB']} style={styles.gradient} start={[0.2, 0]} end={[0.4, 1]}>
                     <ScrollView>
-                        <UserInfo style={styles.userIcon} navigator={this.props.navigation}/>
+                        <UserInfo showHamburger={true} style={styles.userIcon} navigator={this.props.navigation}/>
                         <View>
                             <TouchableOpacity style={styles.button} onPress={this.goToAccountInfo}>
                                 <Text style={styles.text}>

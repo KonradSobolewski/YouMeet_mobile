@@ -12,8 +12,10 @@ import {
     CheckBox
 } from 'react-native';
 import {LinearGradient} from "expo";
-import {createMeeting, getCategories, signOut} from '../../services/user.service'
+import {signOut} from '../../services/user.service';
 import DoubleClick from 'react-native-double-click';
+import {createMeeting} from "../../services/meeting.service";
+import {getCategories} from "../../services/category.service";
 
 export default class MeetingForm extends React.Component {
 
@@ -72,6 +74,7 @@ export default class MeetingForm extends React.Component {
 
                         <Text style={styles.textStyle}> Select the category </Text>
                         <Picker
+                            prompt={"Choose category..."}
                             selectedValue={this.state.language}
                             style={styles.picker}
                             itemStyle={styles.input}

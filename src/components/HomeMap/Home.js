@@ -2,7 +2,8 @@ import React from 'react';
 import {StyleSheet, View, Text, TouchableOpacity} from 'react-native';
 import UsersMap from "./UsersMap";
 import UserInfo from "./UserInfo";
-import {signOut, getMeetingPlaces} from '../../services/user.service'
+import {signOut} from '../../services/user.service'
+import {getMeetingPlaces} from "../../services/meeting.service";
 import ConstKeys from '../../config/app.consts'
 
 export default class Home extends React.Component {
@@ -68,7 +69,7 @@ export default class Home extends React.Component {
         }
         return (
             <View style={styles.container}>
-                <UserInfo navigator={this.props.navigation}/>
+                <UserInfo showHamburger={true} navigator={this.props.navigation}/>
                 <Text>{ConstKeys.userInfo.user_id}</Text>
                 <UsersMap userLocation={this.state.location}
                           meetings={this.state.meetings}
