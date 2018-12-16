@@ -35,12 +35,12 @@ const usersMap = props => {
     if (props.chosenPlace) {
         chosenPlaceMarker = <MapView.Marker coordinate={props.chosenPlace.coordinate}>
             <Image source={markerImage} style={styles.markerIcon}/>
-            <MapView.Callout tooltip>
+            <MapView.Callout tooltip onPress={() => props.navigator.navigate('createMeeting' ,{place: props.chosenPlace})}>
                 <View style={styles.toolTip}>
                     <Text style={styles.toolTipText}>
                         {props.chosenPlace.name}
                     </Text>
-                    <TouchableOpacity style={styles.toolTipButton} onPress={() => props.createMeeting(props.chosenPlace)}>
+                    <TouchableOpacity style={styles.toolTipButton} >
                         <Text style={styles.submitText}>ACCEPT</Text>
                     </TouchableOpacity>
                 </View>

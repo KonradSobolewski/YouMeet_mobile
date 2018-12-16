@@ -66,15 +66,6 @@ export const createRootNavigator = (signedIn = false, data) => {
                                 )
                             }
                         },
-                        createMeeting: {
-                            screen: MeetingScreen,
-                            navigationOptions: {
-                                drawerLabel: 'Create meeting',
-                                drawerIcon: () => (
-                                    <Ionicons name="md-eye" size={18}/>
-                                )
-                            }
-                        },
                         Settings: {
                             screen: Settings,
                             navigationOptions: {

@@ -55,13 +55,6 @@ export default class Home extends React.Component {
         this.setState({chosenPlace: data});
     };
 
-    createMeeting = (data) => {
-        if (data){
-            this.props.navigation.navigate('createMeeting' ,{place: data});
-        } else
-            console.log('createMeeting', data);
-    };
-
     render() {
         const {navigation} = this.props;
         console.log(this.props.navigation.getParam('isSuccessfullCreate'));
@@ -82,7 +75,7 @@ export default class Home extends React.Component {
                           getTapedLocation={(data) => this.setTapedCoordinates(data)}
                           chosenPlace={this.state.chosenPlace}
                           getPickedPoi={(data) => this.getPickedPoi(data)}
-                          createMeeting={(data) => this.createMeeting(data)}
+                          navigator={this.props.navigation}
                           style={styles.map}/>
                 <TouchableOpacity style={styles.buttonContainer} onPress={this.getUserLocationHandler}>
                     <Text style={styles.buttonText}>Get Location</Text>
