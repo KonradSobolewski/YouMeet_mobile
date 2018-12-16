@@ -3,7 +3,7 @@ import {StyleSheet, View, Text, TouchableOpacity} from 'react-native';
 import UsersMap from "./UsersMap";
 import UserInfo from "./UserInfo";
 import {signOut} from '../../services/user.service'
-import {getMeetingPlaces} from "../../services/meeting.service";
+import {createMeeting, getMeetingPlaces} from "../../services/meeting.service";
 import ConstKeys from '../../config/app.consts'
 
 export default class Home extends React.Component {
@@ -55,6 +55,13 @@ export default class Home extends React.Component {
         this.setState({chosenPlace: data});
     };
 
+    createMeeting = (data) => {
+        if (data){
+            this.props.navigation.navigate('createMeeting' ,{place: data});
+        } else
+            console.log('createMeeting', data);
+    };
+
     render() {
         const {navigation} = this.props;
         console.log(this.props.navigation.getParam('isSuccessfullCreate'));
@@ -70,12 +77,12 @@ export default class Home extends React.Component {
         return (
             <View style={styles.container}>
                 <UserInfo showHamburger={true} navigator={this.props.navigation}/>
-                <Text>{ConstKeys.userInfo.user_id}</Text>
                 <UsersMap userLocation={this.state.location}
                           meetings={this.state.meetings}
                           getTapedLocation={(data) => this.setTapedCoordinates(data)}
                           chosenPlace={this.state.chosenPlace}
                           getPickedPoi={(data) => this.getPickedPoi(data)}
+                          createMeeting={(data) => this.createMeeting(data)}
                           style={styles.map}/>
                 <TouchableOpacity style={styles.buttonContainer} onPress={this.getUserLocationHandler}>
                     <Text style={styles.buttonText}>Get Location</Text>

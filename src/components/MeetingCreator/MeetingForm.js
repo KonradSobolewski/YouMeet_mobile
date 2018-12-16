@@ -27,7 +27,8 @@ export default class MeetingForm extends React.Component {
             language: null,
             description: null,
             isOneToOne: true,
-            category: 1
+            category: 1,
+            place: props.navigation.getParam('place'),
         };
         this.getAllCategories();
     }
@@ -35,12 +36,13 @@ export default class MeetingForm extends React.Component {
     getAllCategories = () => {
         getCategories().then(response => response.json().then(data => {
                 this.setState({categories: data});
+                console.log(this.state.place);
             }).catch(err => signOut(this.props.navigation))
         ).catch(err => signOut(this.props.navigation));
     };
 
     createMyMeeting = () => {
-        createMeeting(this.state.isOneToOne, this.state.category, this.state.description)
+        createMeeting(this.state.isOneToOne, this.state.category, this.state.description, this.state.place)
             .then(res => this.props.navigation.navigate('meetingCreated'))
             .catch(err => console.log(err));
     };
@@ -62,6 +64,7 @@ export default class MeetingForm extends React.Component {
                         <DoubleClick onClick={() => this.props.navigation.navigate('meetingForm')}>
                             <Image style={styles.hand} source={require('../../../assets/images/meetingPerson.png')}/>
                         </DoubleClick>
+                        <Text style={styles.place}>{this.state.place.name}</Text>
                         <Text style={styles.textStyle}>Description of the meeting</Text>
                         <TextInput style={styles.input}
                                    placeholder="Enter description of your meeting"
@@ -176,6 +179,12 @@ const styles = StyleSheet.create({
     textStyle: {
         marginTop: 35,
         fontSize: 20,
+        color: 'black',
+        fontFamily: 'Courgette'
+    },
+    place: {
+        marginTop: 30,
+        fontSize: 25,
         color: 'black',
         fontFamily: 'Courgette'
     }

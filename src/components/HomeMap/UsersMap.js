@@ -1,5 +1,5 @@
 import React from 'react'
-import {Button, Image, StyleSheet, View, Text} from 'react-native';
+import {Button, Image, StyleSheet, View, Text, TouchableOpacity} from 'react-native';
 import {MapView} from 'expo'
 import markerImage from '../../../assets/images/marker.png'
 import ConstKeys from '../../config/app.consts'
@@ -40,7 +40,11 @@ const usersMap = props => {
                     <Text style={styles.toolTipText}>
                         {props.chosenPlace.name}
                     </Text>
+                    <TouchableOpacity style={styles.toolTipButton} onPress={() => props.createMeeting(props.chosenPlace)}>
+                        <Text style={styles.submitText}>ACCEPT</Text>
+                    </TouchableOpacity>
                 </View>
+
             </MapView.Callout>
         </MapView.Marker>
     }
@@ -79,13 +83,28 @@ const styles = StyleSheet.create({
         width: 50, height: 50
     },
     toolTip:{
-        backgroundColor: 'rgba(255,255,255,0.8)',
+        flex:1,
+        backgroundColor: 'rgba(255,255,255,0.9)',
         padding: 15,
         marginBottom: 5,
-        borderRadius: 10,
-        width: 100,
+        borderRadius: 3,
+        width: 200,
         alignItems: 'center'
     },
     toolTipText: {
+        flex :1,
+        marginBottom: 15,
+        flexWrap: 'wrap',
+        textAlign: 'center'
+    },
+    submitText: {
+        color: 'white',
+    },
+    toolTipButton: {
+        backgroundColor: '#BA68C8',
+        alignItems: 'center',
+        width: 120,
+        padding: 5,
+        borderRadius: 3,
     }
 });

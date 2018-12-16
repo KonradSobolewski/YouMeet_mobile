@@ -7,7 +7,8 @@ export default class MeetingScreen extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            fontLoaded: false
+            fontLoaded: false,
+            place: props.navigation.getParam('place')
         };
     }
 
@@ -33,7 +34,7 @@ export default class MeetingScreen extends React.Component {
                     <View style={styles.container}>
                         {aboveImageText}
                         <DoubleClickLogo style={{width: 250, height: 250}}
-                                         nagivateMe={() => this.props.navigation.navigate('meetingForm')}
+                                         nagivateMe={() => this.props.navigation.navigate('meetingForm', {place: this.state.place})}
                         />
                         {underImageText}
                     </View>

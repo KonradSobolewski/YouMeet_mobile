@@ -20,7 +20,7 @@ export const getMeetingPlaces = () => {
 };
 
 
-export const createMeeting = (oneToOne, category, description) => {
+export const createMeeting = (oneToOne, category, description, place) => {
     return new Promise((resolve, reject) => {
         fetch(ConstKeys.apiUrl + '/api/createMeeting', {
             credentials: 'include',
@@ -33,9 +33,10 @@ export const createMeeting = (oneToOne, category, description) => {
                 inviter_id: parseInt(ConstKeys.userInfo.id),
                 is_one_to_one: oneToOne,
                 category: parseInt(category),
-                place_longitude: "0",
-                place_latitude: "0",
-                description: description
+                place_longitude: place.coordinate.longitude,
+                place_latitude: place.coordinate.latitude,
+                description: description,
+                placeDescription: place.name
             })
         })
             .then(res => {
