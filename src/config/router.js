@@ -103,7 +103,16 @@ export const createRootNavigator = (signedIn = false, data) => {
             },
             appSettings: {
                 screen: AppSettings
-            }
+            },
+            createMeeting: {
+                screen: MeetingScreen,
+                navigationOptions: {
+                    drawerLabel: 'Create meeting',
+                    drawerIcon: () => (
+                        <Ionicons name="md-eye" size={18}/>
+                    )
+                }
+            },
         },
         {
             initialRouteName: signedIn ? 'homePage' : 'loginPage',
