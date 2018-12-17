@@ -86,7 +86,9 @@ export default class Login extends React.Component {
                 lastName: userInfo.lastName,
                 password: 'fbLogger',
                 params: {
-                    photo: userInfo.picture.data.url
+                    photo: userInfo.picture.data.url,
+                    age: 18,
+                    gender: 'male'
                 }
             })
         })
@@ -141,9 +143,10 @@ export default class Login extends React.Component {
             permissions: ['public_profile', 'email'],
         });
         if (type === 'success') {
-            await fetch(`https://graph.facebook.com/me?access_token=${token}&fields=id,email,likes,name,picture.type(large)`)
+            await fetch(`https://graph.facebook.com/me?access_token=${token}&fields=id,email,name,picture.type(large)`)
                 .then(async res => {
                     let userInfo = await res.json();
+                    console.log(userInfo);
                     if (userInfo.error === undefined) {
                         const {firstName, lastName} = getUserNameAndLastName(userInfo.name);
                         userInfo['firstName'] = firstName;

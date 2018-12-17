@@ -3,8 +3,8 @@ import {StyleSheet, View, Text, TouchableOpacity} from 'react-native';
 import UsersMap from "./UsersMap";
 import UserInfo from "./UserInfo";
 import {signOut} from '../../services/user.service'
-import {createMeeting, getMeetingPlaces} from "../../services/meeting.service";
-import ConstKeys from '../../config/app.consts'
+import {getMeetingPlaces} from "../../services/meeting.service";
+import Ionicons from 'react-native-vector-icons/Ionicons';
 
 export default class Home extends React.Component {
 
@@ -13,6 +13,7 @@ export default class Home extends React.Component {
         this.state = {
             userInfo: props.navigation.getParam('userInfo'),
             auth: props.navigation.getParam('auth'),
+            isSuccessfulCreated: props.navigation.getParam('isSuccessfulCreate'),
             location: {
                 latitude: 52.22967,
                 longitude: 21.01222,
@@ -21,15 +22,30 @@ export default class Home extends React.Component {
             },
             chosenPlace: null,
             meetingsLoaded: false,
-            meetings: null
+            meetings: []
         };
+        if (this._isMounted) {
+
+        }
+
+    }
+    _isMounted = false;
+
+    componentDidMount() {
+        this._isMounted = true;
         this.getUserLocationHandler();
         this.getPlaces();
     }
 
+    componentWillUnmount() {
+        this._isMounted = false;
+    }
+
     getPlaces = () => {
         getMeetingPlaces().then(response => response.json().then(data => {
+            if (this._isMounted) {
                 this.setState({meetings: data, meetingsLoaded: true});
+            }
             }).catch(err => signOut(this.props.navigation))
         ).catch(err => signOut(this.props.navigation));
     };
@@ -48,37 +64,40 @@ export default class Home extends React.Component {
     };
 
     setTapedCoordinates = (data) => {
-        this.setState({chosenPlace: data});
+        if (this._isMounted) {
+            this.setState({chosenPlace: data});
+        }
     };
 
     getPickedPoi = (data) => {
-        this.setState({chosenPlace: data});
+        if (this._isMounted) {
+            this.setState({chosenPlace: data});
+        }
     };
 
     render() {
         const {navigation} = this.props;
-        console.log(this.props.navigation.getParam('isSuccessfullCreate'));
-        if (this.state.auth === null && !this.props.navigation.getParam('isSuccessfullCreate')) {
+        if (this.state.auth === null && !this.state.isSuccessfulCreated) {
             // console.log('\n\n\n wy pierdolone kurwyyy!!!!!  \n\n\n');
             // navigation.navigate('loginPage');
         }
-        let sth = null;
+        let meetings = null;
         if (this.state.meetingsLoaded === true) {
-            // let lat = this.state.meetings[0].place_latitude;
-            // sth = <Text> {lat} </Text>
+           meetings = this.state.meetings;
         }
         return (
             <View style={styles.container}>
                 <UserInfo showHamburger={true} navigator={this.props.navigation}/>
                 <UsersMap userLocation={this.state.location}
-                          meetings={this.state.meetings}
+                          meetings={meetings}
                           getTapedLocation={(data) => this.setTapedCoordinates(data)}
                           chosenPlace={this.state.chosenPlace}
                           getPickedPoi={(data) => this.getPickedPoi(data)}
                           navigator={this.props.navigation}
                           style={styles.map}/>
+
                 <TouchableOpacity style={styles.buttonContainer} onPress={this.getUserLocationHandler}>
-                    <Text style={styles.buttonText}>Get Location</Text>
+                    <Ionicons name="md-locate" size={40} color={'white'}/>
                 </TouchableOpacity>
             </View>
         );
@@ -91,16 +110,10 @@ const styles = StyleSheet.create({
     },
     buttonContainer: {
         position: 'absolute',
-        bottom: 20,
-        left: 120, right: 120,
+        top: 120,
+        right: 5,
         justifyContent: 'center',
-        borderRadius: 15,
-        backgroundColor: 'rgba(255,255,255,1)',
         padding: 15
-    },
-    buttonText: {
-        color: 'black',
-        textAlign: 'center'
     },
     map: {
         position: 'absolute',

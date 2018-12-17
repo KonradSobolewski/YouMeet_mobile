@@ -33,7 +33,7 @@ export default class SuccessfullCreate extends React.Component {
                     <View style={styles.container}>
                         {aboveImageText}
                         <DoubleClick
-                            onClick={() => this.props.navigation.navigate('homePage', {isSuccessfullCreate: true})}>
+                            onClick={() => this.props.navigation.navigate('homePage', {isSuccessfulCreate: true})}>
                             <Image style={styles.hand} source={require('../../../assets/images/thumbsUp.png')}/>
                         </DoubleClick>
                         {underImageText}

@@ -24,7 +24,7 @@ const usersMap = props => {
     if(props.meetings) {
       meetingPlaces = props.meetings.map( meeting =>{
           return (
-          <MapView.Marker
+          <MapView.Marker key={meeting.meeting_id}
             coordinate={{latitude: parseFloat(meeting.place_latitude), longitude: parseFloat(meeting.place_longitude)}}
           >
               <Image source={markerImage} style={styles.markerIcon}/>

@@ -35,7 +35,9 @@ export const updateUser = (userInfo) => {
                 lastName: userInfo.lastName,
                 params: {
                     photo: userInfo.photo,
-                    hobbies: userInfo.userHobbies
+                    hobbies: userInfo.userHobbies,
+                    age: userInfo.age,
+                    gender: userInfo.gender
                 }
             })
         })
@@ -72,6 +74,8 @@ export const matchResponseToUserInfo = (userData) => {
         firstName: userData.firstName,
         lastName: userData.lastName,
         name: userData.firstName + ' ' + userData.lastName,
-        photo: userData.params.photo
+        photo: userData.params.photo,
+        age: userData.params.age,
+        gender: userData.params.gender
     }
 };

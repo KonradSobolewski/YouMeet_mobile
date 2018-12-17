@@ -6,7 +6,7 @@ import {
     StyleSheet,
     ScrollView,
     KeyboardAvoidingView,
-    Text, Picker
+    Text, Picker, Slider, Switch
 } from "react-native";
 import {LinearGradient} from "expo";
 import ConstKeys from '../../config/app.consts'
@@ -15,6 +15,7 @@ import {matchResponseToUserInfo, updateUser} from "../../services/user.service";
 import {validateLength} from "../../services/string.service";
 import UserInfo from "../HomeMap/UserInfo";
 import HobbyItem from './HobbyItem';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 
 export default class AccountInfo extends React.Component {
     constructor(props) {
@@ -24,9 +25,12 @@ export default class AccountInfo extends React.Component {
                 firstName: ConstKeys.userInfo.firstName,
                 lastName: ConstKeys.userInfo.lastName,
                 photo: ConstKeys.userInfo.photo,
+                age: ConstKeys.userInfo.age,
+                gender: ConstKeys.userInfo.gender,
                 userHobbies: []
             },
             selectedValue: 1,
+            switchState: ConstKeys.userInfo.gender !== 'male',
             hobbies: []
         };
         this.getUserHobbies();
@@ -35,9 +39,7 @@ export default class AccountInfo extends React.Component {
 
     getHobbies = () => {
         getAllHobbies().then(res => res.json().then(data => {
-            const tempHobbies = [];
-            data.map(hobby => tempHobbies.push(hobby.name));
-            this.setState({hobbies: tempHobbies});
+            this.setState({hobbies: data});
         }))
             .catch(err => {
                 console.log(err);
@@ -97,10 +99,25 @@ export default class AccountInfo extends React.Component {
         this.state.userInfo.lastName = value;
     };
 
+    setAge = (value) => {
+        this.state.userInfo.age = value;
+        this.forceUpdate();
+    };
+
+    setGender = (value) => {
+        if (value) {
+            this.state.userInfo.gender = 'female';
+        } else {
+            this.state.userInfo.gender = 'male'
+        }
+        this.state.switchState = !this.state.switchState;
+        this.forceUpdate();
+    };
+
     render() {
         let hobbies = this.state.hobbies.map(hobby => {
             return (
-                <Picker.Item label={hobby} value={hobby}/>
+                <Picker.Item key={hobby.id} label={hobby.name} value={hobby.name}/>
             )
         });
 
@@ -132,6 +149,28 @@ export default class AccountInfo extends React.Component {
                                 onChangeText={(value) => this.setLastName(value)}
                                 defaultValue={this.state.userInfo.lastName}
                             />
+                            <Text style={styles.label}>
+                                Your age: {this.state.userInfo.age}
+                            </Text>
+                            <Slider value={this.state.userInfo.age}
+                                    step={1}
+                                    maximumValue={50}
+                                    minimumValue={18}
+                                    onSlidingComplete={(value) => this.setAge(value)}
+                                    minimumTrackTintColor='white'
+                                    thumbTintColor={'white'}
+                                    style={styles.slider}/>
+                            <Text style={styles.label}>
+                                Your gender:
+                            </Text>
+                            <View style={styles.switchContainer}>
+                                <Ionicons name="md-male" size={23} color={"white"} style={styles.genderIcon}/>
+                                <Switch trackColor={{false: 'blue', true: 'red'}}
+                                        thumbColor={'white'}
+                                        value={this.state.switchState}
+                                        onValueChange={(value) => this.setGender(value)}/>
+                                <Ionicons name="md-female" size={23} color={"white"} style={styles.genderIcon}/>
+                            </View>
                             <Text style={styles.label}>
                                 Choose hobby:
                             </Text>
@@ -226,5 +265,17 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         flexDirection: 'row',
         flexWrap: 'wrap'
+    },
+    slider: {
+        width: '80%',
+        padding: 10,
+    },
+    switchContainer: {
+        alignItems: 'center',
+        flexDirection: 'row',
+        padding: 10,
+    },
+    genderIcon: {
+        padding: 10
     }
 });

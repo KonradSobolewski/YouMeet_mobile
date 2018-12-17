@@ -8,11 +8,12 @@ import {
     TextInput,
     TouchableOpacity,
     View,
-    ScrollView
+    ScrollView, Slider, Switch
 } from 'react-native';
 import {LinearGradient} from 'expo';
 import ConstKeys from '../../config/app.consts'
 import {validateEmail, validateLength} from "../../services/string.service";
+import Ionicons from 'react-native-vector-icons/Ionicons';
 
 export default class App extends React.Component {
     state = {
@@ -24,7 +25,10 @@ export default class App extends React.Component {
         lastNameValid: true,
         passwordValid: true,
         emailValid: true,
-        isTouched: false
+        isTouched: false,
+        age: 18,
+        gender: 'male',
+        switchState: false,
     };
 
     updateState = (key, value) => {
@@ -61,7 +65,11 @@ export default class App extends React.Component {
                     firstName: this.state.firstName,
                     lastName: this.state.lastName,
                     email: this.state.email,
-                    password: this.state.password
+                    password: this.state.password,
+                    params: {
+                        age: this.state.age,
+                        gender: this.state.gender
+                    }
                 })
             })
                 .then(res => {
@@ -77,6 +85,21 @@ export default class App extends React.Component {
             Alert.alert('Invalid data.');
         }
 
+    };
+
+    setAge = (value) => {
+        this.state.age = value;
+        this.forceUpdate();
+    };
+
+    setGender = (value) => {
+        if (value) {
+            this.state.gender = 'female';
+        } else {
+            this.state.gender = 'male'
+        }
+        this.state.switchState = !this.state.switchState;
+        this.forceUpdate();
     };
 
     render() {
@@ -124,6 +147,28 @@ export default class App extends React.Component {
                                 ref={(input) => this.passwordInput = input}
                                 onChangeText={(value) => this.updateState('password', value)}
                             />
+                            <Text style={styles.label}>
+                                Your age: {this.state.age}
+                            </Text>
+                            <Slider value={this.state.age}
+                                    step={1}
+                                    maximumValue={50}
+                                    minimumValue={18}
+                                    onSlidingComplete={(value) => this.setAge(value)}
+                                    minimumTrackTintColor='white'
+                                    thumbTintColor={'white'}
+                                    style={styles.slider}/>
+                            <View style={styles.switchContainer}>
+                                <Text style={styles.genderLabel}>
+                                    Gender:
+                                </Text>
+                                <Ionicons name="md-male" size={23} color={"white"} style={styles.genderIcon}/>
+                                <Switch trackColor={{false: 'blue', true: 'red'}}
+                                        thumbColor={'white'}
+                                        value={this.state.switchState}
+                                        onValueChange={(value) => this.setGender(value)}/>
+                                <Ionicons name="md-female" size={23} color={"white"} style={styles.genderIcon}/>
+                            </View>
                             <TouchableOpacity style={styles.registerBtn} onPress={this.register}
                                               disabled={!(this.areFieldsValid && this.state.isTouched)}>
                                 <Text style={styles.registerText}>Register</Text>
@@ -169,7 +214,7 @@ const styles = StyleSheet.create({
     },
     registerBtn: {
         borderRadius: 15,
-        marginTop: 35,
+        marginTop: 15,
         backgroundColor: 'rgba(255,255,255,0.3)',
         padding: 10,
         width: '80%'
@@ -178,5 +223,30 @@ const styles = StyleSheet.create({
         fontSize: 15,
         color: 'white',
         textAlign: 'center'
+    },
+    slider: {
+        width: '80%',
+        padding: 10,
+    },
+    switchContainer: {
+        alignItems: 'center',
+        flexDirection: 'row',
+        padding: 5,
+    },
+    genderIcon: {
+        padding: 10
+    },
+    label: {
+        marginTop: 5,
+        padding: 5,
+        paddingBottom: 0,
+        color: 'white',
+        fontSize: 15
+    },
+    genderLabel: {
+        padding: 5,
+        color: 'white',
+        fontSize: 15,
+        marginRight: 10
     }
 });

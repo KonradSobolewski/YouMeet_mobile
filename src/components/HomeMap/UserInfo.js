@@ -13,7 +13,7 @@ const userInfo = props => {
                     <Image source={humburger} style={styles.humburger}/>
                 </TouchableOpacity>) : (null) }
                 <Text style={styles.userNick}>
-                    {ConstKeys.userInfo.name}
+                    {ConstKeys.userInfo.name}, {ConstKeys.userInfo.age}
                 </Text>
                 {ConstKeys.userInfo.photo ? (
                     <Image source={{uri: ConstKeys.userInfo.photo}} style={styles.userIcon}/>) : (
@@ -59,11 +59,11 @@ const styles = StyleSheet.create({
         borderColor: 'white'
     },
     userNick: {
+        flex:1,
         padding: 10,
-        marginLeft: 130,
+        textAlign: 'right',
+        width: 'auto',
         marginBottom: 20,
         fontSize: 20,
-        borderBottomColor: 'black',
-        borderBottomWidth: 1,
     }
 });

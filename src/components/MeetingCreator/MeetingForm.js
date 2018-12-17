@@ -24,7 +24,7 @@ export default class MeetingForm extends React.Component {
         this.state = {
             categories: null,
             isChecked: true,
-            language: null,
+            selectedValue: 1,
             description: null,
             isOneToOne: true,
             category: 1,
@@ -36,7 +36,6 @@ export default class MeetingForm extends React.Component {
     getAllCategories = () => {
         getCategories().then(response => response.json().then(data => {
                 this.setState({categories: data});
-                console.log(this.state.place);
             }).catch(err => signOut(this.props.navigation))
         ).catch(err => signOut(this.props.navigation));
     };
@@ -52,7 +51,7 @@ export default class MeetingForm extends React.Component {
         if (this.state.categories !== null) {
             categories = this.state.categories.map(category => {
                 return (
-                    <Picker.Item label={category.type} value={category.id}/>
+                    <Picker.Item key={category.id} label={category.type} value={category.id}/>
                 )
             });
         }
@@ -78,10 +77,13 @@ export default class MeetingForm extends React.Component {
                         <Text style={styles.textStyle}> Select the category </Text>
                         <Picker
                             prompt={"Choose category..."}
-                            selectedValue={this.state.language}
+                            selectedValue={this.state.selectedValue}
                             style={styles.picker}
                             itemStyle={styles.input}
-                            onValueChange={(itemValue, itemIndex) => this.setState({category: itemValue})}>
+                            onValueChange={(itemValue, itemIndex) => {
+                                this.setState({category: itemValue});
+                                this.state.selectedValue = itemValue;
+                            }}>
                             {categories}
                         </Picker>
 
