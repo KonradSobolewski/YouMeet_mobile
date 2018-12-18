@@ -3,11 +3,15 @@ import {StyleSheet, Text, TouchableOpacity, View} from "react-native";
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
 const hobbyItem = props => {
+    let text = null;
+    if(props.fontLoaded) {
+        text =  <Text style={styles.text}>{props.itemName}</Text>;
+    }
     return (
         <View>
             <TouchableOpacity style={styles.buttonContainer} onPress={() => props.deleteHobby(props.itemName)}>
-                <Text style={styles.text}>{props.itemName}</Text>
-                <Ionicons name="md-close" size={15} color={"red"} style={styles.icon}/>
+                {text}
+                <Ionicons name="md-close" size={17} color={"red"} style={styles.icon}/>
             </TouchableOpacity>
         </View>
     );
@@ -19,20 +23,23 @@ const styles = StyleSheet.create({
     buttonContainer: {
         marginTop: 10,
         marginHorizontal: 5,
-        borderRadius: 5,
-        backgroundColor: 'rgba(255,255,255,0.2)',
+        borderRadius: 3,
+        borderWidth: 1,
+        borderColor: 'white',
+        backgroundColor: 'rgba(255,104,104,0.1)',
         color: '#FFF',
         padding: 5,
         flexDirection: 'row',
-        alignSelf: 'flex-start'
+        alignSelf: 'flex-start',
+        elevation: 1
     },
     text: {
         fontSize: 12,
-        color: 'white',
+        color: 'black',
         textAlign: 'center'
     },
     icon: {
-        padding: 2,
-        paddingLeft: 5
+        paddingRight: 2,
+        paddingLeft: 7
     }
 });

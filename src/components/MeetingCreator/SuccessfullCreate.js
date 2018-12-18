@@ -28,8 +28,7 @@ export default class SuccessfullCreate extends React.Component {
         }
         return (
             <View style={styles.wrapper}>
-                <LinearGradient colors={['#ebc0fd', '#d9ded8']} style={styles.gradient}
-                                locations={[0, 1]} start={[0.2, 0]} end={[0.8, 1.2]}>
+                <LinearGradient colors={['#b22b7d', '#c6c0db']} locations={[0, 0.8]} style={styles.gradient}>
                     <View style={styles.container}>
                         {aboveImageText}
                         <DoubleClick

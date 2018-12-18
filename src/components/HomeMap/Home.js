@@ -5,6 +5,7 @@ import UserInfo from "./UserInfo";
 import {signOut} from '../../services/user.service'
 import {getMeetingPlaces} from "../../services/meeting.service";
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import {Font} from "expo";
 
 export default class Home extends React.Component {
 
@@ -22,17 +23,20 @@ export default class Home extends React.Component {
             },
             chosenPlace: null,
             meetingsLoaded: false,
-            meetings: []
+            meetings: [],
+            fontLoaded: false
         };
-        if (this._isMounted) {
-
-        }
-
     }
     _isMounted = false;
 
-    componentDidMount() {
+  async componentDidMount() {
         this._isMounted = true;
+        await Font.loadAsync({
+            'Courgette': require('../../../assets/fonts/Courgette-Regular.ttf'),
+            'Dosis': require('../../../assets/fonts/Dosis-Regular.ttf'),
+            'Gloria': require('../../../assets/fonts/GloriaHallelujah.ttf'),
+        });
+        this.setState({fontLoaded: true});
         this.getUserLocationHandler();
         this.getPlaces();
     }
@@ -87,7 +91,7 @@ export default class Home extends React.Component {
         }
         return (
             <View style={styles.container}>
-                <UserInfo showHamburger={true} navigator={this.props.navigation}/>
+                <UserInfo showHamburger={true} navigator={this.props.navigation} fontLoaded={this.state.fontLoaded}/>
                 <UsersMap userLocation={this.state.location}
                           meetings={meetings}
                           getTapedLocation={(data) => this.setTapedCoordinates(data)}
@@ -113,7 +117,8 @@ const styles = StyleSheet.create({
         top: 120,
         right: 5,
         justifyContent: 'center',
-        padding: 15
+        padding: 15,
+        elevation: 1
     },
     map: {
         position: 'absolute',

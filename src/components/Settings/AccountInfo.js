@@ -8,7 +8,7 @@ import {
     KeyboardAvoidingView,
     Text, Picker, Slider, Switch
 } from "react-native";
-import {LinearGradient} from "expo";
+import {Font, LinearGradient} from "expo";
 import ConstKeys from '../../config/app.consts'
 import {getAllHobbies, getAllUserHobbies} from "../../services/hobby.service";
 import {matchResponseToUserInfo, updateUser} from "../../services/user.service";
@@ -31,10 +31,21 @@ export default class AccountInfo extends React.Component {
             },
             selectedValue: 1,
             switchState: ConstKeys.userInfo.gender !== 'male',
-            hobbies: []
+            hobbies: [],
+            fontLoaded: false,
+            valid: true,
         };
         this.getUserHobbies();
         this.getHobbies();
+    }
+
+    async componentDidMount() {
+        await Font.loadAsync({
+            'Courgette': require('../../../assets/fonts/Courgette-Regular.ttf'),
+            'Dosis': require('../../../assets/fonts/Dosis-Regular.ttf'),
+            'Gloria': require('../../../assets/fonts/GloriaHallelujah.ttf'),
+        });
+        this.setState({fontLoaded: true});
     }
 
     getHobbies = () => {
@@ -84,6 +95,8 @@ export default class AccountInfo extends React.Component {
                     this.props.navigation.navigate('homePage')
                 })
                 .catch(err => console.log(err));
+        } else {
+            this.setState({valid: false});
         }
     };
 
@@ -115,6 +128,36 @@ export default class AccountInfo extends React.Component {
     };
 
     render() {
+        let firstName = null;
+        let lastName = null;
+        let age = null;
+        let gender = null;
+        let chooseHobby = null;
+        let yourHobby = null;
+        let update = null;
+
+        if(this.state.fontLoaded){
+            firstName =  <Text style={styles.label}>
+                First Name:
+            </Text>;
+            lastName =  <Text style={styles.label}>
+                Last Name:
+            </Text>;
+            age =  <Text style={styles.label}>
+                Your age: {this.state.userInfo.age}
+            </Text>;
+            gender =   <Text style={styles.label}>
+                Your gender:
+            </Text>;
+            yourHobby = <Text style={styles.label}>
+                Your hobbies:
+            </Text>;
+            chooseHobby =  <Text style={styles.label}>
+                Choose hobby:
+            </Text>;
+            update = <Text style={styles.submitText}>UPDATE</Text>;
+        }
+
         let hobbies = this.state.hobbies.map(hobby => {
             return (
                 <Picker.Item key={hobby.id} label={hobby.name} value={hobby.name}/>
@@ -122,36 +165,30 @@ export default class AccountInfo extends React.Component {
         });
 
         return (
+            <LinearGradient colors={['#b22b7d', '#c6c0db']} locations={[0, 0.8]} style={styles.gradient}>
             <KeyboardAvoidingView behavior="padding" style={styles.container}>
-                <LinearGradient colors={['#7b258e', '#B39DDB']} style={styles.gradient} start={[0.2, 0]} end={[0.4, 1]}>
                     <ScrollView >
-                        <UserInfo navigator={this.props.navigation} showHamburger={false}/>
+                        <UserInfo navigator={this.props.navigation} showHamburger={false} fontLoaded={this.state.fontLoaded}/>
                         <View style={styles.scrollView}>
-                            <Text style={styles.label}>
-                                First Name:
-                            </Text>
+                            {firstName}
                             <TextInput
-                                style={styles.input}
+                                style={[styles.input, this.state.valid ? null: styles.inputInvalid]}
                                 placeholder="First name"
                                 placeholderTextColor="rgba(255,255,255,0.5)"
                                 autoCorrect={false}
                                 onChangeText={(value) => this.setFirstName(value)}
                                 defaultValue={this.state.userInfo.firstName}
                             />
-                            <Text style={styles.label}>
-                                Last Name:
-                            </Text>
+                            {lastName}
                             <TextInput
-                                style={styles.input}
+                                style={[styles.input, this.state.valid ? null: styles.inputInvalid]}
                                 placeholder="Last name"
                                 placeholderTextColor="rgba(255,255,255,0.5)"
                                 autoCorrect={false}
                                 onChangeText={(value) => this.setLastName(value)}
                                 defaultValue={this.state.userInfo.lastName}
                             />
-                            <Text style={styles.label}>
-                                Your age: {this.state.userInfo.age}
-                            </Text>
+                            {age}
                             <Slider value={this.state.userInfo.age}
                                     step={1}
                                     maximumValue={50}
@@ -160,9 +197,7 @@ export default class AccountInfo extends React.Component {
                                     minimumTrackTintColor='white'
                                     thumbTintColor={'white'}
                                     style={styles.slider}/>
-                            <Text style={styles.label}>
-                                Your gender:
-                            </Text>
+                            {gender}
                             <View style={styles.switchContainer}>
                                 <Ionicons name="md-male" size={23} color={"white"} style={styles.genderIcon}/>
                                 <Switch trackColor={{false: 'blue', true: 'red'}}
@@ -171,9 +206,7 @@ export default class AccountInfo extends React.Component {
                                         onValueChange={(value) => this.setGender(value)}/>
                                 <Ionicons name="md-female" size={23} color={"white"} style={styles.genderIcon}/>
                             </View>
-                            <Text style={styles.label}>
-                                Choose hobby:
-                            </Text>
+                            {chooseHobby}
                             <Picker
                                 selectedValue={this.state.selectedValue}
                                 prompt={"Choose hobby..."}
@@ -185,31 +218,28 @@ export default class AccountInfo extends React.Component {
                                 }}>
                                 {hobbies}
                             </Picker>
-                            <Text style={styles.label}>
-                                Your hobbies:
-                            </Text>
+                            {yourHobby}
                             <View style={styles.hobbyContainer}>
                                 {this.state.userInfo.userHobbies.map(hobby => {
                                     return (
-                                        <HobbyItem itemName={hobby} deleteHobby={(value) => this.deleteUserHobby(value)}/>
+                                        <HobbyItem itemName={hobby} deleteHobby={(value) => this.deleteUserHobby(value)} fontLoaded={this.state.fontLoaded}/>
                                     )})
                                 }
                             </View>
                             <TouchableOpacity style={styles.submitButton} onPress={() => this.updateUserInfo()}>
-                                <Text style={styles.submitText}>Update</Text>
+                                {update}
                             </TouchableOpacity>
                         </View>
                     </ScrollView>
-                </LinearGradient>
             </KeyboardAvoidingView>
+                </LinearGradient>
         );
     }
 }
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
-        backgroundColor: '#e2e2e2'
+        flex: 1
     },
     gradient: {
         position: 'absolute',
@@ -228,7 +258,8 @@ const styles = StyleSheet.create({
         padding: 5,
         paddingBottom: 0,
         color: 'white',
-        fontSize: 15
+        fontSize: 15,
+        fontFamily: 'Dosis'
     },
     picker: {
         marginTop: 15,
@@ -236,12 +267,14 @@ const styles = StyleSheet.create({
         height: 40,
         color: 'white',
         padding: 10,
-        width: '80%'
+        width: '80%',
+        elevation: 1,
     },
     input: {
         width: '80%',
-        borderRadius: 15,
-        backgroundColor: 'rgba(255,255,255,0.2)',
+        borderRadius: 5,
+        borderBottomWidth: 1,
+        borderBottomColor: 'white',
         height: 40,
         color: '#FFF',
         padding: 10
@@ -250,16 +283,18 @@ const styles = StyleSheet.create({
         backgroundColor: 'rgba(255,51,0,0.2)'
     },
     submitButton: {
-        borderRadius: 15,
+        borderRadius: 5,
         marginTop: 35,
-        backgroundColor: 'rgba(255,255,255,0.3)',
+        backgroundColor: 'rgba(255,255,255,0.4)',
+        elevation: 1,
         padding: 10,
-        width: '80%'
+        width: '80%',
     },
     submitText: {
         fontSize: 15,
-        color: 'white',
-        textAlign: 'center'
+        color: 'black',
+        textAlign: 'center',
+        letterSpacing: 2
     },
     hobbyContainer: {
         alignItems: 'center',

@@ -1,6 +1,14 @@
 import React from 'react';
-import {Image, KeyboardAvoidingView, ScrollView, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
-import LoginForm from './LoginForm'
+import {
+    Image,
+    KeyboardAvoidingView,
+    ScrollView,
+    StyleSheet,
+    Text,
+    TextInput,
+    TouchableOpacity,
+    View
+} from 'react-native';
 import {Font, LinearGradient} from 'expo';
 import ConstKeys from '../../config/app.consts'
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -11,6 +19,8 @@ export default class Login extends React.Component {
     async componentDidMount() {
         await Font.loadAsync({
             'Courgette': require('../../../assets/fonts/Courgette-Regular.ttf'),
+            'Dosis': require('../../../assets/fonts/Dosis-Regular.ttf'),
+            'Gloria': require('../../../assets/fonts/GloriaHallelujah.ttf'),
         });
         this.setState({fontLoaded: true});
     }
@@ -162,39 +172,33 @@ export default class Login extends React.Component {
         }
     };
 
-    renderFbLogin = () => {
-        return (
-            <TouchableOpacity style={styles.facebookBtn} onPress={this.logInFb}>
-                <Text style={styles.facebookQuestions}>
-                    Got?
-                </Text>
-                <Text style={styles.facebookTxt}>
-                    <Ionicons name="logo-facebook" size={30} color={"white"}/>
-                </Text>
-            </TouchableOpacity>
-        );
-    };
-
     render() {
         let title = null;
         let description = null;
+        let errorDuringUpload = null;
+        let informationalText = null;
+        let iconFB = null;
+        let login = null;
         if (this.state.fontLoaded) {
             title = <Text style={styles.title}> YouMeet </Text>;
             description = <Text style={styles.description}>Meet new people in entertaining places</Text>;
-        }
-        let errorDuringUpload = this.state.errorDuringLog ? (
-            <Text style={styles.errorMessage}> There was an error during loging.
-            </Text>
-        ) : null;
-        let informationalText = this.props.navigation.getParam('regInfo') === true ? (
-            <Text style={styles.infoMessage}> You have successfully registered!
-            </Text>
-        ) : null;
-        return (
-            <KeyboardAvoidingView behavior="padding" style={styles.container}>
+            errorDuringUpload = this.state.errorDuringLog ? (
+                <Text style={styles.errorMessage}> There was an error during loging.
+                </Text>
+            ) : null;
+            informationalText = this.props.navigation.getParam('regInfo') === true ? (
+                <Text style={styles.infoMessage}> You have successfully registered!
+                </Text>
+            ) : null;
+            iconFB = <Text style={styles.facebookTxt}>
+                <Ionicons name="logo-facebook" size={30} color={"white"}/>
+            </Text>;
+            login = <Text style={styles.buttonText}>LOGIN</Text>;
 
-                <LinearGradient colors={['#7b258e', '#B39DDB', '#3b2281']} style={styles.gradient}
-                                locations={[0, 0.4, 1]} start={[0.2, 0]} end={[0.8, 1.2]}>
+        }
+        return (
+            <LinearGradient colors={['#b22b7d', '#c6c0db']} locations={[0, 0.8]} style={styles.gradient}>
+                <KeyboardAvoidingView behavior="padding" style={styles.container}>
                     <ScrollView>
                         <View style={styles.logoContainer}>
                             {errorDuringUpload}
@@ -202,29 +206,47 @@ export default class Login extends React.Component {
                             <Image style={styles.logo} source={require('../../../assets/images/logo.gif')}/>
                             {title}
                             {description}
-                            <LoginForm loginAction={this.login} getEmail={(data) => {
-                                this.setState({errorDuringLog: false});
-                                this.setState({email: data})
-                            }}
-                                       getPassword={(data) => {
-                                           this.setState({password: data});
-                                           this.setState({errorDuringLog: false})
-                                       }}
-                            />
-                            {this.renderFbLogin()}
+                            <View style={styles.loginContainer}>
+                                <TextInput style={styles.input}
+                                           placeholder="Email"
+                                           placeholderTextColor="rgba(255,255,255,0.5)"
+                                           onSubmitEditing={() => this.passwordInput.focus()}
+                                           keyboardType="email-address"
+                                           autoCapitalize="none"
+                                           autoCorrect={false}
+                                           onChangeText={(email) => {
+                                               this.setState({errorDuringLog: false});
+                                               this.setState({email: email})
+                                           }}
+                                />
+
+                                <TextInput style={styles.input}
+                                           placeholder="Password"
+                                           secureTextEntry
+                                           placeholderTextColor="rgba(255,255,255,0.5)"
+                                           ref={(input) => this.passwordInput = input}
+                                           onChangeText={(password) => {
+                                               this.setState({errorDuringLog: false});
+                                               this.setState({email: password})
+                                           }}
+                                />
+                                <TouchableOpacity style={styles.buttonContainer} onPress={() => this.login()}>
+                                    {login}
+                                </TouchableOpacity>
+                            </View>
+                            <TouchableOpacity style={styles.facebookBtn} onPress={this.logInFb}>
+                                {iconFB}
+                            </TouchableOpacity>
                         </View>
                     </ScrollView>
-                </LinearGradient>
-
-            </KeyboardAvoidingView>
-
+                </KeyboardAvoidingView>
+            </LinearGradient>
         );
     }
 }
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#ba68c8',
     },
     gradient: {
         position: 'absolute',
@@ -237,52 +259,35 @@ const styles = StyleSheet.create({
         marginTop: 20,
         alignItems: 'center',
         flexGrow: 1,
-        justifyContent: 'center'
+        justifyContent: 'center',
     },
     logo: {
         width: 200,
-        height: 200
+        height: 200,
     },
     title: {
         marginTop: 5,
         fontSize: 20,
         color: '#FFF',
-        fontFamily: 'Courgette'
+        fontFamily: 'Gloria'
     },
     description: {
         marginTop: 5,
-        fontSize: 10,
-        fontFamily: 'Courgette'
-    },
-    registerBtn: {
-        borderRadius: 15,
-        marginTop: 15,
-        backgroundColor: 'rgba(255,255,255,0.3)',
-        padding: 10,
-        width: 120
-    },
-    registerText: {
-        fontSize: 10,
-        color: 'white',
-        textAlign: 'center'
-    },
-    footer: {
-        color: 'white',
-        fontSize: 10,
-        padding: 10,
-        position: 'absolute',
-        bottom: 0
+        fontSize: 12,
+        fontFamily: 'Gloria'
     },
     facebookBtn: {
         flexDirection: 'row',
-        padding: 10,
-        borderRadius: 10,
+        paddingHorizontal: 40,
+        borderRadius: 5,
         backgroundColor: '#3B5998',
-        opacity: 0.9
+        opacity: 0.9,
+        elevation: 1
     },
     facebookTxt: {
         color: '#FFF',
-        padding: 5
+        padding: 5,
+        fontFamily: 'Dosis'
     },
     errorMessage: {
         backgroundColor: 'rgba(255,51,0,0.1)',
@@ -290,22 +295,49 @@ const styles = StyleSheet.create({
         color: 'rgba(255,77,77,0.9)',
         fontSize: 15,
         padding: 15,
-        marginTop: 25
+        marginTop: 25,
+        fontFamily: 'Dosis'
     },
     infoMessage: {
-        backgroundColor: '#7b258e',
+        backgroundColor: '#b22b7d',
         opacity: 0.3,
         borderRadius: 10,
         color: 'rgba(255,255,255,1)',
         fontSize: 15,
         padding: 15,
-        marginTop: 25
+        marginTop: 25,
+        fontFamily: 'Dosis'
     },
     facebookQuestions: {
         padding: 5,
-        backgroundColor: '#3B5998',
         color: 'white',
         fontSize: 20,
-        fontWeight: '600'
+        fontFamily: 'Dosis'
+    },
+    loginContainer: {
+        padding: 20,
+        width: '80%'
+    },
+    input: {
+        marginTop: 15,
+        borderRadius: 15,
+        borderBottomWidth: 1,
+        borderBottomColor: 'white',
+        height: 40,
+        color: '#FFF',
+        padding: 10,
+    },
+    buttonContainer: {
+        borderRadius: 5,
+        marginTop: 15,
+        backgroundColor: 'rgba(255,255,255,0.4)',
+        paddingVertical: 15,
+        elevation: 1
+    },
+    buttonText: {
+        color: 'black',
+        textAlign: 'center',
+        fontFamily: 'Dosis',
+        letterSpacing: 3
     }
 });

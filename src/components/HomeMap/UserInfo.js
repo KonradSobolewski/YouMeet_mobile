@@ -6,15 +6,19 @@ import humburger from '../../../assets/images/humburger.png'
 import {LinearGradient} from "expo";
 
 const userInfo = props => {
+    let info = null;
+    if(props.fontLoaded) {
+        info =  <Text style={styles.userNick}>
+            {ConstKeys.userInfo.name}, {ConstKeys.userInfo.age}
+        </Text>;
+    }
     return (
         <View style={styles.userView}>
-            <LinearGradient colors={['#ebc0fd', '#d9ded8']} style={styles.gradient}>
+            <LinearGradient colors={['#ffffff', '#d9ded8']} style={styles.gradient}>
                 { props.showHamburger ? (<TouchableOpacity style={styles.humburgerContainer} onPress={() => props.navigator.toggleDrawer()}>
                     <Image source={humburger} style={styles.humburger}/>
                 </TouchableOpacity>) : (null) }
-                <Text style={styles.userNick}>
-                    {ConstKeys.userInfo.name}, {ConstKeys.userInfo.age}
-                </Text>
+                {info}
                 {ConstKeys.userInfo.photo ? (
                     <Image source={{uri: ConstKeys.userInfo.photo}} style={styles.userIcon}/>) : (
                     <Image source={userIcon} style={styles.userIcon}/>)
@@ -65,5 +69,6 @@ const styles = StyleSheet.create({
         width: 'auto',
         marginBottom: 20,
         fontSize: 20,
+        fontFamily: 'Dosis'
     }
 });

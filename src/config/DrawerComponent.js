@@ -12,7 +12,7 @@ import {Container, Content, Icon, Header, Body} from 'native-base';
 const CustomDrawerContentComponent = (props) => (
     <Container>
         <Header style={styles.drawerHeader}>
-            <LinearGradient colors={['#fbc2eb', '#a18cd1']} style={styles.gradient}
+            <LinearGradient colors={['#ffffff', '#b22b7d']} style={styles.gradient}
                             locations={[0, 1]} start={[0.2, 0]} end={[0.8, 1.2]}>
                 <Body>
                 <Image
@@ -24,7 +24,6 @@ const CustomDrawerContentComponent = (props) => (
         <Content>
             <DrawerItems {...props} />
         </Content>
-
     </Container>
 );
 
@@ -37,7 +36,7 @@ const styles = StyleSheet.create({
         left: 0,
         right: 0,
         top: 0,
-        height: '100%',
+        height: '100%',justifyContent: 'center', alignItems: 'center',
     },
     drawerImage: {
         paddingTop: 60,

@@ -10,7 +10,7 @@ import {
     View,
     ScrollView, Slider, Switch
 } from 'react-native';
-import {LinearGradient} from 'expo';
+import {Font, LinearGradient} from 'expo';
 import ConstKeys from '../../config/app.consts'
 import {validateEmail, validateLength} from "../../services/string.service";
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -29,7 +29,17 @@ export default class App extends React.Component {
         age: 18,
         gender: 'male',
         switchState: false,
+        fontLoaded: false
     };
+
+    async componentDidMount() {
+        await Font.loadAsync({
+            'Courgette': require('../../../assets/fonts/Courgette-Regular.ttf'),
+            'Dosis': require('../../../assets/fonts/Dosis-Regular.ttf'),
+            'Gloria': require('../../../assets/fonts/GloriaHallelujah.ttf'),
+        });
+        this.setState({fontLoaded: true});
+    }
 
     updateState = (key, value) => {
         let result = validateLength(value);
@@ -103,10 +113,22 @@ export default class App extends React.Component {
     };
 
     render() {
+        let age = null;
+        let gender = null;
+        let register = null;
+        if(this.state.fontLoaded) {
+            age = <Text style={styles.label}>
+                Your age: {this.state.age}
+            </Text>;
+            gender = <Text style={styles.genderLabel}>
+                Gender:
+            </Text>;
+            register = <Text style={styles.registerText}>REGISTER</Text>;
+        }
         return (
-            <KeyboardAvoidingView behavior="padding" style={styles.container}>
-                <LinearGradient colors={['#7b258e', '#B39DDB', '#3b2281']} style={styles.gradient}
-                                locations={[0, 0.4, 1]} start={[0.2, 0]} end={[0.8, 1.2]}>
+            <LinearGradient colors={['#b22b7d', '#c6c0db']} locations={[0, 0.8]} style={styles.gradient}>
+                <KeyboardAvoidingView behavior="padding" style={styles.container}>
+
                     <ScrollView contentContainerStyle={styles.scrollView}>
                         <View style={styles.fieldsContainer}>
                             <Image style={styles.logo} source={require('../../../assets/images/logo.gif')}/>
@@ -147,9 +169,7 @@ export default class App extends React.Component {
                                 ref={(input) => this.passwordInput = input}
                                 onChangeText={(value) => this.updateState('password', value)}
                             />
-                            <Text style={styles.label}>
-                                Your age: {this.state.age}
-                            </Text>
+                            {age}
                             <Slider value={this.state.age}
                                     step={1}
                                     maximumValue={50}
@@ -159,9 +179,7 @@ export default class App extends React.Component {
                                     thumbTintColor={'white'}
                                     style={styles.slider}/>
                             <View style={styles.switchContainer}>
-                                <Text style={styles.genderLabel}>
-                                    Gender:
-                                </Text>
+                                {gender}
                                 <Ionicons name="md-male" size={23} color={"white"} style={styles.genderIcon}/>
                                 <Switch trackColor={{false: 'blue', true: 'red'}}
                                         thumbColor={'white'}
@@ -171,12 +189,12 @@ export default class App extends React.Component {
                             </View>
                             <TouchableOpacity style={styles.registerBtn} onPress={this.register}
                                               disabled={!(this.areFieldsValid && this.state.isTouched)}>
-                                <Text style={styles.registerText}>Register</Text>
+                                {register}
                             </TouchableOpacity>
                         </View>
                     </ScrollView>
-                </LinearGradient>
-            </KeyboardAvoidingView>
+                </KeyboardAvoidingView>
+            </LinearGradient>
         );
     }
 }
@@ -192,7 +210,7 @@ const styles = StyleSheet.create({
         alignItems: 'center'
     },
     fieldsContainer: {
-        margin: 20,
+        margin: 5,
         width: '80%',
         alignItems: 'center'
     },
@@ -202,27 +220,31 @@ const styles = StyleSheet.create({
     },
     input: {
         width: '80%',
-        marginTop: 15,
+        marginTop: 12,
         borderRadius: 15,
-        backgroundColor: 'rgba(255,255,255,0.2)',
+        borderBottomWidth: 1,
+        borderBottomColor: 'white',
         height: 40,
         color: '#FFF',
-        padding: 10
+        padding: 10,
     },
     inputInvalid: {
         backgroundColor: 'rgba(255,51,0,0.2)'
     },
     registerBtn: {
-        borderRadius: 15,
+        borderRadius: 5,
         marginTop: 15,
-        backgroundColor: 'rgba(255,255,255,0.3)',
-        padding: 10,
+        backgroundColor: 'rgba(255,255,255,0.4)',
+        padding: 15,
+        elevation: 1,
         width: '80%'
     },
     registerText: {
         fontSize: 15,
-        color: 'white',
-        textAlign: 'center'
+        color: 'black',
+        textAlign: 'center',
+        fontFamily: 'Dosis',
+        letterSpacing: 3
     },
     slider: {
         width: '80%',
@@ -234,19 +256,21 @@ const styles = StyleSheet.create({
         padding: 5,
     },
     genderIcon: {
-        padding: 10
+        padding: 10,
     },
     label: {
         marginTop: 5,
         padding: 5,
         paddingBottom: 0,
         color: 'white',
-        fontSize: 15
+        fontSize: 15,
+        fontFamily: 'Dosis',
     },
     genderLabel: {
         padding: 5,
         color: 'white',
         fontSize: 15,
-        marginRight: 10
+        marginRight: 10,
+        fontFamily: 'Dosis',
     }
 });

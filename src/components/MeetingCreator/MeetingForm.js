@@ -11,7 +11,7 @@ import {
     KeyboardAvoidingView,
     CheckBox
 } from 'react-native';
-import {LinearGradient} from "expo";
+import {Font, LinearGradient} from "expo";
 import {signOut} from '../../services/user.service';
 import DoubleClick from 'react-native-double-click';
 import {createMeeting} from "../../services/meeting.service";
@@ -29,8 +29,18 @@ export default class MeetingForm extends React.Component {
             isOneToOne: true,
             category: 1,
             place: props.navigation.getParam('place'),
+            fontLoaded: false,
         };
         this.getAllCategories();
+    }
+
+    async componentDidMount() {
+        await Font.loadAsync({
+            'Courgette': require('../../../assets/fonts/Courgette-Regular.ttf'),
+            'Dosis': require('../../../assets/fonts/Dosis-Regular.ttf'),
+            'Gloria': require('../../../assets/fonts/GloriaHallelujah.ttf'),
+        });
+        this.setState({fontLoaded: true});
     }
 
     getAllCategories = () => {
@@ -57,8 +67,7 @@ export default class MeetingForm extends React.Component {
         }
         return (
             <View style={styles.wrapper}>
-                <LinearGradient colors={['#ebc0fd', '#d9ded8']} style={styles.gradient}
-                                locations={[0, 1]} start={[0.2, 0]} end={[0.8, 1.2]}>
+                <LinearGradient colors={['#b22b7d', '#c6c0db']} locations={[0, 0.8]} style={styles.gradient}>
                     <View style={styles.container}>
                         <DoubleClick onClick={() => this.props.navigation.navigate('meetingForm')}>
                             <Image style={styles.hand} source={require('../../../assets/images/meetingPerson.png')}/>

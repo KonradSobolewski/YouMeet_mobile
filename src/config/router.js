@@ -46,7 +46,7 @@ export const createRootNavigator = (signedIn = false, data) => {
                             showLabel: true, // hide labels
                             showIcon: true,
                             style: {
-                                backgroundColor: '#7b258e' // TabBar background
+                                backgroundColor: '#B22B7D' // TabBar background
                             }
                         }
                     }
