@@ -40,7 +40,7 @@ export default class Settings extends React.Component {
             </Text>;
         }
         return (
-            <LinearGradient colors={['#b22b7d', '#ffffff']} locations={[0, 0.8]} style={styles.gradient}>
+            <LinearGradient colors={['#b22b7d', '#ddb6ca']} locations={[0, 0.8]} style={styles.gradient}>
                 <KeyboardAvoidingView behavior="padding" style={styles.container}>
                     <ScrollView>
                         <UserInfo showHamburger={true} navigator={this.props.navigation} fontLoaded={this.state.fontLoaded}/>
@@ -80,6 +80,7 @@ const styles = StyleSheet.create({
     area: {
         backgroundColor: 'rgba(255,255,255,0.2)',
         borderRadius: 10,
+        marginTop: 130,
         margin: 20,
         padding: 20,
         justifyContent: 'center', alignItems: 'center',elevation: 1
@@ -93,17 +94,23 @@ const styles = StyleSheet.create({
         fontSize: 20,
         fontFamily: 'Dosis',
         color: 'white',
-        letterSpacing: 1
+        letterSpacing: 1,
+        textShadowColor: 'rgba(0, 0, 0, 0.4)',
+        textShadowOffset: {width: 0, height: 1},
+        textShadowRadius: 5
     },
     icon: {
         alignSelf: 'center',
+        textShadowColor: 'rgba(0, 0, 0, 0.4)',
+        textShadowOffset: {width: 0, height: 1},
+        textShadowRadius: 5
     },
     footer: {
         padding: 10,
         position: 'absolute', left: 0, right: 0, bottom: 0,  justifyContent: 'center', alignItems: 'center',
     },
     footerTxt: {
-        color: 'black',
+        color: 'white',
         fontFamily: 'Dosis',
         fontSize: 13,
     },

@@ -14,33 +14,37 @@ const usersMap = props => {
     if (props.userLocation) {
         userLocationMarker = ConstKeys.userInfo.photo ?
             (<MapView.Marker coordinate={props.userLocation}>
-                <Image source={{uri: ConstKeys.userInfo.photo }} style={styles.userIcon}/>
+                <Image source={{uri: ConstKeys.userInfo.photo}} style={styles.userIcon}/>
             </MapView.Marker>)
             :
             (<MapView.Marker coordinate={props.userLocation}>
                 <Image source={userIcon} style={styles.userIcon}/>
             </MapView.Marker>);
     }
-    if(props.meetings) {
-      meetingPlaces = props.meetings.map( meeting =>{
-          return (
-          <MapView.Marker key={meeting.meeting_id}
-            coordinate={{latitude: parseFloat(meeting.place_latitude), longitude: parseFloat(meeting.place_longitude)}}
-          >
-              <Image source={markerImage} style={styles.markerIcon}/>
-          </MapView.Marker>
-        )
-      });
+    if (props.meetings) {
+        meetingPlaces = props.meetings.map(meeting => {
+            return (
+                <MapView.Marker key={meeting.meeting_id}
+                                coordinate={{
+                                    latitude: parseFloat(meeting.place_latitude),
+                                    longitude: parseFloat(meeting.place_longitude)
+                                }}
+                >
+                    <Image source={markerImage} style={styles.markerIcon}/>
+                </MapView.Marker>
+            )
+        });
     }
     if (props.chosenPlace) {
         chosenPlaceMarker = <MapView.Marker coordinate={props.chosenPlace.coordinate}>
             <Image source={markerImage} style={styles.markerIcon}/>
-            <MapView.Callout tooltip onPress={() => props.navigator.navigate('createMeeting' ,{place: props.chosenPlace})}>
+            <MapView.Callout tooltip
+                             onPress={() => props.navigator.navigate('createMeeting', {place: props.chosenPlace})}>
                 <View style={styles.toolTip}>
                     <Text style={styles.toolTipText}>
                         {props.chosenPlace.name}
                     </Text>
-                    <TouchableOpacity style={styles.toolTipButton} >
+                    <TouchableOpacity style={styles.toolTipButton}>
                         <Text style={styles.submitText}>ACCEPT</Text>
                     </TouchableOpacity>
                 </View>
@@ -50,10 +54,11 @@ const usersMap = props => {
     }
     return (
         <View style={styles.mapContainer}>
-            <MapView region={props.userLocation} style={styles.map} customMapStyle={mapStyle} showsBuildings showsCompass
-                     // onPress={(e) => {
-                     //     props.getTapedLocation(e.nativeEvent.coordinate);
-                     // }}
+            <MapView region={props.userLocation} style={styles.map} customMapStyle={mapStyle} showsBuildings
+                     showsCompass
+                // onPress={(e) => {
+                //     props.getTapedLocation(e.nativeEvent.coordinate);
+                // }}
                      onPoiClick={(e) => props.getPickedPoi(e.nativeEvent)}>
                 {userLocationMarker}
                 {chosenPlaceMarker}
@@ -82,8 +87,8 @@ const styles = StyleSheet.create({
     markerIcon: {
         width: 50, height: 50
     },
-    toolTip:{
-        flex:1,
+    toolTip: {
+        flex: 1,
         backgroundColor: 'rgba(255,255,255,0.9)',
         padding: 15,
         marginBottom: 5,
@@ -92,7 +97,7 @@ const styles = StyleSheet.create({
         alignItems: 'center'
     },
     toolTipText: {
-        flex :1,
+        flex: 1,
         marginBottom: 15,
         flexWrap: 'wrap',
         textAlign: 'center'
@@ -101,7 +106,7 @@ const styles = StyleSheet.create({
         color: 'white',
     },
     toolTipButton: {
-        backgroundColor: '#BA68C8',
+        backgroundColor: '#B22B7D',
         alignItems: 'center',
         width: 120,
         padding: 5,

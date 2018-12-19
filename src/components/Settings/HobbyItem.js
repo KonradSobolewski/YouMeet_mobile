@@ -31,7 +31,8 @@ const styles = StyleSheet.create({
         padding: 5,
         flexDirection: 'row',
         alignSelf: 'flex-start',
-        elevation: 1
+        elevation: 1,
+        fontFamily: 'Cabin'
     },
     text: {
         fontSize: 12,

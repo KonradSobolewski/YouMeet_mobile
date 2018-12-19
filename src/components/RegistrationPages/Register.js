@@ -37,6 +37,7 @@ export default class App extends React.Component {
             'Courgette': require('../../../assets/fonts/Courgette-Regular.ttf'),
             'Dosis': require('../../../assets/fonts/Dosis-Regular.ttf'),
             'Gloria': require('../../../assets/fonts/GloriaHallelujah.ttf'),
+            'Cabin': require('../../../assets/fonts/Cabin-Regular.ttf'),
         });
         this.setState({fontLoaded: true});
     }
@@ -116,7 +117,7 @@ export default class App extends React.Component {
         let age = null;
         let gender = null;
         let register = null;
-        if(this.state.fontLoaded) {
+        if (this.state.fontLoaded) {
             age = <Text style={styles.label}>
                 Your age: {this.state.age}
             </Text>;
@@ -126,7 +127,7 @@ export default class App extends React.Component {
             register = <Text style={styles.registerText}>REGISTER</Text>;
         }
         return (
-            <LinearGradient colors={['#b22b7d', '#c6c0db']} locations={[0, 0.8]} style={styles.gradient}>
+            <LinearGradient colors={['#b22b7d', '#ddb6ca']} locations={[0, 0.8]} style={styles.gradient}>
                 <KeyboardAvoidingView behavior="padding" style={styles.container}>
 
                     <ScrollView contentContainerStyle={styles.scrollView}>
@@ -234,16 +235,16 @@ const styles = StyleSheet.create({
     registerBtn: {
         borderRadius: 5,
         marginTop: 15,
-        backgroundColor: 'rgba(255,255,255,0.4)',
+        backgroundColor: 'white',
         padding: 15,
-        elevation: 1,
+        elevation: 2,
         width: '80%'
     },
     registerText: {
         fontSize: 15,
         color: 'black',
         textAlign: 'center',
-        fontFamily: 'Dosis',
+        fontFamily: 'Cabin',
         letterSpacing: 3
     },
     slider: {
@@ -264,13 +265,13 @@ const styles = StyleSheet.create({
         paddingBottom: 0,
         color: 'white',
         fontSize: 15,
-        fontFamily: 'Dosis',
+        fontFamily: 'Cabin',
     },
     genderLabel: {
         padding: 5,
         color: 'white',
         fontSize: 15,
         marginRight: 10,
-        fontFamily: 'Dosis',
+        fontFamily: 'Cabin',
     }
 });

@@ -7,23 +7,24 @@ import {LinearGradient} from "expo";
 
 const userInfo = props => {
     let info = null;
-    if(props.fontLoaded) {
-        info =  <Text style={styles.userNick}>
+    if (props.fontLoaded) {
+        info = <Text style={styles.userNick}>
             {ConstKeys.userInfo.name}, {ConstKeys.userInfo.age}
         </Text>;
     }
     return (
         <View style={styles.userView}>
-            <LinearGradient colors={['#ffffff', '#d9ded8']} style={styles.gradient}>
-                { props.showHamburger ? (<TouchableOpacity style={styles.humburgerContainer} onPress={() => props.navigator.toggleDrawer()}>
-                    <Image source={humburger} style={styles.humburger}/>
-                </TouchableOpacity>) : (null) }
+            <View style={styles.container}>
+                {props.showHamburger ? (
+                    <TouchableOpacity style={styles.humburgerContainer} onPress={() => props.navigator.toggleDrawer()}>
+                        <Image source={humburger} style={styles.humburger}/>
+                    </TouchableOpacity>) : (null)}
                 {info}
-                {ConstKeys.userInfo.photo ? (
-                    <Image source={{uri: ConstKeys.userInfo.photo}} style={styles.userIcon}/>) : (
-                    <Image source={userIcon} style={styles.userIcon}/>)
-                }
-            </LinearGradient>
+            </View>
+            {ConstKeys.userInfo.photo ? (
+                <Image source={{uri: ConstKeys.userInfo.photo}} style={styles.userIcon}/>) : (
+                <Image source={userIcon} style={styles.userIcon}/>)
+            }
         </View>
     );
 };
@@ -32,17 +33,24 @@ export default userInfo;
 
 const styles = StyleSheet.create({
     userView: {
-        height: 110
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        right: 0,
+        height: 80,
+        zIndex: 1,
+        elevation: 1
     },
-    gradient: {
+    container: {
         position: 'absolute',
         left: 0,
         right: 0,
         top: 0,
-        height: 110,
+        height: 80,
+        borderBottomWidth: 2,
+        borderBottomColor: 'white',
         width: '100%',
-        alignItems: 'flex-end',
-        flexDirection: 'row',
+        backgroundColor: '#B22B7D',
     },
     humburgerContainer: {
         position: 'absolute', top: 0, left: 0
@@ -51,24 +59,27 @@ const styles = StyleSheet.create({
         padding: 10,
         margin: 10,
         width: 40, height: 40,
+        tintColor: 'white'
     },
     userIcon: {
+        zIndex: 2,
+        position: 'absolute',
+        top: 43,
+        right: 20,
         padding: 10,
-        margin: 10,
-        marginRight: 15,
-        marginBottom: 20,
-        width: 60, height: 60, borderRadius: 30,
-        marginLeft: 'auto',
+        width: 70, height: 70, borderRadius: 35,
         borderWidth: 2,
         borderColor: 'white'
     },
     userNick: {
-        flex:1,
-        padding: 10,
-        textAlign: 'right',
-        width: 'auto',
-        marginBottom: 20,
+        top: 45,
+        right: 110,
+        position: 'absolute',
         fontSize: 20,
-        fontFamily: 'Dosis'
+        fontFamily: 'Cabin',
+        color: 'white',
+        textShadowColor: 'rgba(0, 0, 0, 0.4)',
+        textShadowOffset: {width: 0, height: 1},
+        textShadowRadius: 5
     }
 });

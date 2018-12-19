@@ -67,7 +67,7 @@ export default class MeetingForm extends React.Component {
         }
         return (
             <View style={styles.wrapper}>
-                <LinearGradient colors={['#b22b7d', '#c6c0db']} locations={[0, 0.8]} style={styles.gradient}>
+                <LinearGradient colors={['#b22b7d', '#ddb6ca']} locations={[0, 0.8]} style={styles.gradient}>
                     <View style={styles.container}>
                         <DoubleClick onClick={() => this.props.navigation.navigate('meetingForm')}>
                             <Image style={styles.hand} source={require('../../../assets/images/meetingPerson.png')}/>
@@ -123,25 +123,30 @@ const styles = StyleSheet.create({
         justifyContent: 'center'
     },
     buttonContainer: {
-        borderRadius: 15,
-        borderColor: 'black',
-        marginTop: 60,
-        backgroundColor: 'rgba(255,255,255,0.5)',
-        padding: 15
+        borderRadius: 5,
+        marginTop: 15,
+        backgroundColor: '#FFF',
+        paddingVertical: 15,
+        elevation: 2,
+        width: '80%'
     },
     buttonText: {
         color: 'black',
         textAlign: 'center',
-        fontFamily: 'Courgette'
+        fontFamily: 'Courgette',
     },
     hand: {
         width: 50,
-        height: 50
+        height: 50,
+        tintColor: 'white'
     },
     goodByeText: {
         marginTop: 5,
         fontSize: 20,
-        color: 'black',
+        color: 'white',
+        textShadowColor: 'rgba(0, 0, 0, 0.4)',
+        textShadowOffset: {width: 0, height: 1},
+        textShadowRadius: 5,
         fontFamily: 'Courgette'
     },
 
@@ -158,10 +163,10 @@ const styles = StyleSheet.create({
     input: {
         fontSize: 15,
         marginTop: 15,
-        borderRadius: 15,
+        borderRadius: 5,
         backgroundColor: 'rgba(255,255,255,0.2)',
         height: 40,
-        color: 'black',
+        color: 'white',
         padding: 10,
         width: '80%',
         textAlign: 'center'
@@ -171,7 +176,7 @@ const styles = StyleSheet.create({
         borderRadius: 15,
         backgroundColor: 'rgba(255,255,255,0.2)',
         height: 40,
-        color: 'black',
+        color: 'white',
         padding: 10,
         width: '80%'
     },
@@ -190,13 +195,19 @@ const styles = StyleSheet.create({
     textStyle: {
         marginTop: 35,
         fontSize: 20,
-        color: 'black',
+        color: 'white',
+        textShadowColor: 'rgba(0, 0, 0, 0.4)',
+        textShadowOffset: {width: 0, height: 1},
+        textShadowRadius: 5,
         fontFamily: 'Courgette'
     },
     place: {
         marginTop: 30,
         fontSize: 25,
-        color: 'black',
+        color: 'white',
+        textShadowColor: 'rgba(0, 0, 0, 0.4)',
+        textShadowOffset: {width: 0, height: 1},
+        textShadowRadius: 5,
         fontFamily: 'Courgette'
     }
 });

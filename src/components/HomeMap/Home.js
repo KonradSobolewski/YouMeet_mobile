@@ -35,6 +35,7 @@ export default class Home extends React.Component {
             'Courgette': require('../../../assets/fonts/Courgette-Regular.ttf'),
             'Dosis': require('../../../assets/fonts/Dosis-Regular.ttf'),
             'Gloria': require('../../../assets/fonts/GloriaHallelujah.ttf'),
+            'Cabin': require('../../../assets/fonts/Cabin-Regular.ttf'),
         });
         this.setState({fontLoaded: true});
         this.getUserLocationHandler();
@@ -91,7 +92,6 @@ export default class Home extends React.Component {
         }
         return (
             <View style={styles.container}>
-                <UserInfo showHamburger={true} navigator={this.props.navigation} fontLoaded={this.state.fontLoaded}/>
                 <UsersMap userLocation={this.state.location}
                           meetings={meetings}
                           getTapedLocation={(data) => this.setTapedCoordinates(data)}
@@ -99,9 +99,9 @@ export default class Home extends React.Component {
                           getPickedPoi={(data) => this.getPickedPoi(data)}
                           navigator={this.props.navigation}
                           style={styles.map}/>
-
+                <UserInfo showHamburger={true} navigator={this.props.navigation} fontLoaded={this.state.fontLoaded}/>
                 <TouchableOpacity style={styles.buttonContainer} onPress={this.getUserLocationHandler}>
-                    <Ionicons name="md-locate" size={40} color={'white'}/>
+                    <Ionicons name="md-locate" size={40} color={'white'} style={styles.icon}/>
                 </TouchableOpacity>
             </View>
         );
@@ -114,14 +114,18 @@ const styles = StyleSheet.create({
     },
     buttonContainer: {
         position: 'absolute',
-        top: 120,
+        bottom: 20,
         right: 5,
         justifyContent: 'center',
         padding: 15,
         elevation: 1
     },
     map: {
-        position: 'absolute',
-        bottom: 0
+        height: '100%'
+    },
+    icon: {
+        textShadowColor: 'rgba(0, 0, 0, 0.4)',
+        textShadowOffset: {width: 0, height: 1},
+        textShadowRadius: 5
     }
 });

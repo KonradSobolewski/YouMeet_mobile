@@ -23,7 +23,7 @@ export default class SignOut extends React.Component {
         }
         return (
             <View style={styles.wrapper}>
-                <LinearGradient colors={['#b22b7d', '#c6c0db']} locations={[0, 0.8]} style={styles.gradient}>
+                <LinearGradient colors={['#b22b7d', '#FFF']} locations={[0, 0.8]} style={styles.gradient}>
                     <View style={styles.container}>
                         <DoubleClick onClick={() => signOut(this.props.navigation)}>
                             <Image style={styles.hand} source={require('../../../assets/images/byebye.png')}/>

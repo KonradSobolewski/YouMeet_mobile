@@ -29,7 +29,7 @@ export default class MeetingScreen extends React.Component {
         }
         return (
             <View style={styles.wrapper}>
-                <LinearGradient colors={['#b22b7d', '#c6c0db']} locations={[0, 0.8]} style={styles.gradient}>
+                <LinearGradient colors={['#b22b7d', '#ddb6ca']} locations={[0, 0.8]} style={styles.gradient}>
                     <View style={styles.container}>
                         {aboveImageText}
                         <DoubleClickLogo style={{width: 250, height: 250}}

@@ -44,6 +44,7 @@ export default class AccountInfo extends React.Component {
             'Courgette': require('../../../assets/fonts/Courgette-Regular.ttf'),
             'Dosis': require('../../../assets/fonts/Dosis-Regular.ttf'),
             'Gloria': require('../../../assets/fonts/GloriaHallelujah.ttf'),
+            'Cabin': require('../../../assets/fonts/Cabin-Regular.ttf'),
         });
         this.setState({fontLoaded: true});
     }
@@ -136,23 +137,23 @@ export default class AccountInfo extends React.Component {
         let yourHobby = null;
         let update = null;
 
-        if(this.state.fontLoaded){
-            firstName =  <Text style={styles.label}>
+        if (this.state.fontLoaded) {
+            firstName = <Text style={styles.label}>
                 First Name:
             </Text>;
-            lastName =  <Text style={styles.label}>
+            lastName = <Text style={styles.label}>
                 Last Name:
             </Text>;
-            age =  <Text style={styles.label}>
+            age = <Text style={styles.label}>
                 Your age: {this.state.userInfo.age}
             </Text>;
-            gender =   <Text style={styles.label}>
+            gender = <Text style={styles.label}>
                 Your gender:
             </Text>;
             yourHobby = <Text style={styles.label}>
                 Your hobbies:
             </Text>;
-            chooseHobby =  <Text style={styles.label}>
+            chooseHobby = <Text style={styles.label}>
                 Choose hobby:
             </Text>;
             update = <Text style={styles.submitText}>UPDATE</Text>;
@@ -165,14 +166,14 @@ export default class AccountInfo extends React.Component {
         });
 
         return (
-            <LinearGradient colors={['#b22b7d', '#c6c0db']} locations={[0, 0.8]} style={styles.gradient}>
-            <KeyboardAvoidingView behavior="padding" style={styles.container}>
-                    <ScrollView >
-                        <UserInfo navigator={this.props.navigation} showHamburger={false} fontLoaded={this.state.fontLoaded}/>
+            <LinearGradient colors={['#b22b7d', '#ddb6ca']} locations={[0, 0.8]} style={styles.gradient}>
+                <UserInfo navigator={this.props.navigation} showHamburger={false} fontLoaded={this.state.fontLoaded}/>
+                <KeyboardAvoidingView behavior="padding" style={styles.container}>
+                    <ScrollView>
                         <View style={styles.scrollView}>
                             {firstName}
                             <TextInput
-                                style={[styles.input, this.state.valid ? null: styles.inputInvalid]}
+                                style={[styles.input, this.state.valid ? null : styles.inputInvalid]}
                                 placeholder="First name"
                                 placeholderTextColor="rgba(255,255,255,0.5)"
                                 autoCorrect={false}
@@ -181,7 +182,7 @@ export default class AccountInfo extends React.Component {
                             />
                             {lastName}
                             <TextInput
-                                style={[styles.input, this.state.valid ? null: styles.inputInvalid]}
+                                style={[styles.input, this.state.valid ? null : styles.inputInvalid]}
                                 placeholder="Last name"
                                 placeholderTextColor="rgba(255,255,255,0.5)"
                                 autoCorrect={false}
@@ -222,8 +223,10 @@ export default class AccountInfo extends React.Component {
                             <View style={styles.hobbyContainer}>
                                 {this.state.userInfo.userHobbies.map(hobby => {
                                     return (
-                                        <HobbyItem itemName={hobby} deleteHobby={(value) => this.deleteUserHobby(value)} fontLoaded={this.state.fontLoaded}/>
-                                    )})
+                                        <HobbyItem itemName={hobby} deleteHobby={(value) => this.deleteUserHobby(value)}
+                                                   fontLoaded={this.state.fontLoaded}/>
+                                    )
+                                })
                                 }
                             </View>
                             <TouchableOpacity style={styles.submitButton} onPress={() => this.updateUserInfo()}>
@@ -231,15 +234,15 @@ export default class AccountInfo extends React.Component {
                             </TouchableOpacity>
                         </View>
                     </ScrollView>
-            </KeyboardAvoidingView>
-                </LinearGradient>
+                </KeyboardAvoidingView>
+            </LinearGradient>
         );
     }
 }
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1
+        flex:1
     },
     gradient: {
         position: 'absolute',
@@ -251,7 +254,8 @@ const styles = StyleSheet.create({
     scrollView: {
         alignItems: 'center',
         flexGrow: 1,
-        justifyContent: 'center'
+        justifyContent: 'center',
+        marginTop: 100
     },
     label: {
         marginTop: 5,
@@ -259,7 +263,10 @@ const styles = StyleSheet.create({
         paddingBottom: 0,
         color: 'white',
         fontSize: 15,
-        fontFamily: 'Dosis'
+        fontFamily: 'Cabin',
+        textShadowColor: 'rgba(0, 0, 0, 0.4)',
+        textShadowOffset: {width: 0, height: 1},
+        textShadowRadius: 5
     },
     picker: {
         marginTop: 15,
@@ -285,10 +292,10 @@ const styles = StyleSheet.create({
     submitButton: {
         borderRadius: 5,
         marginTop: 35,
-        backgroundColor: 'rgba(255,255,255,0.4)',
-        elevation: 1,
-        padding: 10,
+        backgroundColor: '#FFF',
+        paddingVertical: 15,
         width: '80%',
+        elevation: 2,
     },
     submitText: {
         fontSize: 15,

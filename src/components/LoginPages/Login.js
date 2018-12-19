@@ -21,6 +21,7 @@ export default class Login extends React.Component {
             'Courgette': require('../../../assets/fonts/Courgette-Regular.ttf'),
             'Dosis': require('../../../assets/fonts/Dosis-Regular.ttf'),
             'Gloria': require('../../../assets/fonts/GloriaHallelujah.ttf'),
+            'Cabin': require('../../../assets/fonts/Cabin-Regular.ttf'),
         });
         this.setState({fontLoaded: true});
     }
@@ -197,7 +198,7 @@ export default class Login extends React.Component {
 
         }
         return (
-            <LinearGradient colors={['#b22b7d', '#c6c0db']} locations={[0, 0.8]} style={styles.gradient}>
+            <LinearGradient colors={['#b22b7d', '#ddb6ca']} locations={[0, 0.8]} style={styles.gradient}>
                 <KeyboardAvoidingView behavior="padding" style={styles.container}>
                     <ScrollView>
                         <View style={styles.logoContainer}>
@@ -269,7 +270,10 @@ const styles = StyleSheet.create({
         marginTop: 5,
         fontSize: 20,
         color: '#FFF',
-        fontFamily: 'Gloria'
+        fontFamily: 'Gloria',
+        textShadowColor: 'rgba(0, 0, 0, 0.5)',
+        textShadowOffset: {width: 0, height: 2},
+        textShadowRadius: 5
     },
     description: {
         marginTop: 5,
@@ -282,12 +286,12 @@ const styles = StyleSheet.create({
         borderRadius: 5,
         backgroundColor: '#3B5998',
         opacity: 0.9,
-        elevation: 1
+        elevation: 3
     },
     facebookTxt: {
         color: '#FFF',
         padding: 5,
-        fontFamily: 'Dosis'
+        fontFamily: 'Cabin'
     },
     errorMessage: {
         backgroundColor: 'rgba(255,51,0,0.1)',
@@ -296,23 +300,23 @@ const styles = StyleSheet.create({
         fontSize: 15,
         padding: 15,
         marginTop: 25,
-        fontFamily: 'Dosis'
+        fontFamily: 'Cabin'
     },
     infoMessage: {
-        backgroundColor: '#b22b7d',
+        backgroundColor: '#B22B7D',
         opacity: 0.3,
         borderRadius: 10,
         color: 'rgba(255,255,255,1)',
         fontSize: 15,
         padding: 15,
         marginTop: 25,
-        fontFamily: 'Dosis'
+        fontFamily: 'Cabin'
     },
     facebookQuestions: {
         padding: 5,
         color: 'white',
         fontSize: 20,
-        fontFamily: 'Dosis'
+        fontFamily: 'Cabin'
     },
     loginContainer: {
         padding: 20,
@@ -330,14 +334,14 @@ const styles = StyleSheet.create({
     buttonContainer: {
         borderRadius: 5,
         marginTop: 15,
-        backgroundColor: 'rgba(255,255,255,0.4)',
+        backgroundColor: '#FFF',
         paddingVertical: 15,
-        elevation: 1
+        elevation: 2
     },
     buttonText: {
         color: 'black',
         textAlign: 'center',
-        fontFamily: 'Dosis',
+        fontFamily: 'Cabin',
         letterSpacing: 3
     }
 });
