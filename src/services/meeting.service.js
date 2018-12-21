@@ -47,3 +47,22 @@ export const createMeeting = (oneToOne, category, description, place) => {
             .catch(err => reject(err))
     });
 };
+
+export const getMeetingHistory = (email) => {
+    return new Promise((resolve, reject) => {
+        fetch(ConstKeys.apiUrl + '/api/getUserMeetingHistory?email=' + email, {
+            credentials: 'include',
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: ConstKeys.auth
+            },
+        })
+            .then(res => {
+                if (res.status === 200)
+                    resolve(res);
+                reject(res);
+            })
+            .catch(err => reject(err))
+    });
+};
