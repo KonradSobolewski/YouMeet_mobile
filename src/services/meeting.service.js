@@ -36,7 +36,7 @@ export const createMeeting = (oneToOne, category, description, place) => {
                 place_longitude: place.coordinate.longitude,
                 place_latitude: place.coordinate.latitude,
                 description: description,
-                placeDescription: place.name
+                placeDescription: place.name.replace(/(\r\n\t|\n|\r\t)/gm,' ')
             })
         })
             .then(res => {
