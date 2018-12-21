@@ -20,11 +20,11 @@ const userInfo = props => {
                         <Image source={humburger} style={styles.humburger}/>
                     </TouchableOpacity>) : (null)}
                 {info}
+                {ConstKeys.userInfo.photo ? (
+                    <Image source={{uri: ConstKeys.userInfo.photo}} style={styles.userIcon}/>) : (
+                    <Image source={userIcon} style={styles.userIcon}/>)
+                }
             </View>
-            {ConstKeys.userInfo.photo ? (
-                <Image source={{uri: ConstKeys.userInfo.photo}} style={styles.userIcon}/>) : (
-                <Image source={userIcon} style={styles.userIcon}/>)
-            }
         </View>
     );
 };
@@ -39,7 +39,6 @@ const styles = StyleSheet.create({
         right: 0,
         height: 80,
         zIndex: 1,
-        elevation: 1
     },
     container: {
         position: 'absolute',
@@ -51,6 +50,7 @@ const styles = StyleSheet.create({
         borderBottomColor: 'white',
         width: '100%',
         backgroundColor: '#B22B7D',
+        elevation: 8
     },
     humburgerContainer: {
         position: 'absolute', top: 0, left: 0

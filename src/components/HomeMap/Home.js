@@ -1,5 +1,5 @@
 import React from 'react';
-import {StyleSheet, View, Text, TouchableOpacity} from 'react-native';
+import {StyleSheet, View, Text, TouchableOpacity, ActivityIndicator} from 'react-native';
 import UsersMap from "./UsersMap";
 import UserInfo from "./UserInfo";
 import {signOut} from '../../services/user.service'
@@ -24,22 +24,23 @@ export default class Home extends React.Component {
             chosenPlace: null,
             meetingsLoaded: false,
             meetings: [],
-            fontLoaded: false
+            fontLoaded: false,
+            userPositionLoaded: false
         };
     }
     _isMounted = false;
 
-  async componentDidMount() {
+    async componentDidMount() {
         this._isMounted = true;
+        this.getUserLocationHandler();
+        this.getPlaces();
         await Font.loadAsync({
             'Courgette': require('../../../assets/fonts/Courgette-Regular.ttf'),
             'Dosis': require('../../../assets/fonts/Dosis-Regular.ttf'),
             'Gloria': require('../../../assets/fonts/GloriaHallelujah.ttf'),
             'Cabin': require('../../../assets/fonts/Cabin-Regular.ttf'),
         });
-        this.setState({fontLoaded: true});
-        this.getUserLocationHandler();
-        this.getPlaces();
+        this.state.fontLoaded = true;
     }
 
     componentWillUnmount() {
@@ -48,24 +49,27 @@ export default class Home extends React.Component {
 
     getPlaces = () => {
         getMeetingPlaces().then(response => response.json().then(data => {
-            if (this._isMounted) {
-                this.setState({meetings: data, meetingsLoaded: true});
-            }
+                if (this._isMounted) {
+                    this.setState({meetings: data, meetingsLoaded: true});
+                }
             }).catch(err => signOut(this.props.navigation))
         ).catch(err => signOut(this.props.navigation));
     };
 
     getUserLocationHandler = () => {
-        navigator.geolocation.getCurrentPosition(position => {
-            this.setState({
-                location: {
-                    latitude: position.coords.latitude,
-                    longitude: position.coords.longitude,
-                    latitudeDelta: 0.0522,
-                    longitudeDelta: 0.0321
-                }
-            });
-        }, err => console.log(err));
+        if (this._isMounted) {
+            navigator.geolocation.getCurrentPosition(position => {
+                this.setState({
+                    location: {
+                        latitude: position.coords.latitude,
+                        longitude: position.coords.longitude,
+                        latitudeDelta: 0.0522,
+                        longitudeDelta: 0.0321
+                    },
+                    userPositionLoaded: true
+                });
+            }, err => console.log(err));
+        }
     };
 
     setTapedCoordinates = (data) => {
@@ -80,6 +84,10 @@ export default class Home extends React.Component {
         }
     };
 
+    isAllLoaded = () => {
+        return this.state.meetingsLoaded && this.state.fontLoaded && this.state.userPositionLoaded && this._isMounted;
+    };
+
     render() {
         const {navigation} = this.props;
         if (this.state.auth === null && !this.state.isSuccessfulCreated) {
@@ -87,13 +95,14 @@ export default class Home extends React.Component {
             // navigation.navigate('loginPage');
         }
         let meetings = null;
-        if (this.state.meetingsLoaded === true) {
-           meetings = this.state.meetings;
+        if (this.isAllLoaded()) {
+            meetings = this.state.meetings;
         }
         return (
             <View style={styles.container}>
                 <UsersMap userLocation={this.state.location}
                           meetings={meetings}
+                          loaded={this.isAllLoaded()}
                           getTapedLocation={(data) => this.setTapedCoordinates(data)}
                           chosenPlace={this.state.chosenPlace}
                           getPickedPoi={(data) => this.getPickedPoi(data)}
@@ -103,6 +112,7 @@ export default class Home extends React.Component {
                 <TouchableOpacity style={styles.buttonContainer} onPress={this.getUserLocationHandler}>
                     <Ionicons name="md-locate" size={40} color={'white'} style={styles.icon}/>
                 </TouchableOpacity>
+                {this.isAllLoaded() ? null : (<ActivityIndicator size={80} color="white" style={styles.spinner}/>)}
             </View>
         );
     }
@@ -111,6 +121,13 @@ export default class Home extends React.Component {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
+    },
+    spinner: {
+        position: 'absolute',
+        left: 0,
+        right: 0,
+        bottom: 130,
+        alignSelf: 'center'
     },
     buttonContainer: {
         position: 'absolute',

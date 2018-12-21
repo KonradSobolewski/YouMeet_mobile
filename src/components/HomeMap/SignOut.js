@@ -3,6 +3,7 @@ import {StyleSheet, Text, View, Image} from 'react-native';
 import {Font, LinearGradient} from 'expo';
 import DoubleClick from 'react-native-double-click';
 import {signOut} from '../../services/user.service'
+import UserInfo from "./UserInfo";
 
 export default class SignOut extends React.Component {
     state = {
@@ -12,6 +13,9 @@ export default class SignOut extends React.Component {
     async componentDidMount() {
         await Font.loadAsync({
             'Courgette': require('../../../assets/fonts/Courgette-Regular.ttf'),
+            'Dosis': require('../../../assets/fonts/Dosis-Regular.ttf'),
+            'Gloria': require('../../../assets/fonts/GloriaHallelujah.ttf'),
+            'Cabin': require('../../../assets/fonts/Cabin-Regular.ttf'),
         });
         this.setState({fontLoaded: true});
     }
@@ -23,7 +27,8 @@ export default class SignOut extends React.Component {
         }
         return (
             <View style={styles.wrapper}>
-                <LinearGradient colors={['#b22b7d', '#FFF']} locations={[0, 0.8]} style={styles.gradient}>
+                <UserInfo showHamburger={true} navigator={this.props.navigation} fontLoaded={this.state.fontLoaded}/>
+                <LinearGradient colors={['#b22b7d', '#DDB6CA']} locations={[0, 0.8]} style={styles.gradient}>
                     <View style={styles.container}>
                         <DoubleClick onClick={() => signOut(this.props.navigation)}>
                             <Image style={styles.hand} source={require('../../../assets/images/byebye.png')}/>

@@ -290,10 +290,11 @@ const styles = StyleSheet.create({
         backgroundColor: 'rgba(255,51,0,0.2)'
     },
     submitButton: {
+        flex:1,
         borderRadius: 5,
         marginTop: 35,
-        backgroundColor: '#FFF',
-        paddingVertical: 15,
+        backgroundColor: 'white',
+        padding: 15,
         width: '80%',
         elevation: 2,
     },
@@ -318,6 +319,9 @@ const styles = StyleSheet.create({
         padding: 10,
     },
     genderIcon: {
-        padding: 10
+        padding: 10,
+        textShadowColor: 'rgba(0, 0, 0, 0.4)',
+        textShadowOffset: {width: 0, height: 1},
+        textShadowRadius: 5
     }
 });

@@ -258,6 +258,9 @@ const styles = StyleSheet.create({
     },
     genderIcon: {
         padding: 10,
+        textShadowColor: 'rgba(0, 0, 0, 0.4)',
+        textShadowOffset: {width: 0, height: 1},
+        textShadowRadius: 5
     },
     label: {
         marginTop: 5,
@@ -266,6 +269,9 @@ const styles = StyleSheet.create({
         color: 'white',
         fontSize: 15,
         fontFamily: 'Cabin',
+        textShadowColor: 'rgba(0, 0, 0, 0.4)',
+        textShadowOffset: {width: 0, height: 1},
+        textShadowRadius: 5
     },
     genderLabel: {
         padding: 5,
@@ -273,5 +279,8 @@ const styles = StyleSheet.create({
         fontSize: 15,
         marginRight: 10,
         fontFamily: 'Cabin',
+        textShadowColor: 'rgba(0, 0, 0, 0.4)',
+        textShadowOffset: {width: 0, height: 1},
+        textShadowRadius: 5
     }
 });

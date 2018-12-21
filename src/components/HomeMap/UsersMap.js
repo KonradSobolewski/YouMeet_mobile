@@ -60,9 +60,9 @@ const usersMap = props => {
                 //     props.getTapedLocation(e.nativeEvent.coordinate);
                 // }}
                      onPoiClick={(e) => props.getPickedPoi(e.nativeEvent)}>
-                {userLocationMarker}
-                {chosenPlaceMarker}
-                {meetingPlaces}
+                {props.loaded ? userLocationMarker: null}
+                {props.loaded ? chosenPlaceMarker : null}
+                {props.loaded ? meetingPlaces : null}
             </MapView>
         </View>
     );
