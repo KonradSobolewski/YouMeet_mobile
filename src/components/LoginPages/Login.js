@@ -228,7 +228,7 @@ export default class Login extends React.Component {
                                            ref={(input) => this.passwordInput = input}
                                            onChangeText={(password) => {
                                                this.setState({errorDuringLog: false});
-                                               this.setState({email: password})
+                                               this.setState({password: password})
                                            }}
                                 />
                                 <TouchableOpacity style={styles.buttonContainer} onPress={() => this.login()}>

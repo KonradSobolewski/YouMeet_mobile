@@ -12,7 +12,7 @@ export default class History extends React.Component {
         super(props);
         this.state = {
             historyLoaded: false,
-            history: null,
+            history: [],
             fontLoaded: false,
             refreshing: false,
         };
@@ -39,6 +39,7 @@ export default class History extends React.Component {
         getMeetingHistory(ConstKeys.userInfo.email).then(response => response.json().then(data => {
                 if (this._isMounted) {
                     this.setState({history: data, historyLoaded: true, refreshing: false});
+                    console.log(data);
                 }
             }).catch(err => signOut(this.props.navigation))
         ).catch(err => signOut(this.props.navigation));
@@ -65,8 +66,7 @@ export default class History extends React.Component {
 
     render() {
         let history = null;
-        let items = null;
-        if (this.state.historyLoaded && this.state.fontLoaded && this.state.history !== null) {
+        if (this.state.historyLoaded && this.state.fontLoaded && this.state.history.length > 0 ) {
             history =
                     <FlatList style={styles.flatList}
                                 data={this.state.history}
@@ -81,7 +81,7 @@ export default class History extends React.Component {
                                 }
                     />
 
-        } else if (this.state.fontLoaded && this.state.history === null){
+        } else if (this.state.fontLoaded){
             history = <View style={styles.noMeetingsContainer}><Text style={styles.noMeetings}>You haven't met yet</Text></View>;
         }
         return (
