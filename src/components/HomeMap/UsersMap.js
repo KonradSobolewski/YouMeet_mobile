@@ -88,7 +88,7 @@ const styles = StyleSheet.create({
         borderColor: 'white'
     },
     markerIcon: {
-        width: 50, height: 50, borderRadius: 25,
+        width: 40, height: 40, borderRadius: 20,
     },
     toolTip: {
         flex: 1,
