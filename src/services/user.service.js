@@ -1,5 +1,7 @@
 import ConstKeys from '../config/app.consts'
 import {onSignOut, onSignIn} from "../config/authorization";
+import man from '../../assets/images/man.png'
+import girl from '../../assets/images/girl.png'
 
 export const getUserByEmail = (email) => {
     return new Promise((resolve, reject) => {
@@ -78,4 +80,12 @@ export const matchResponseToUserInfo = (userData) => {
         age: userData.params.age,
         gender: userData.params.gender
     }
+};
+
+export const getUserIcon = () => {
+  return ConstKeys.userInfo.gender === 'male' ? man : girl;
+};
+
+export const getMetUserIcon = (gender) => {
+    return gender === 'male' ? man : girl;
 };

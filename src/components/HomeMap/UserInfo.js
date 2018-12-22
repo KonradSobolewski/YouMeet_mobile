@@ -1,9 +1,8 @@
 import React from 'react'
 import {Image, StyleSheet, Text, View, TouchableOpacity, KeyboardAvoidingView} from 'react-native';
 import ConstKeys from '../../config/app.consts'
-import userIcon from '../../../assets/images/user.png'
 import humburger from '../../../assets/images/humburger.png'
-import {LinearGradient} from "expo";
+import {getUserIcon} from "../../services/user.service";
 
 const userInfo = props => {
     let info = null;
@@ -22,7 +21,7 @@ const userInfo = props => {
                 {info}
                 {ConstKeys.userInfo.photo ? (
                     <Image source={{uri: ConstKeys.userInfo.photo}} style={styles.userIcon}/>) : (
-                    <Image source={userIcon} style={styles.userIcon}/>)
+                    <Image source={getUserIcon()} style={styles.userIcon}/>)
                 }
             </View>
         </View>

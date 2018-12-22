@@ -3,7 +3,7 @@ import {Button, Image, StyleSheet, View, Text, TouchableOpacity} from 'react-nat
 import {MapView} from 'expo'
 import markerImage from '../../../assets/images/marker.png'
 import ConstKeys from '../../config/app.consts'
-import userIcon from '../../../assets/images/user.png'
+import {getMetUserIcon, getUserIcon} from "../../services/user.service";
 
 let mapStyle = require('../../config/map.style.json');
 
@@ -18,7 +18,7 @@ const usersMap = props => {
             </MapView.Marker>)
             :
             (<MapView.Marker coordinate={props.userLocation}>
-                <Image source={userIcon} style={styles.userIcon}/>
+                <Image source={getUserIcon()} style={styles.userIcon}/>
             </MapView.Marker>);
     }
     if (props.meetings) {
@@ -30,7 +30,10 @@ const usersMap = props => {
                                     longitude: parseFloat(meeting.place_longitude)
                                 }}
                 >
-                    <Image source={markerImage} style={styles.markerIcon}/>
+                    {meeting.params.photo !== null ?
+                        (<Image source={{uri: meeting.params.photo}} style={styles.markerIcon}/>) :
+                        (<Image source={getMetUserIcon(meeting.params.gender)} style={styles.markerIcon}/>)
+                    }
                 </MapView.Marker>
             )
         });
@@ -85,7 +88,7 @@ const styles = StyleSheet.create({
         borderColor: 'white'
     },
     markerIcon: {
-        width: 50, height: 50
+        width: 50, height: 50, borderRadius: 25,
     },
     toolTip: {
         flex: 1,

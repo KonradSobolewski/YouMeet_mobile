@@ -1,6 +1,6 @@
 import React from 'react'
 import {Image, StyleSheet, Text, View} from "react-native";
-import userIcon from "../../../assets/images/user.png";
+import {getMetUserIcon} from "../../services/user.service";
 
 const historyItem = props => {
     let date = new Date(Date.parse(props.historyData.params.startDate));
@@ -8,7 +8,7 @@ const historyItem = props => {
         <View style={styles.container}>
             {props.historyData.params.photo ? (
                 <Image source={{uri: props.historyData.params.photo}} style={styles.userIcon}/>) : (
-                <Image source={userIcon} style={styles.userIcon}/>)
+                <Image source={getMetUserIcon(props.historyData.params.gender)} style={styles.userIcon}/>)
             }
             <View style={styles.rightBox}>
                 <Text style={styles.person}>{props.historyData.params.firstName + ' ' + props.historyData.params.lastName + ', ' + props.historyData.params.age}</Text>
