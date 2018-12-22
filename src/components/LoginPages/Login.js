@@ -339,7 +339,7 @@ const styles = StyleSheet.create({
         elevation: 2
     },
     buttonText: {
-        color: 'black',
+        color: '#373D3F',
         textAlign: 'center',
         fontFamily: 'Cabin',
         letterSpacing: 3

@@ -29,6 +29,7 @@ const usersMap = props => {
                                     latitude: parseFloat(meeting.place_latitude),
                                     longitude: parseFloat(meeting.place_longitude)
                                 }}
+                                onPress={() => props.openModal(meeting)}
                 >
                     {meeting.params.photo !== null ?
                         (<Image source={{uri: meeting.params.photo}} style={styles.markerIcon}/>) :

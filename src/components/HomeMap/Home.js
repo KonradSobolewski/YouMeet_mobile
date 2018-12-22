@@ -1,7 +1,8 @@
 import React from 'react';
-import {StyleSheet, View, Text, TouchableOpacity, ActivityIndicator, Picker} from 'react-native';
+import {StyleSheet, View, Text, TouchableOpacity, ActivityIndicator, Picker, Modal} from 'react-native';
 import UsersMap from "./UsersMap";
 import UserInfo from "./UserInfo";
+import InviteModal from "./InviteModal";
 import {signOut} from '../../services/user.service'
 import {getMeetingPlaces} from "../../services/meeting.service";
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -30,7 +31,9 @@ export default class Home extends React.Component {
             filteredMeetings: [],
             fontLoaded: false,
             userPositionLoaded: false,
-            categoryLoaded: false
+            categoryLoaded: false,
+            modalVisible: false,
+            selectedMeeting: null,
         };
     }
     _isMounted = false;
@@ -161,6 +164,26 @@ export default class Home extends React.Component {
         )
     };
 
+    inviteUser = () => {
+        console.log('invited');
+        this.closeModal();
+    };
+
+    closeModal = () => {
+        this.setState({modalVisible: false});
+    };
+
+    showInviteModal = (meeting) => {
+        return(
+          <InviteModal meeting={meeting}
+                       modalVisible={this.state.modalVisible}
+                       inviteUser={() => this.inviteUser()}
+                       closeModal={() => this.closeModal()}
+                       fontLoaded={this.state.fontLoaded}
+          />
+        );
+    };
+
     render() {
         const {navigation} = this.props;
         if (this.state.auth === null && !this.state.isSuccessfulCreated) {
@@ -180,11 +203,15 @@ export default class Home extends React.Component {
                           chosenPlace={this.state.chosenPlace}
                           getPickedPoi={(data) => this.getPickedPoi(data)}
                           navigator={this.props.navigation}
+                          openModal={(data) => {
+                              this.setState({modalVisible: true, selectedMeeting: data});
+                          }}
                           style={styles.map}/>
                 <UserInfo showHamburger={true} navigator={this.props.navigation} fontLoaded={this.state.fontLoaded}/>
                 {this.getFilter()}
                 {this.getButtons()}
                 {this.isAllLoaded() ? null : (<ActivityIndicator size={80} color="white" style={styles.spinner}/>)}
+                {this.state.selectedMeeting != null && this.state.modalVisible ? this.showInviteModal(this.state.selectedMeeting) : null}
             </View>
         );
     }
@@ -236,5 +263,5 @@ const styles = StyleSheet.create({
         color: '#373D3F',
         padding: 10,
         width: 250
-    },
+    }
 });

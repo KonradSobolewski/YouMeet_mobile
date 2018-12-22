@@ -242,7 +242,7 @@ const styles = StyleSheet.create({
     },
     registerText: {
         fontSize: 15,
-        color: 'black',
+        color: '#373D3F',
         textAlign: 'center',
         fontFamily: 'Cabin',
         letterSpacing: 3
