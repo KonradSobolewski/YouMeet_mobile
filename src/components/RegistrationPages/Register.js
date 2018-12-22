@@ -28,7 +28,9 @@ export default class App extends React.Component {
         isTouched: false,
         age: 18,
         gender: 'male',
-        switchState: false,
+        account: 'personal',
+        genderState: false,
+        accountTypeState: false,
         fontLoaded: false
     };
 
@@ -79,7 +81,8 @@ export default class App extends React.Component {
                     password: this.state.password,
                     params: {
                         age: this.state.age,
-                        gender: this.state.gender
+                        gender: this.state.gender,
+                        account: this.state.account
                     }
                 })
             })
@@ -109,7 +112,17 @@ export default class App extends React.Component {
         } else {
             this.state.gender = 'male'
         }
-        this.state.switchState = !this.state.switchState;
+        this.state.genderState = !this.state.genderState;
+        this.forceUpdate();
+    };
+
+    setAccountType = (value) => {
+        if (value) {
+            this.state.account = 'business';
+        } else {
+            this.state.account = 'personal'
+        }
+        this.state.accountTypeState = !this.state.accountTypeState;
         this.forceUpdate();
     };
 
@@ -117,13 +130,15 @@ export default class App extends React.Component {
         let age = null;
         let gender = null;
         let register = null;
+        let accountType = null;
         if (this.state.fontLoaded) {
             age = <Text style={styles.label}>
                 Your age: {this.state.age}
             </Text>;
-            gender = <Text style={styles.genderLabel}>
+            gender = <Text style={styles.switchLabel}>
                 Gender:
             </Text>;
+            accountType = <Text style={styles.switchLabel}>Account type: </Text>;
             register = <Text style={styles.registerText}>REGISTER</Text>;
         }
         return (
@@ -184,9 +199,18 @@ export default class App extends React.Component {
                                 <Ionicons name="md-male" size={23} color={"white"} style={styles.genderIcon}/>
                                 <Switch trackColor={{false: 'blue', true: 'red'}}
                                         thumbColor={'white'}
-                                        value={this.state.switchState}
+                                        value={this.state.genderState}
                                         onValueChange={(value) => this.setGender(value)}/>
                                 <Ionicons name="md-female" size={23} color={"white"} style={styles.genderIcon}/>
+                            </View>
+                            <View style={styles.switchContainer}>
+                                {accountType}
+                                <Ionicons name="md-body" size={23} color={"white"} style={styles.genderIcon}/>
+                                <Switch trackColor={{false: 'blue', true: 'red'}}
+                                        thumbColor={'white'}
+                                        value={this.state.accountTypeState}
+                                        onValueChange={(value) => this.setAccountType(value)}/>
+                                <Ionicons name="md-briefcase" size={23} color={"white"} style={styles.genderIcon}/>
                             </View>
                             <TouchableOpacity style={styles.registerBtn} onPress={this.register}
                                               disabled={!(this.areFieldsValid && this.state.isTouched)}>
@@ -242,7 +266,7 @@ const styles = StyleSheet.create({
     },
     registerText: {
         fontSize: 15,
-        color: '#373D3F',
+        color: 'black',
         textAlign: 'center',
         fontFamily: 'Cabin',
         letterSpacing: 3
@@ -273,7 +297,7 @@ const styles = StyleSheet.create({
         textShadowOffset: {width: 0, height: 1},
         textShadowRadius: 5
     },
-    genderLabel: {
+    switchLabel: {
         padding: 5,
         color: 'white',
         fontSize: 15,
