@@ -179,7 +179,6 @@ export default class Home extends React.Component {
                         item.additionalInformation = 'Failure';
                       return item;
                     });
-                    this.closeModal();
                 }
             }).catch(err => signOut(this.props.navigation))
         ).catch(err => signOut(this.props.navigation));
