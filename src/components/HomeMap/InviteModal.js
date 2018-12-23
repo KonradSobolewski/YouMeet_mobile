@@ -15,7 +15,7 @@ const inviteModal = props => {
         place =  <Text style={styles.place}>Place: {props.meeting.params.placeDescription}</Text>;
         description =  <Text style={styles.description}>Description: {props.meeting.params.description}</Text>;
         cancel =  <Text style={styles.textButton}>Cancel</Text>;
-        invite =  <Text style={styles.textButton}>Invite</Text>;
+        invite =  <Text style={styles.textButton}>Join</Text>;
         if(props.meeting.additionalInformation)
           additionalInformation = <Text style={styles.place}>Invitation status: {props.meeting.additionalInformation}</Text>;
     }
