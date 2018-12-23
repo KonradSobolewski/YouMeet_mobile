@@ -4,10 +4,11 @@ import UsersMap from "./UsersMap";
 import UserInfo from "./UserInfo";
 import InviteModal from "./InviteModal";
 import {signOut} from '../../services/user.service'
-import {getMeetingPlaces} from "../../services/meeting.service";
+import {getMeetingPlaces, joinMeeting} from "../../services/meeting.service";
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {Font} from "expo";
 import {getCategories} from "../../services/category.service";
+import ConstKeys from "../../config/app.consts";
 
 export default class Home extends React.Component {
 
@@ -33,7 +34,7 @@ export default class Home extends React.Component {
             userPositionLoaded: false,
             categoryLoaded: false,
             modalVisible: false,
-            selectedMeeting: null,
+            selectedMeeting: null
         };
     }
     _isMounted = false;
@@ -120,6 +121,8 @@ export default class Home extends React.Component {
         }
     };
 
+
+
     getFilter = () => {
         let categories = [];
         if (this.state.categories.length > 0) {
@@ -164,9 +167,23 @@ export default class Home extends React.Component {
         )
     };
 
-    inviteUser = () => {
-        console.log('invited');
-        this.closeModal();
+    joinUser = (meetingId) => {
+        joinMeeting(meetingId).then(response => response.json().then(data => {
+                if (this._isMounted) {
+                    this.state.meetings
+                    .filter((item) => (item.meeting_id == meetingId))
+                    .map(item => {
+                      if(item.params.joinerId.includes(ConstKeys.userInfo.id))
+                        item.additionalInformation = 'Success';
+                      else
+                        item.additionalInformation = 'Failure';
+                      return item;
+                    });
+                    this.closeModal();
+                }
+            }).catch(err => signOut(this.props.navigation))
+        ).catch(err => signOut(this.props.navigation));
+
     };
 
     closeModal = () => {
@@ -177,7 +194,7 @@ export default class Home extends React.Component {
         return(
           <InviteModal meeting={meeting}
                        modalVisible={this.state.modalVisible}
-                       inviteUser={() => this.inviteUser()}
+                       inviteUser={() => this.joinUser(meeting.meeting_id)}
                        closeModal={() => this.closeModal()}
                        fontLoaded={this.state.fontLoaded}
           />
@@ -258,7 +275,7 @@ const styles = StyleSheet.create({
         elevation: 4
     },
     picker: {
-        backgroundColor: 'white',
+        backgroundColor: 'rgba(255,255,255,0.5)',
         height: 40,
         color: '#373D3F',
         padding: 10,

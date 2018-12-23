@@ -9,12 +9,15 @@ const inviteModal = props => {
     let description = null;
     let cancel = null;
     let invite = null;
+    let additionalInformation = null;
     if(props.fontLoaded) {
         name =  <Text style={styles.name}>{props.meeting.params.firstName + ' '+ props.meeting.params.lastName + ', ' + props.meeting.params.age}</Text>;
         place =  <Text style={styles.place}>Place: {props.meeting.params.placeDescription}</Text>;
         description =  <Text style={styles.description}>Description: {props.meeting.params.description}</Text>;
         cancel =  <Text style={styles.textButton}>Cancel</Text>;
         invite =  <Text style={styles.textButton}>Invite</Text>;
+        if(props.meeting.additionalInformation)
+          additionalInformation = <Text style={styles.place}>Invitation status: {props.meeting.additionalInformation}</Text>;
     }
     return (
         <Modal
@@ -33,6 +36,7 @@ const inviteModal = props => {
                             (<Image source={getMetUserIcon(props.meeting.params.gender)} style={styles.userIcon}/>)
                         }
                         {name}
+                        {additionalInformation}
                         {place}
                         {description}
                     </View>
