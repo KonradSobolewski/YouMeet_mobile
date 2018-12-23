@@ -65,7 +65,7 @@ export const signOut = (navigator) => {
 
 export const signIn = (data, navigator) => {
     onSignIn(JSON.stringify(data))
-        .then(() => navigator.navigate('homePage', data))
+        .then(() => navigator.navigate('loadingPage', data))
         .catch(err => console.log(err));
 };
 

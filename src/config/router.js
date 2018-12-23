@@ -16,6 +16,7 @@ import MeetingScreen from "../components/MeetingCreator/MeetingScreen"
 import MeetingForm from "../components/MeetingCreator/MeetingForm"
 import History from "../components/UserHistory/History"
 import SuccessfullCreate from "../components/MeetingCreator/SuccessfullCreate"
+import Loading from "../components/Loading/Loading"
 
 export const createRootNavigator = (signedIn = false, data) => {
     return createStackNavigator({
@@ -117,9 +118,12 @@ export const createRootNavigator = (signedIn = false, data) => {
             createMeeting: {
                 screen: MeetingScreen
             },
+            loadingPage: {
+                screen: Loading
+            }
         },
         {
-            initialRouteName: signedIn ? 'homePage' : 'loginPage',
+            initialRouteName: signedIn ? 'loadingPage' : 'loginPage',
             initialRouteParams: signedIn ? {userInfo: data.userInfo, auth: data.auth} : null,
             mode: 'modal',
             headerMode: 'none',

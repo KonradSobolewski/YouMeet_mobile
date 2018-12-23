@@ -8,41 +8,34 @@ import {getMeetingPlaces} from "../../services/meeting.service";
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {Font} from "expo";
 import {getCategories} from "../../services/category.service";
+import ConstKeys from "../../config/app.consts";
 
 export default class Home extends React.Component {
 
     constructor(props) {
         super(props);
         this.state = {
-            userInfo: props.navigation.getParam('userInfo'),
-            auth: props.navigation.getParam('auth'),
+            userInfo: ConstKeys.userInfo,
+            auth: ConstKeys.auth,
             isSuccessfulCreated: props.navigation.getParam('isSuccessfulCreate'),
-            location: {
-                latitude: 52.22967,
-                longitude: 21.01222,
-                latitudeDelta: 0.0522,
-                longitudeDelta: 0.0321
-            },
-            categories: [],
-            category: 0,
-            chosenPlace: null,
-            meetingsLoaded: false,
-            meetings: [],
-            filteredMeetings: [],
-            fontLoaded: false,
-            userPositionLoaded: false,
-            categoryLoaded: false,
+            location: props.navigation.getParam('location'),
+            categories: props.navigation.getParam('categories'),
+            category:  props.navigation.getParam('category'),
+            meetingsLoaded: props.navigation.getParam('meetingsLoaded'),
+            meetings: props.navigation.getParam('meetings'),
+            filteredMeetings: props.navigation.getParam('filteredMeetings'),
+            userPositionLoaded: props.navigation.getParam('userPositionLoaded'),
+            categoryLoaded: props.navigation.getParam('categoryLoaded'),
             modalVisible: false,
             selectedMeeting: null,
+            fontLoaded: false,
+            chosenPlace: null,
         };
     }
     _isMounted = false;
 
     async componentDidMount() {
         this._isMounted = true;
-        this.getUserLocationHandler();
-        this.getPlaces();
-        this.getAllCategories();
         await Font.loadAsync({
             'Courgette': require('../../../assets/fonts/Courgette-Regular.ttf'),
             'Dosis': require('../../../assets/fonts/Dosis-Regular.ttf'),
@@ -78,12 +71,6 @@ export default class Home extends React.Component {
                     userPositionLoaded: true
                 });
             }, err => console.log(err));
-        }
-    };
-
-    setTapedCoordinates = (data) => {
-        if (this._isMounted) {
-            this.setState({chosenPlace: data});
         }
     };
 
@@ -199,7 +186,6 @@ export default class Home extends React.Component {
                 <UsersMap userLocation={this.state.location}
                           meetings={meetings}
                           loaded={this.isAllLoaded()}
-                          getTapedLocation={(data) => this.setTapedCoordinates(data)}
                           chosenPlace={this.state.chosenPlace}
                           getPickedPoi={(data) => this.getPickedPoi(data)}
                           navigator={this.props.navigation}

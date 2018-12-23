@@ -60,9 +60,6 @@ const usersMap = props => {
         <View style={styles.mapContainer}>
             <MapView region={props.userLocation} style={styles.map} customMapStyle={mapStyle} showsBuildings
                      showsCompass
-                // onPress={(e) => {
-                //     props.getTapedLocation(e.nativeEvent.coordinate);
-                // }}
                      onPoiClick={(e) => props.getPickedPoi(e.nativeEvent)}>
                 {props.loaded ? userLocationMarker: null}
                 {props.loaded ? chosenPlaceMarker : null}
