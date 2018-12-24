@@ -14,6 +14,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import CustomDrawerContentComponent from './DrawerComponent';
 import MeetingScreen from "../components/MeetingCreator/MeetingScreen"
 import MeetingForm from "../components/MeetingCreator/MeetingForm"
+import NotificationScreen from '../components/Notifications/NotificationScreen'
 import History from "../components/UserHistory/History"
 import SuccessfullCreate from "../components/MeetingCreator/SuccessfullCreate"
 
@@ -64,6 +65,15 @@ export const createRootNavigator = (signedIn = false, data) => {
                                 drawerLabel: 'Home',
                                 drawerIcon: () => (
                                     <Ionicons name="md-home" size={18}/>
+                                )
+                            }
+                        },
+                        notificationsPage: {
+                            screen: NotificationScreen,
+                            navigationOptions: {
+                                drawerLabel: 'Notifications',
+                                drawerIcon: () => (
+                                    <Ionicons name="md-mail" size={18}/>
                                 )
                             }
                         },

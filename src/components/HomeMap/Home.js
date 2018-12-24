@@ -97,7 +97,7 @@ export default class Home extends React.Component {
     getAllCategories = () => {
         if (this._isMounted) {
             getCategories().then(response => response.json().then(data => {
-                    data.unshift({id: 0, type: 'All'});
+                    data.unshift({id: 0, type: 'Select category: All'});
                     this.setState({categories: data, categoryLoaded: true});
                 }).catch(err => signOut(this.props.navigation))
             ).catch(err => signOut(this.props.navigation));
