@@ -60,6 +60,12 @@ export default class Home extends React.Component {
     getPlaces = () => {
         getMeetingPlaces().then(response => response.json().then(data => {
                 if (this._isMounted) {
+                    data.filter(item => item.params.joinerId != null).
+                    map((item => {
+                      if(item.params.joinerId.includes(ConstKeys.userInfo.id))
+                        item.additionalInformation = 'Success';
+                      return item;
+                    }));
                     this.setState({meetings: data, filteredMeetings: data, meetingsLoaded: true});
                 }
             }).catch(err => signOut(this.props.navigation))
@@ -170,15 +176,18 @@ export default class Home extends React.Component {
     joinUser = (meetingId) => {
         joinMeeting(meetingId).then(response => response.json().then(data => {
                 if (this._isMounted) {
+
+                    console.log(data);
                     this.state.meetings
                     .filter((item) => (item.meeting_id == meetingId))
                     .map(item => {
-                      if(item.params.joinerId.includes(ConstKeys.userInfo.id))
+                      if(data.params.joinerId.includes(ConstKeys.userInfo.id))
                         item.additionalInformation = 'Success';
                       else
                         item.additionalInformation = 'Failure';
                       return item;
                     });
+                    this.closeModal();
                 }
             }).catch(err => signOut(this.props.navigation))
         ).catch(err => signOut(this.props.navigation));

@@ -1,29 +1,22 @@
 import React from 'react'
-import {Image, StyleSheet, Text, View} from "react-native";
+import {Image, StyleSheet, Text, View, TouchableOpacity} from "react-native";
 import {getMetUserIcon} from "../../services/user.service";
+import Ionicons from 'react-native-vector-icons/Ionicons';
 
-const historyItem = props => {
+const notificationItem = props => {
     let date = new Date(Date.parse(props.historyData.params.startDate));
-    console.log('\n\n\n' + props.historyData.meeting_id + '\n\n\n');
+    console.log('chuj');
     return(
         <View style={styles.container}>
-            {props.historyData.params.photo ? (
-                <Image source={{uri: props.historyData.params.photo}} style={styles.userIcon}/>) : (
-                <Image source={getMetUserIcon(props.historyData.params.gender)} style={styles.userIcon}/>)
-            }
-            <View style={styles.rightBox}>
-                <Text style={styles.person}>{props.historyData.params.firstName + ' ' + props.historyData.params.lastName + ', ' + props.historyData.params.age}</Text>
-                <Text style={styles.description}>{props.historyData.params.placeDescription.replace(/(\r\n\t|\n|\r\t)/gm,' ')}</Text>
-            </View>
-            <View style={styles.leftBox}>
-                <Text style={styles.date}>{date.toDateString() + ' ' + date.getHours() + ':' + date.getMinutes()}</Text>
-                <Text style={styles.category}>Category: {props.historyData.params.categoryName}</Text>
-            </View>
+                <Text style={styles.person}>{props.historyData.meeting_id}</Text>
+                <TouchableOpacity onPress={() => props.acceptMeeting(props.historyData.meeting_id, props.historyData.params.joinerId[0])}>
+                    <Ionicons name="md-add-circle" size={30} color={'#373D3F'} style={styles.icon}/>
+                </TouchableOpacity>
         </View>
     );
 };
 
-export default historyItem;
+export default notificationItem;
 
 const styles = StyleSheet.create({
     container: {

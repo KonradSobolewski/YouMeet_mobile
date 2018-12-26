@@ -1,12 +1,14 @@
 import React from 'react'
 import {Image, StyleSheet, Text, View} from "react-native";
 import {getMetUserIcon} from "../../services/user.service";
+import ConstKeys from "../../config/app.consts";
 
-const historyItem = props => {
-    let date = new Date(Date.parse(props.historyData.params.startDate));
-    console.log('\n\n\n' + props.historyData.meeting_id + '\n\n\n');
+
+const notificationSubscribedItem = props => {
+    let date = new Date(Date.parse(props.historyData.params.creationDate));
+    let isAccepted = !props.historyData.params.joinerId.includes(ConstKeys.userInfo.id);
     return(
-        <View style={styles.container}>
+        <View style={[styles.container, isAccepted === true ? styles.acceptedTo : styles.rejectedFrom]}>
             {props.historyData.params.photo ? (
                 <Image source={{uri: props.historyData.params.photo}} style={styles.userIcon}/>) : (
                 <Image source={getMetUserIcon(props.historyData.params.gender)} style={styles.userIcon}/>)
@@ -23,7 +25,7 @@ const historyItem = props => {
     );
 };
 
-export default historyItem;
+export default notificationSubscribedItem;
 
 const styles = StyleSheet.create({
     container: {
@@ -32,6 +34,12 @@ const styles = StyleSheet.create({
         height: 70,
         backgroundColor: '#eee',
         flexDirection: 'row',
+    },
+    acceptedTo: {
+      backgroundColor: '#01FF70'
+    },
+    rejectedFrom: {
+      backgroundColor: '#FF4136'
     },
     person: {
         margin: 10,

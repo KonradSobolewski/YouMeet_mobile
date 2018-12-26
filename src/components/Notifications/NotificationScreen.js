@@ -1,117 +1,178 @@
-import React from 'react'
-import {StyleSheet, Text, View, TouchableOpacity, ScrollView, KeyboardAvoidingView,} from 'react-native'
-import Ionicons from 'react-native-vector-icons/Ionicons';
-import {Font, LinearGradient} from "expo";
+import React from 'react';
+import {StyleSheet, FlatList, Text, View, RefreshControl, ActivityIndicator} from "react-native";
+import {Font} from 'expo';
+import NotificationItem from './NotificationItem';
+import NotificationSubscribedItem from './NotificationSubscribedItem';
+import HistoryItem from '../UserHistory/HistoryItem'
+import {getSubscribedToMeetings, getMeetingWithNewJoiners, acceptJoinerMeeting} from "../../services/meeting.service";
+import {signOut} from "../../services/user.service";
 import UserInfo from "../HomeMap/UserInfo";
+import ConstKeys from "../../config/app.consts";
 
 export default class NotificationScreen extends React.Component {
-    state = {
-      fontLoaded: false
-    };
+    constructor(props) {
+        super(props);
+        this.state = {
+            historyLoaded: false,
+            history: [],
+            newJoinersMeetings: [],
+            newJoinersLoaded: false,
+            fontLoaded: false,
+            refreshing: false,
+        };
+    }
+    _isMounted = false;
+
     async componentDidMount() {
+        this._isMounted = true;
         await Font.loadAsync({
             'Courgette': require('../../../assets/fonts/Courgette-Regular.ttf'),
             'Dosis': require('../../../assets/fonts/Dosis-Regular.ttf'),
             'Gloria': require('../../../assets/fonts/GloriaHallelujah.ttf'),
+            'Cabin': require('../../../assets/fonts/Cabin-Regular.ttf'),
         });
         this.setState({fontLoaded: true});
+        this.getSubscribedTo();
+        this.getNewJoiners();
     }
-    goToAccountInfo = () => {
-        this.props.navigation.navigate('accountInfo');
+
+    componentWillUnmount () {
+        this._isMounted = false
+    }
+
+    getNewJoiners = () => {
+        getMeetingWithNewJoiners(ConstKeys.userInfo.id).then(response => response.json().then(data => {
+                if (this._isMounted) {
+                    this.setState({newJoinersMeetings: data, newJoinersLoaded: true, refreshing: false});
+                }
+            }).catch(err => signOut(this.props.navigation))
+        ).catch(err => signOut(this.props.navigation));
     };
 
-    goToAppSettings = () => {
-        this.props.navigation.navigate('appSettings');
+    getSubscribedTo = () => {
+      getSubscribedToMeetings(ConstKeys.userInfo.id).then(response => response.json().then(data => {
+              if (this._isMounted) {
+                  this.setState({history: data, historyLoaded: true, refreshing: false});
+              }
+          }).catch(err => signOut(this.props.navigation))
+      ).catch(err => signOut(this.props.navigation));
+    };
+
+    acceptMeeting = (meetingId, joinerId) => {
+      acceptJoinerMeeting(meetingId, joinerId).then(response => response.json().then(data => {
+              if (this._isMounted) {
+                  this.setState({refreshing: false});
+              }
+          }).catch(err => signOut(this.props.navigation))
+      ).catch(err => signOut(this.props.navigation));
+    };
+
+    renderSeparator = () => {
+      return (
+        <View style={{height: 1, width: '100%', backgroundColor: '#CED0CE'}}/>
+      );
+    };
+
+    refresh = () => {
+        this.setState({refreshing: true});
+        this.getSubscribedTo();
+        this.getNewJoiners();
+    };
+
+    renderHeader = (text) => {
+        return (
+            <View style={styles.header}>
+                <Text style={styles.noMeetings}> {text} </Text>
+            </View>
+        );
     };
 
     render() {
-        let edit = null;
-        let app = null;
-        let footerTxt= null;
-        if (this.state.fontLoaded) {
-            edit =  <Text style={styles.text}>
-                Edit account
-            </Text>;
-            app =  <Text style={styles.text}>
-                App settings
-            </Text>;
-            footerTxt = <Text style={styles.footerTxt}>
-                YouMeet &copy; version 0.2
-            </Text>;
+        let history = null;
+        let newJoiners = null;
+        if (this.state.newJoinersLoaded && this.state.fontLoaded && this.state.newJoinersMeetings.length > 0 ) {
+            newJoiners =
+                    <FlatList style={styles.flatList}
+                                data={this.state.newJoinersMeetings}
+                                renderItem={({ item }) => (
+                                    <NotificationItem acceptMeeting={(meeting_id, joinerId) => this.acceptMeeting(meeting_id, joinerId)} historyData={item}/>
+                                )}
+                                keyExtractor={item => item.meeting_id.toString()}
+                                ItemSeparatorComponent={this.renderSeparator}
+                                ListHeaderComponent={this.renderHeader('New joiners in your meetigs: ')}
+                                refreshControl={
+                                    <RefreshControl refreshing={this.state.refreshing} onRefresh={this.refresh}/>
+                                }
+                    />
+
+        }
+        if (this.state.historyLoaded && this.state.fontLoaded && this.state.history.length > 0 ) {
+            history =
+                    <FlatList style={styles.flatList}
+                                data={this.state.history}
+                                renderItem={({ item }) => (
+                                    <NotificationSubscribedItem historyData={item}/>
+                                )}
+                                keyExtractor={item => item.meeting_id.toString()}
+                                ItemSeparatorComponent={this.renderSeparator}
+                                ListHeaderComponent={this.renderHeader('Subscribed to meetings: ')}
+                                refreshControl={
+                                    <RefreshControl refreshing={this.state.refreshing} onRefresh={this.refresh}/>
+                                }
+                    />
+
+        } else if (this.state.fontLoaded){
+            history = <View style={styles.noMeetingsContainer}><Text style={styles.noMeetings}>You haven't met yet</Text></View>;
         }
         return (
-            <LinearGradient colors={['#b22b7d', '#ddb6ca']} locations={[0, 0.8]} style={styles.gradient}>
-                <KeyboardAvoidingView behavior="padding" style={styles.container}>
-                    <ScrollView>
-                        <UserInfo showHamburger={true} navigator={this.props.navigation} fontLoaded={this.state.fontLoaded}/>
-                        <View style={styles.area}>
-                            <TouchableOpacity style={styles.button} onPress={this.goToAccountInfo}>
-                                <Ionicons name="md-person" size={70} color={'white'} style={styles.icon}/>
-                                {edit}
-                            </TouchableOpacity>
-                            <View style={{borderWidth:1, borderColor:'white', width:150}}></View>
-                            <TouchableOpacity style={styles.button} onPress={this.goToAppSettings}>
-                                <Ionicons name="md-settings" size={70} color={'white'} style={styles.icon}/>
-                                {app}
-                            </TouchableOpacity>
-
-                        </View>
-                    </ScrollView>
-                    <View style={styles.footer}>
-                        {footerTxt}
-                    </View>
-                </KeyboardAvoidingView>
-            </LinearGradient>
+            <View style={styles.container}>
+                <UserInfo showHamburger={true} navigator={this.props.navigation} fontLoaded={this.state.fontLoaded}/>
+                {this.state.historyLoaded ? null : (<ActivityIndicator size={90} color="#B22B7D" style={styles.spinner}/>)}
+                {history}
+                {newJoiners}
+            </View>
         )
     }
 }
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1
+        flex: 1,
+        backgroundColor: '#ddd'
     },
-    gradient: {
+    header: {
+        flex:1 ,
+        justifyContent: 'center',
+        alignItems: 'center',
+        padding: 10,
+        height: 40,
+        width: '100%'
+    },
+    infoText: {
+      justifyContent: 'center',
+      alignItems: 'center',
+      fontSize: 16
+    },
+    spinner: {
+        flex: 2,
         position: 'absolute',
         left: 0,
         right: 0,
-        top: 0,
-        height: '100%',
+        bottom: 150,
+        alignSelf: 'center'
     },
-    area: {
-        backgroundColor: 'rgba(255,255,255,0.2)',
-        borderRadius: 10,
-        marginTop: 130,
-        margin: 20,
-        padding: 20,
-        justifyContent: 'center', alignItems: 'center',elevation: 1
+    flatList: {
+      marginTop: 80,
     },
-    button: {
-        margin: 20,
-        padding: 5,
-        elevation: 1
+    noMeetingsContainer: {
+        flex:1,
+       height: '100%', justifyContent: 'center',
     },
-    text: {
-        fontSize: 20,
-        fontFamily: 'Dosis',
-        color: 'white',
-        letterSpacing: 1,
-        textShadowColor: 'rgba(0, 0, 0, 0.4)',
-        textShadowOffset: {width: 0, height: 1},
-        textShadowRadius: 5
-    },
-    icon: {
+    noMeetings:{
+        fontSize: 15,
+        color: '#373D3F',
+        fontFamily: 'Cabin',
         alignSelf: 'center',
-        textShadowColor: 'rgba(0, 0, 0, 0.4)',
-        textShadowOffset: {width: 0, height: 1},
-        textShadowRadius: 5
-    },
-    footer: {
-        padding: 10,
-        position: 'absolute', left: 0, right: 0, bottom: 0,  justifyContent: 'center', alignItems: 'center',
-    },
-    footerTxt: {
-        color: 'white',
-        fontFamily: 'Dosis',
-        fontSize: 13,
+        textAlign: 'center',
     },
 });

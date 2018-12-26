@@ -66,6 +66,63 @@ export const createMeeting = (oneToOne, category, description, place) => {
     });
 };
 
+export const getSubscribedToMeetings = (id) => {
+    return new Promise((resolve, reject) => {
+        fetch(ConstKeys.apiUrl + '/api/getMeetingWithSubscribers?id=' + id, {
+            credentials: 'include',
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: ConstKeys.auth
+            },
+        })
+            .then(res => {
+                if (res.status === 200)
+                    resolve(res);
+                reject(res);
+            })
+            .catch(err => reject(err))
+    });
+};
+
+export const getMeetingWithNewJoiners = (id) => {
+    return new Promise((resolve, reject) => {
+        fetch(ConstKeys.apiUrl + '/api/getMeetingsWithNewJoiners?id=' + id, {
+            credentials: 'include',
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: ConstKeys.auth
+            },
+        })
+            .then(res => {
+                if (res.status === 200)
+                    resolve(res);
+                reject(res);
+            })
+            .catch(err => reject(err))
+    });
+};
+
+export const acceptJoinerMeeting = (id, joinerId) => {
+    return new Promise((resolve, reject) => {
+        fetch(ConstKeys.apiUrl + '/api/acceptNewJoinerInMeeting?id=' + id + '&newJoinerId=' + joinerId, {
+            credentials: 'include',
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: ConstKeys.auth
+            },
+        })
+            .then(res => {
+                if (res.status === 200)
+                    resolve(res);
+                reject(res);
+            })
+            .catch(err => reject(err))
+    });
+};
+
 export const getMeetingHistory = (email) => {
     return new Promise((resolve, reject) => {
         fetch(ConstKeys.apiUrl + '/api/getUserMeetingHistory?email=' + email, {
