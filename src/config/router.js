@@ -15,6 +15,7 @@ import CustomDrawerContentComponent from './DrawerComponent';
 import MeetingScreen from "../components/MeetingCreator/MeetingScreen"
 import MeetingForm from "../components/MeetingCreator/MeetingForm"
 import NotificationScreen from '../components/Notifications/NotificationScreen'
+import OwnMeetingsScreen from '../components/OwnMeetingsPanel/OwnMeetingsScreen'
 import History from "../components/UserHistory/History"
 import SuccessfullCreate from "../components/MeetingCreator/SuccessfullCreate"
 
@@ -69,12 +70,43 @@ export const createRootNavigator = (signedIn = false, data) => {
                             }
                         },
                         notificationsPage: {
-                            screen: NotificationScreen,
+                            screen: createMaterialTopTabNavigator({
+                                    joinMeetings: {
+                                        screen: NotificationScreen,
+                                        navigationOptions: {
+                                            tabBarLabel: 'Notifications',
+                                            showIcon: true,
+                                            tabBarIcon: () => {
+                                                return <Ionicons name="md-mail-open" size={20} color={"white"}/>
+                                            }
+                                        }
+                                    },
+                                    ownMeetings: {
+                                        screen: OwnMeetingsScreen,
+                                        navigationOptions: {
+                                            tabBarLabel: 'Own Meetings',
+                                            showIcon: true,
+                                            tabBarIcon: () => {
+                                                return <Ionicons name="md-list" size={20} color={"white"}/>
+                                            }
+                                        }
+                                    }
+                                },
+                                {
+                                    tabBarOptions: {
+                                        showLabel: true, // hide labels
+                                        showIcon: true,
+                                        style: {
+                                            backgroundColor: '#B22B7D' // TabBar background
+                                        }
+                                    }
+                                }
+                            ),
                             navigationOptions: {
-                                drawerLabel: 'Notifications',
-                                drawerIcon: () => (
-                                    <Ionicons name="md-mail" size={18}/>
-                                )
+                                drawerLabel: 'Meetings',
+                                drawerIcon: () => {
+                                    return <Ionicons name="md-mail" size={18}/>
+                                }
                             }
                         },
                         history: {

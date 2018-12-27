@@ -3,10 +3,8 @@ import {StyleSheet, FlatList, Text, View, RefreshControl, ActivityIndicator} fro
 import {Font} from 'expo';
 import NotificationItem from './NotificationItem';
 import NotificationSubscribedItem from './NotificationSubscribedItem';
-import HistoryItem from '../UserHistory/HistoryItem'
 import {getSubscribedToMeetings, getMeetingWithNewJoiners, acceptJoinerMeeting} from "../../services/meeting.service";
 import {signOut} from "../../services/user.service";
-import UserInfo from "../HomeMap/UserInfo";
 import ConstKeys from "../../config/app.consts";
 
 export default class NotificationScreen extends React.Component {
@@ -126,7 +124,6 @@ export default class NotificationScreen extends React.Component {
         }
         return (
             <View style={styles.container}>
-                <UserInfo showHamburger={true} navigator={this.props.navigation} fontLoaded={this.state.fontLoaded}/>
                 {this.state.historyLoaded ? null : (<ActivityIndicator size={90} color="#B22B7D" style={styles.spinner}/>)}
                 {history}
                 {newJoiners}
@@ -162,7 +159,7 @@ const styles = StyleSheet.create({
         alignSelf: 'center'
     },
     flatList: {
-      marginTop: 80,
+
     },
     noMeetingsContainer: {
         flex:1,

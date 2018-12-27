@@ -283,7 +283,7 @@ const styles = StyleSheet.create({
         elevation: 4
     },
     picker: {
-        backgroundColor: 'rgba(255,255,255,0.5)',
+        backgroundColor: 'rgba(255,255,255,0.7)',
         height: 40,
         color: '#373D3F',
         padding: 10,
