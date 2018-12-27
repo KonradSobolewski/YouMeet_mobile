@@ -65,7 +65,7 @@ export default class Login extends React.Component {
                                 let userData = JSON.parse(response._bodyInit);
                                 let data = {
                                     userInfo: matchResponseToUserInfo(userData),
-                                    auth: ConstKeys.auth
+                                    auth: ConstKeys.auth,
                                 };
                                 ConstKeys.userInfo = data.userInfo;
                                 this.setState({errorDuringLog: false});

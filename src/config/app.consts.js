@@ -5,4 +5,7 @@ export default class ConstKeys {
     static auth = '';
     static userInfo = {};
     static minLength = 3;
+    static minAge = 18;
+    static maxAge = 50;
+    static gender = 'male';
 }

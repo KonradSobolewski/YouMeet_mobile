@@ -2,14 +2,19 @@ import ConstKeys from "../config/app.consts";
 
 export const getMeetingPlaces = () => {
     return new Promise((resolve, reject) => {
-        fetch(ConstKeys.apiUrl + '/api/getMeetings?user_id=' + ConstKeys.userInfo.id, {
-            credentials: 'include',
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-                Authorization: ConstKeys.auth
-            },
-        })
+        fetch(ConstKeys.apiUrl + '/api/getMeetings?user_id=' +
+            ConstKeys.userInfo.id + '&minAge=' +
+            ConstKeys.minAge + '&maxAge=' +
+            ConstKeys.maxAge + '&gender=' +
+            ConstKeys.gender,
+            {
+                credentials: 'include',
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: ConstKeys.auth
+                },
+            })
             .then(res => {
                 if (res.status === 200)
                     resolve(res);
@@ -54,7 +59,7 @@ export const createMeeting = (oneToOne, category, description, place) => {
                 place_longitude: place.coordinate.longitude,
                 place_latitude: place.coordinate.latitude,
                 description: description,
-                placeDescription: place.name.replace(/(\r\n\t|\n|\r\t)/gm,' ')
+                placeDescription: place.name.replace(/(\r\n\t|\n|\r\t)/gm, ' ')
             })
         })
             .then(res => {
