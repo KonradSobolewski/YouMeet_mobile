@@ -4,6 +4,7 @@ import {Font} from 'expo';
 import {getRecentMeetings} from "../../services/meeting.service";
 import ConstKeys from "../../config/app.consts";
 import MeetingItem from "./MeetingItem";
+import {updateUserData} from "../../config/authorization";
 
 export default class NotificationScreen extends React.Component {
     constructor(props) {
@@ -39,6 +40,7 @@ export default class NotificationScreen extends React.Component {
                 if (this._isMounted) {
                     this.setState({meetings: data, meetingsLoaded: true, refreshing: false});
                     ConstKeys.userInfo.meetingCounter = 3 - data.length;
+                    updateUserData();
                 }
 
             })

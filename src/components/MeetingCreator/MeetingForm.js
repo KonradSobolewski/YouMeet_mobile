@@ -18,6 +18,7 @@ import {createMeeting} from "../../services/meeting.service";
 import {getCategories} from "../../services/category.service";
 import DatePicker from 'react-native-datepicker'
 import ConstKeys from "../../config/app.consts";
+import {updateUserData} from "../../config/authorization";
 
 export default class MeetingForm extends React.Component {
 
@@ -60,6 +61,7 @@ export default class MeetingForm extends React.Component {
         createMeeting(this.state.isOneToOne, this.state.category, this.state.description, this.state.place, this.state.pickedTime)
             .then(res => {
                 ConstKeys.userInfo.meetingCounter = ConstKeys.userInfo.meetingCounter - 1;
+                updateUserData();
                 this.props.navigation.navigate('meetingCreated')
             })
             .catch(err => console.log(err));

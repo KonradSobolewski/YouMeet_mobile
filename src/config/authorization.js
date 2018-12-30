@@ -1,4 +1,5 @@
 import { AsyncStorage } from "react-native";
+import ConstKeys from "./app.consts";
 
 export const USER_KEY = 'auth-data';
 export const APP_DATA = 'app-data';
@@ -23,6 +24,10 @@ export const isSignedIn = () => {
             })
             .catch(err => reject(err));
     });
+};
+
+export const updateUserData = () => {
+    return AsyncStorage.setItem(USER_KEY, JSON.stringify({ auth: ConstKeys.auth, userInfo: ConstKeys.userInfo}));
 };
 
 export const setAppData = (value) => {
