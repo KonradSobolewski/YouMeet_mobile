@@ -28,12 +28,16 @@ export default class Settings extends React.Component {
         let edit = null;
         let app = null;
         let footerTxt= null;
+        let premium = null
         if (this.state.fontLoaded) {
             edit =  <Text style={styles.text}>
                 Edit account
             </Text>;
             app =  <Text style={styles.text}>
                 App settings
+            </Text>;
+            premium =  <Text style={styles.text}>
+                Buy premium
             </Text>;
             footerTxt = <Text style={styles.footerTxt}>
                 YouMeet &copy; version 0.2
@@ -53,6 +57,12 @@ export default class Settings extends React.Component {
                             <TouchableOpacity style={styles.button} onPress={this.goToAppSettings}>
                                 <Ionicons name="md-settings" size={70} color={'white'} style={styles.icon}/>
                                 {app}
+                            </TouchableOpacity>
+
+                            <View style={{borderWidth:1, borderColor:'white', width:150}}></View>
+                            <TouchableOpacity style={styles.button} onPress={this.goToAppSettings}>
+                                <Ionicons name="md-cash" size={70} color={'white'} style={styles.icon}/>
+                                {premium}
                             </TouchableOpacity>
 
                         </View>
