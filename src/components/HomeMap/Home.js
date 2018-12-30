@@ -37,6 +37,7 @@ export default class Home extends React.Component {
             selectedMeeting: null
         };
     }
+
     _isMounted = false;
 
     async componentDidMount() {
@@ -60,11 +61,10 @@ export default class Home extends React.Component {
     getPlaces = () => {
         getMeetingPlaces().then(response => response.json().then(data => {
                 if (this._isMounted) {
-                    data.filter(item => item.params.joinerId != null).
-                    map((item => {
-                      if(item.params.joinerId.includes(ConstKeys.userInfo.id))
-                        item.additionalInformation = 'Success';
-                      return item;
+                    data.filter(item => item.params.joinerId != null).map((item => {
+                        if (item.params.joinerId.includes(ConstKeys.userInfo.id))
+                            item.additionalInformation = 'Success';
+                        return item;
                     }));
                     this.setState({meetings: data, filteredMeetings: data, meetingsLoaded: true});
                 }
@@ -115,7 +115,7 @@ export default class Home extends React.Component {
     };
 
     filterMeetings = (index) => {
-        if (index === 0){
+        if (index === 0) {
             this.state.filteredMeetings = this.state.meetings;
         } else {
             this.state.filteredMeetings = this.state.meetings.filter(function (item) {
@@ -126,7 +126,6 @@ export default class Home extends React.Component {
             this.forceUpdate();
         }
     };
-
 
 
     getFilter = () => {
@@ -164,9 +163,6 @@ export default class Home extends React.Component {
         return (
             <View style={styles.buttonContainer}>
                 <TouchableOpacity onPress={this.refresh}>
-                    <Ionicons name="md-refresh" size={30} color={'#373D3F'} style={styles.icon}/>
-                </TouchableOpacity>
-                <TouchableOpacity onPress={this.getUserLocationHandler}>
                     <Ionicons name="md-locate" size={30} color={'#373D3F'} style={styles.icon}/>
                 </TouchableOpacity>
             </View>
@@ -179,14 +175,14 @@ export default class Home extends React.Component {
 
                     console.log(data);
                     this.state.meetings
-                    .filter((item) => (item.meeting_id == meetingId))
-                    .map(item => {
-                      if(data.params.joinerId.includes(ConstKeys.userInfo.id))
-                        item.additionalInformation = 'Success';
-                      else
-                        item.additionalInformation = 'Failure';
-                      return item;
-                    });
+                        .filter((item) => (item.meeting_id == meetingId))
+                        .map(item => {
+                            if (data.params.joinerId.includes(ConstKeys.userInfo.id))
+                                item.additionalInformation = 'Success';
+                            else
+                                item.additionalInformation = 'Failure';
+                            return item;
+                        });
                     this.closeModal();
                 }
             }).catch(err => signOut(this.props.navigation))
@@ -199,13 +195,13 @@ export default class Home extends React.Component {
     };
 
     showInviteModal = (meeting) => {
-        return(
-          <InviteModal meeting={meeting}
-                       modalVisible={this.state.modalVisible}
-                       inviteUser={() => this.joinUser(meeting.meeting_id)}
-                       closeModal={() => this.closeModal()}
-                       fontLoaded={this.state.fontLoaded}
-          />
+        return (
+            <InviteModal meeting={meeting}
+                         modalVisible={this.state.modalVisible}
+                         inviteUser={() => this.joinUser(meeting.meeting_id)}
+                         closeModal={() => this.closeModal()}
+                         fontLoaded={this.state.fontLoaded}
+            />
         );
     };
 
@@ -221,21 +217,21 @@ export default class Home extends React.Component {
         }
         return (
             <View style={styles.container}>
-                <UsersMap userLocation={this.state.location}
-                          meetings={meetings}
-                          loaded={this.isAllLoaded()}
-                          getTapedLocation={(data) => this.setTapedCoordinates(data)}
-                          chosenPlace={this.state.chosenPlace}
-                          getPickedPoi={(data) => this.getPickedPoi(data)}
-                          navigator={this.props.navigation}
-                          openModal={(data) => {
-                              this.setState({modalVisible: true, selectedMeeting: data});
-                          }}
-                          style={styles.map}/>
+                {this.isAllLoaded() ? (<UsersMap userLocation={this.state.location}
+                                                 meetings={meetings}
+                                                 loaded={this.isAllLoaded()}
+                                                 getTapedLocation={(data) => this.setTapedCoordinates(data)}
+                                                 chosenPlace={this.state.chosenPlace}
+                                                 getPickedPoi={(data) => this.getPickedPoi(data)}
+                                                 navigator={this.props.navigation}
+                                                 openModal={(data) => {
+                                                     this.setState({modalVisible: true, selectedMeeting: data});
+                                                 }}
+                                                 style={styles.map}/>) : null}
                 <UserInfo showHamburger={true} navigator={this.props.navigation} fontLoaded={this.state.fontLoaded}/>
                 {this.getFilter()}
                 {this.getButtons()}
-                {this.isAllLoaded() ? null : (<ActivityIndicator size={80} color="white" style={styles.spinner}/>)}
+                {this.isAllLoaded() ? null : (<ActivityIndicator size={80} color="black" style={styles.spinner}/>)}
                 {this.state.selectedMeeting != null && this.state.modalVisible ? this.showInviteModal(this.state.selectedMeeting) : null}
             </View>
         );
@@ -258,13 +254,13 @@ const styles = StyleSheet.create({
     },
     buttonContainer: {
         position: 'absolute',
-        top: 250,
+        bottom: 50,
         right: 0,
         justifyContent: 'center',
         alignItems: 'center',
         width: 50,
-        height: 150,
-        backgroundColor : 'white',
+        height: 50,
+        backgroundColor: 'white',
         borderRadius: 5,
         elevation: 2
     },

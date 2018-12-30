@@ -58,7 +58,7 @@ const usersMap = props => {
     }
     return (
         <View style={styles.mapContainer}>
-            <MapView region={props.userLocation} style={styles.map} customMapStyle={mapStyle} showsBuildings
+            <MapView initialRegion={props.userLocation} style={styles.map} customMapStyle={mapStyle} showsBuildings
                      showsCompass
                 // onPress={(e) => {
                 //     props.getTapedLocation(e.nativeEvent.coordinate);
