@@ -36,8 +36,11 @@ export default class NotificationScreen extends React.Component {
 
     getOwnMeetings = () => {
         getRecentMeetings(ConstKeys.userInfo.email).then(res => res.json().then(data => {
-                if (this._isMounted)
+                if (this._isMounted) {
                     this.setState({meetings: data, meetingsLoaded: true, refreshing: false});
+                    ConstKeys.userInfo.meetingCounter = 3 - data.length;
+                }
+
             })
         ).catch(err => console.log(err));
     };
