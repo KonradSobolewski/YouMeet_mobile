@@ -224,7 +224,7 @@ export default class AccountInfo extends React.Component {
                                 {this.state.userInfo.userHobbies.map(hobby => {
                                     return (
                                         <HobbyItem itemName={hobby} deleteHobby={(value) => this.deleteUserHobby(value)}
-                                                   fontLoaded={this.state.fontLoaded}/>
+                                                   fontLoaded={this.state.fontLoaded} showDeleteButton={true}/>
                                     )
                                 })
                                 }

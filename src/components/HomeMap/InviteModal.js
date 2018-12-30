@@ -2,6 +2,7 @@ import React from 'react';
 import {StyleSheet, View, Text, TouchableOpacity, Modal, Image} from 'react-native';
 import {getMetUserIcon} from "../../services/user.service";
 import {LinearGradient} from "expo";
+import HobbyItem from "../Settings/HobbyItem";
 
 const inviteModal = props => {
     let name = null;
@@ -10,6 +11,8 @@ const inviteModal = props => {
     let cancel = null;
     let invite = null;
     let additionalInformation = null;
+    let time = null;
+    let commonHobbies = null;
     if(props.fontLoaded) {
         name =  <Text style={styles.name}>{props.meeting.params.firstName + ' '+ props.meeting.params.lastName + ', ' + props.meeting.params.age}</Text>;
         place =  <Text style={styles.place}>Place: {props.meeting.params.placeDescription}</Text>;
@@ -18,6 +21,8 @@ const inviteModal = props => {
         invite =  <Text style={styles.textButton}>Join</Text>;
         if(props.meeting.additionalInformation)
           additionalInformation = <Text style={styles.place}>Invitation status: {props.meeting.additionalInformation}</Text>;
+        time =  <Text style={styles.name}>Meeting hour: {props.meeting.params.pickedTime}</Text>;
+        commonHobbies =  <Text style={styles.place}>Common Hobbies: </Text>;
     }
     return (
         <Modal
@@ -39,6 +44,17 @@ const inviteModal = props => {
                         {additionalInformation}
                         {place}
                         {description}
+                        {time}
+                        {commonHobbies}
+                        <View style={styles.hobbyContainer}>
+                            {props.meeting.params.commonHobbies.map(hobby => {
+                                return (
+                                    <HobbyItem itemName={hobby} deleteHobby={(value) => console.log(value)}
+                                               fontLoaded={props.fontLoaded} showDeleteButton={false}/>
+                                )
+                            })
+                            }
+                        </View>
                     </View>
                     <View style={styles.buttonContainer}>
                         <TouchableOpacity onPress={() => props.closeModal()} style={styles.button}>
@@ -58,14 +74,20 @@ export default inviteModal;
 
 const styles = StyleSheet.create({
    container: {
-       marginTop: 150,
+       marginTop: 100,
        marginLeft: 'auto',
        marginRight: 'auto',
-       height: 400,
-       width: 300,
+       height: 550,
+       width: 350,
        zIndex: 5,
        elevation: 10,
    },
+    hobbyContainer: {
+        alignItems: 'center',
+        flexDirection: 'row',
+        flexWrap: 'wrap',
+        marginBottom: 10
+    },
     gradient: {
         position: 'absolute',
         left: 0,
@@ -93,7 +115,7 @@ const styles = StyleSheet.create({
         borderColor: 'white'
     },
     name: {
-        margin: 10,
+        margin: 8,
         color: 'white',
         fontSize: 20,
         fontFamily: 'Cabin',
@@ -102,7 +124,7 @@ const styles = StyleSheet.create({
         textShadowRadius: 5
     },
     place: {
-        margin: 5,
+        margin: 2,
         color: 'white',
         fontSize: 15,
         fontFamily: 'Cabin',
@@ -111,7 +133,7 @@ const styles = StyleSheet.create({
         textShadowRadius: 5
     },
     description: {
-        margin: 5,
+        margin: 2,
         marginBottom: 15,
         color: 'white',
         fontSize: 15,

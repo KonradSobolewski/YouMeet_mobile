@@ -11,7 +11,7 @@ const hobbyItem = props => {
         <View>
             <TouchableOpacity style={styles.buttonContainer} onPress={() => props.deleteHobby(props.itemName)}>
                 {text}
-                <Ionicons name="md-close" size={17} color={"red"} style={styles.icon}/>
+                {props.showDeleteButton ? (<Ionicons name="md-close" size={17} color={"red"} style={styles.icon}/>) : null }
             </TouchableOpacity>
         </View>
     );

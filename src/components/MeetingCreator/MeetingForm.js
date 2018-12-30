@@ -16,6 +16,7 @@ import {signOut} from '../../services/user.service';
 import DoubleClick from 'react-native-double-click';
 import {createMeeting} from "../../services/meeting.service";
 import {getCategories} from "../../services/category.service";
+import DatePicker from 'react-native-datepicker'
 
 export default class MeetingForm extends React.Component {
 
@@ -29,6 +30,7 @@ export default class MeetingForm extends React.Component {
             isOneToOne: true,
             category: 1,
             place: props.navigation.getParam('place'),
+            pickedTime: null,
             fontLoaded: false,
         };
         this.getAllCategories();
@@ -51,12 +53,27 @@ export default class MeetingForm extends React.Component {
     };
 
     createMyMeeting = () => {
-        createMeeting(this.state.isOneToOne, this.state.category, this.state.description, this.state.place)
+        if (this.state.pickedTime === null)
+            this.setMeetingHour(new Date().getHours().toString() + ':' + new Date().getMinutes().toString());
+
+        createMeeting(this.state.isOneToOne, this.state.category, this.state.description, this.state.place, this.state.pickedTime)
             .then(res => this.props.navigation.navigate('meetingCreated'))
             .catch(err => console.log(err));
     };
 
+    setMeetingHour = (date) => {
+        let newDate = new Date();
+        let now = new Date();
+        newDate.setHours(date.substring(0,2));
+        newDate.setMinutes(date.substring(3,date.length));
+        if (newDate < now.getTime())
+            this.setState({pickedTime: now.getHours().toString() + ':' + now.getMinutes().toString()});
+        else
+            this.setState({pickedTime: date})
+    };
+
     render() {
+        let time = new Date().getHours().toString() + ':' + new Date().getMinutes().toString();
         let categories = null;
         if (this.state.categories !== null) {
             categories = this.state.categories.map(category => {
@@ -95,7 +112,31 @@ export default class MeetingForm extends React.Component {
                             }}>
                             {categories}
                         </Picker>
-
+                        <Text style={styles.textStyle}>Select Hour:</Text>
+                        <DatePicker
+                            style={{width: 200, margin: 10}}
+                            date={this.state.pickedTime !== null ? this.state.pickedTime : time}
+                            is24Hour={true}
+                            mode="time"
+                            placeholder="Select hour"
+                            format='HH:mm'
+                            minDate={time}
+                            maxDate={'23:59'}
+                            confirmBtnText="Confirm"
+                            cancelBtnText="Cancel"
+                            customStyles={{
+                                dateIcon: {
+                                    position: 'absolute',
+                                    left: 0,
+                                    top: 4,
+                                    marginLeft: 0
+                                },
+                                dateInput: {
+                                    marginLeft: 36
+                                }
+                            }}
+                            onDateChange={(date) => this.setMeetingHour(date)}
+                        />
                         <Text style={styles.textStyle}> One-to-one meeting? </Text>
                         <CheckBox
                             value={this.state.isOneToOne}

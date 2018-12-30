@@ -43,7 +43,7 @@ export const joinMeeting = (meetingId) => {
   });
 };
 
-export const createMeeting = (oneToOne, category, description, place) => {
+export const createMeeting = (oneToOne, category, description, place, time) => {
     return new Promise((resolve, reject) => {
         fetch(ConstKeys.apiUrl + '/api/createMeeting', {
             credentials: 'include',
@@ -59,7 +59,8 @@ export const createMeeting = (oneToOne, category, description, place) => {
                 place_longitude: place.coordinate.longitude,
                 place_latitude: place.coordinate.latitude,
                 description: description,
-                placeDescription: place.name.replace(/(\r\n\t|\n|\r\t)/gm, ' ')
+                placeDescription: place.name.replace(/(\r\n\t|\n|\r\t)/gm, ' '),
+                pickedTime: time
             })
         })
             .then(res => {
@@ -131,6 +132,25 @@ export const acceptJoinerMeeting = (id, joinerId) => {
 export const getMeetingHistory = (email) => {
     return new Promise((resolve, reject) => {
         fetch(ConstKeys.apiUrl + '/api/getUserMeetingHistory?email=' + email, {
+            credentials: 'include',
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: ConstKeys.auth
+            },
+        })
+            .then(res => {
+                if (res.status === 200)
+                    resolve(res);
+                reject(res);
+            })
+            .catch(err => reject(err))
+    });
+};
+
+export const getRecentMeetings = (email) => {
+    return new Promise((resolve, reject) => {
+        fetch(ConstKeys.apiUrl + '/api/getRecentMeetings?email=' + email, {
             credentials: 'include',
             method: 'GET',
             headers: {

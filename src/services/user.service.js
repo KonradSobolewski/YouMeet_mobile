@@ -78,7 +78,8 @@ export const matchResponseToUserInfo = (userData) => {
         name: userData.firstName + ' ' + userData.lastName,
         photo: userData.params.photo,
         age: userData.params.age,
-        gender: userData.params.gender
+        gender: userData.params.gender,
+        meetingCounter: ConstKeys.meetingCounter - userData.params.meetingCounter
     }
 };
 
