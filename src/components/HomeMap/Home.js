@@ -9,6 +9,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import {Font} from "expo";
 import {getCategories} from "../../services/category.service";
 import ConstKeys from "../../config/app.consts";
+import Dialog, {SlideAnimation,ScaleAnimation, DialogContent} from 'react-native-popup-dialog';
 
 export default class Home extends React.Component {
 
@@ -34,7 +35,8 @@ export default class Home extends React.Component {
             userPositionLoaded: false,
             categoryLoaded: false,
             modalVisible: false,
-            selectedMeeting: null
+            selectedMeeting: null,
+            dialogVisible: false
         };
     }
 
@@ -227,8 +229,27 @@ export default class Home extends React.Component {
                                                  openModal={(data) => {
                                                      this.setState({modalVisible: true, selectedMeeting: data});
                                                  }}
+                                                 setDialogVisibility={() => this.setState({dialogVisible: true})}
                                                  style={styles.map}/>) : null}
                 <UserInfo showHamburger={true} navigator={this.props.navigation} fontLoaded={this.state.fontLoaded}/>
+                <Dialog
+                    visible={this.state.dialogVisible}
+                    dialogAnimation={new ScaleAnimation({
+                        toValue: 0, // optional
+                        useNativeDriver: true, // optional
+                    })}
+                    onTouchOutside={() => {
+                        this.setState({dialogVisible: false});
+                    }}
+                    dialogStyle={styles.dialog}
+                    width={0.8}
+                    height={0.15}
+                >
+                    <DialogContent>
+                        <Text style={styles.dialogText}>You have created too many meetings. Please delete recently
+                            created to create new one or buy premium account.</Text>
+                    </DialogContent>
+                </Dialog>
                 {this.getFilter()}
                 {this.getButtons()}
                 {this.isAllLoaded() ? null : (<ActivityIndicator size={80} color="black" style={styles.spinner}/>)}
@@ -244,6 +265,15 @@ const styles = StyleSheet.create({
     },
     map: {
         height: '100%'
+    },
+    dialog: {
+        justifyContent: 'center',
+        alignItems: 'center',
+        margin: 10,
+    },
+    dialogText: {
+        marginTop: 15,
+        fontSize: 12
     },
     spinner: {
         position: 'absolute',

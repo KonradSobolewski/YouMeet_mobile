@@ -19,6 +19,7 @@
     "react-native-elements": "^1.0.0-beta7",
     "react-native-icon-checkbox": "^1.2.0",
     "react-native-maps": "^0.22.1",
+    "react-native-popup-dialog": "^0.16.6",
     "react-native-shake": "^3.2.3",
     "react-navigation": "^2.18.2"
   },

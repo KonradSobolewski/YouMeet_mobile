@@ -17,6 +17,7 @@ import DoubleClick from 'react-native-double-click';
 import {createMeeting} from "../../services/meeting.service";
 import {getCategories} from "../../services/category.service";
 import DatePicker from 'react-native-datepicker'
+import ConstKeys from "../../config/app.consts";
 
 export default class MeetingForm extends React.Component {
 
@@ -57,7 +58,10 @@ export default class MeetingForm extends React.Component {
             this.setMeetingHour(new Date().getHours().toString() + ':' + new Date().getMinutes().toString());
 
         createMeeting(this.state.isOneToOne, this.state.category, this.state.description, this.state.place, this.state.pickedTime)
-            .then(res => this.props.navigation.navigate('meetingCreated'))
+            .then(res => {
+                ConstKeys.userInfo.meetingCounter = ConstKeys.userInfo.meetingCounter - 1;
+                this.props.navigation.navigate('meetingCreated')
+            })
             .catch(err => console.log(err));
     };
 

@@ -43,7 +43,12 @@ const usersMap = props => {
         chosenPlaceMarker = <MapView.Marker coordinate={props.chosenPlace.coordinate}>
             <Image source={markerImage} style={styles.markerIcon}/>
             <MapView.Callout tooltip
-                             onPress={() => props.navigator.navigate('createMeeting', {place: props.chosenPlace})}>
+                             onPress={() => {
+                                 if(ConstKeys.userInfo.meetingCounter > 0)
+                                    props.navigator.navigate('createMeeting', {place: props.chosenPlace});
+                                 else
+                                     props.setDialogVisibility();
+                             }}>
                 <View style={styles.toolTip}>
                     <Text style={styles.toolTipText}>
                         {props.chosenPlace.name}
