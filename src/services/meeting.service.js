@@ -166,3 +166,22 @@ export const getRecentMeetings = (email) => {
             .catch(err => reject(err))
     });
 };
+
+export const deleteMeeting = (meeting_id) => {
+    return new Promise((resolve, reject) => {
+        fetch(ConstKeys.apiUrl + '/api/deleteMeeting?id=' + meeting_id, {
+            credentials: 'include',
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: ConstKeys.auth
+            },
+        })
+            .then(res => {
+                if (res.status === 200)
+                    resolve(res);
+                reject(res);
+            })
+            .catch(err => reject(err))
+    });
+};

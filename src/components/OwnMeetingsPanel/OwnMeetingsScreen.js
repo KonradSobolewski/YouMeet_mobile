@@ -1,10 +1,11 @@
 import React from 'react';
 import {StyleSheet, FlatList, Text, View, RefreshControl, ActivityIndicator} from "react-native";
 import {Font} from 'expo';
-import {getRecentMeetings} from "../../services/meeting.service";
+import {deleteMeeting, getRecentMeetings} from "../../services/meeting.service";
 import ConstKeys from "../../config/app.consts";
 import MeetingItem from "./MeetingItem";
 import {updateUserData} from "../../config/authorization";
+import Dialog, {SlideAnimation,ScaleAnimation, DialogContent, DialogTitle, DialogButton} from 'react-native-popup-dialog';
 
 export default class NotificationScreen extends React.Component {
     constructor(props) {
@@ -14,6 +15,12 @@ export default class NotificationScreen extends React.Component {
             meetings: [],
             refreshing: false,
             meetingsLoaded: false,
+            pickedMeeting: {
+                params: {
+                    placeDescription: 'Place'
+                }
+            },
+            dialogVisible: false
         };
     }
 
@@ -38,13 +45,19 @@ export default class NotificationScreen extends React.Component {
     getOwnMeetings = () => {
         getRecentMeetings(ConstKeys.userInfo.email).then(res => res.json().then(data => {
                 if (this._isMounted) {
-                    this.setState({meetings: data, meetingsLoaded: true, refreshing: false});
                     ConstKeys.userInfo.meetingCounter = 3 - data.length;
                     updateUserData();
+                    this.setState({meetings: data, meetingsLoaded: true, refreshing: false});
                 }
-
             })
         ).catch(err => console.log(err));
+    };
+
+    deleteMeeting = (meeting) => {
+        this.setState({refreshing: true});
+        deleteMeeting(meeting.meeting_id).then(res=> res.json().then(data => console.log(data))).catch(err => console.log(err));
+        this.getOwnMeetings();
+        this.setState({dialogVisible: false});
     };
 
     renderSeparator = () => {
@@ -73,7 +86,7 @@ export default class NotificationScreen extends React.Component {
                 <FlatList style={styles.flatList}
                           data={this.state.meetings}
                           renderItem={({item}) => (
-                              <MeetingItem meetingItem={item} pressAction={(data) => console.log(data)}/>
+                              <MeetingItem meetingItem={item} pressAction={(data) => this.setState({pickedMeeting: data, dialogVisible: true})} />
                           )}
                           keyExtractor={item => item.meeting_id.toString()}
                           ItemSeparatorComponent={this.renderSeparator}
@@ -95,6 +108,30 @@ export default class NotificationScreen extends React.Component {
                 <View style={styles.footer}>
                     <Text styke={styles.noMeetings}>Possible meetings to create: {ConstKeys.userInfo.meetingCounter}</Text>
                 </View>
+                <Dialog
+                    visible={this.state.dialogVisible}
+                    dialogAnimation={new SlideAnimation({ slideFrom: 'bottom' })}
+                    onTouchOutside={() => {
+                        this.setState({dialogVisible: false});
+                    }}
+                    dialogStyle={styles.dialog}
+                    width={0.8}
+                    height={0.25}
+                    dialogTitle={<DialogTitle title={this.state.pickedMeeting.params.placeDescription}/>}
+                    actions={[
+                        <DialogButton
+                            text="MODIFY"
+                            onPress={() => {}}
+                        />,
+                        <DialogButton
+                            text="DELETE"
+                            onPress={() => {this.deleteMeeting(this.state.pickedMeeting)}}
+                        />,
+                    ]}
+                >
+                    <DialogContent>
+                    </DialogContent>
+                </Dialog>
             </View>
         )
     }
@@ -112,6 +149,15 @@ const styles = StyleSheet.create({
         padding: 10,
         height: 40,
         width: '100%'
+    },
+    dialog: {
+        justifyContent: 'center',
+        alignItems: 'center',
+        margin: 10,
+    },
+    dialogText: {
+        marginTop: 15,
+        fontSize: 12
     },
     spinner: {
         flex: 2,

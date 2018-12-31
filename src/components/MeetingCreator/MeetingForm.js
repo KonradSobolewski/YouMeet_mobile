@@ -56,7 +56,7 @@ export default class MeetingForm extends React.Component {
 
     createMyMeeting = () => {
         if (this.state.pickedTime === null)
-            this.setMeetingHour(new Date().getHours().toString() + ':' + new Date().getMinutes().toString());
+            this.state.pickedTime = new Date().getHours().toString() + ':' + new Date().getMinutes().toString();
 
         createMeeting(this.state.isOneToOne, this.state.category, this.state.description, this.state.place, this.state.pickedTime)
             .then(res => {
