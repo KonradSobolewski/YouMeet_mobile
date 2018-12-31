@@ -120,7 +120,7 @@ export default class NotificationScreen extends React.Component {
                     />
 
         } else if (this.state.fontLoaded){
-            history = <View style={styles.noMeetingsContainer}><Text style={styles.noMeetings}>You haven't met yet</Text></View>;
+            history = <View style={styles.noMeetingsContainer}><Text style={styles.noMeetings}>You haven't joined to any meeting</Text></View>;
         }
         return (
             <View style={styles.container}>

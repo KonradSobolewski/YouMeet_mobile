@@ -74,7 +74,7 @@ export const createRootNavigator = (signedIn = false, data) => {
                                     joinMeetings: {
                                         screen: NotificationScreen,
                                         navigationOptions: {
-                                            tabBarLabel: 'Notifications',
+                                            tabBarLabel: 'Requested Meetings',
                                             showIcon: true,
                                             tabBarIcon: () => {
                                                 return <Ionicons name="md-mail-open" size={20} color={"white"}/>
@@ -103,7 +103,7 @@ export const createRootNavigator = (signedIn = false, data) => {
                                 }
                             ),
                             navigationOptions: {
-                                drawerLabel: 'Meetings',
+                                drawerLabel: 'Notifications',
                                 drawerIcon: () => {
                                     return <Ionicons name="md-mail" size={18}/>
                                 }
