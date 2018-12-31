@@ -8,7 +8,7 @@ const meetingItem = props => {
                 <Text style={styles.text}>Place: {props.meetingItem.params.placeDescription.replace(/(\r\n\t|\n|\r\t)/gm,' ')}</Text>
                 <Text style={styles.text}>Description: {props.meetingItem.params.description}</Text>
                 <Text style={styles.text}>Hour: {props.meetingItem.params.pickedTime}</Text>
-                <Text style={styles.text}>Multi Meeting: {props.meetingItem.is_one_to_one ? 'Yes' : 'No'}</Text>
+                <Text style={styles.text}>Multi Meeting: {props.meetingItem.is_one_to_one ? 'No' : 'Yes'}</Text>
                 <Text style={styles.text}>Category: {props.meetingItem.params.categoryName}</Text>
             </View>
             <View style={{borderLeftWidth:1, borderColor:'#373D3F', height: '85%'}}></View>
