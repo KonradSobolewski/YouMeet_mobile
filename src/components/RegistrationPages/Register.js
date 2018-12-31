@@ -88,7 +88,6 @@ export default class App extends React.Component {
             })
                 .then(res => {
                     if (res.status === 200) {
-                        console.log(JSON.parse(res._bodyText));
                         this.props.navigation.navigate('loginPage', {
                             regInfo: true
                         });

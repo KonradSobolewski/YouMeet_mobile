@@ -174,8 +174,6 @@ export default class Home extends React.Component {
     joinUser = (meetingId) => {
         joinMeeting(meetingId).then(response => response.json().then(data => {
                 if (this._isMounted) {
-
-                    console.log(data);
                     this.state.meetings
                         .filter((item) => (item.meeting_id == meetingId))
                         .map(item => {

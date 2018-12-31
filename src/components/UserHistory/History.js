@@ -39,7 +39,6 @@ export default class History extends React.Component {
         getMeetingHistory(ConstKeys.userInfo.email).then(response => response.json().then(data => {
                 if (this._isMounted) {
                     this.setState({history: data, historyLoaded: true, refreshing: false});
-                    console.log(data);
                 }
             }).catch(err => signOut(this.props.navigation))
         ).catch(err => signOut(this.props.navigation));

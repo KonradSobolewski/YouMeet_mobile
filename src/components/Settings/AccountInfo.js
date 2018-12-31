@@ -54,7 +54,6 @@ export default class AccountInfo extends React.Component {
             this.setState({hobbies: data});
         }))
             .catch(err => {
-                console.log(err);
                 this.props.navigation.navigate('homePage')
             })
     };

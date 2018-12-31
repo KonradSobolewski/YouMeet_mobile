@@ -58,7 +58,6 @@ export default class Login extends React.Component {
             })
                 .then(res => {
                     if (res.status === 200 && res.headers.map.bearer) {
-                        console.log(res);
                         ConstKeys.auth = 'Bearer ' + res.headers.map.bearer;
                         getUserByEmail(this.state.email)
                             .then(response => {
@@ -121,7 +120,6 @@ export default class Login extends React.Component {
             method: 'GET',
         })
             .then(res => {
-                console.log(res);
                 if (res.status === 200) {
                     ConstKeys.auth = res._bodyInit;
                     let data = {
@@ -137,7 +135,6 @@ export default class Login extends React.Component {
             })
             .catch(err => {
                     this.setState({errorDuringLog: true});
-                    console.log(err);
                     return 'error';
                 }
             );
@@ -157,7 +154,6 @@ export default class Login extends React.Component {
             await fetch(`https://graph.facebook.com/me?access_token=${token}&fields=id,email,name,picture.type(large)`)
                 .then(async res => {
                     let userInfo = await res.json();
-                    console.log(userInfo);
                     if (userInfo.error === undefined) {
                         const {firstName, lastName} = getUserNameAndLastName(userInfo.name);
                         userInfo['firstName'] = firstName;

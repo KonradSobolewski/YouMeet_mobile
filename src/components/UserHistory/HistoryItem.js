@@ -7,7 +7,6 @@ const historyItem = props => {
     let date = new Date(Date.parse(props.historyData.params.startDate));
     let minutes = (date.getMinutes() < 10 ? '0':'') + date.getMinutes();
     let dateTime = date.toDateString() + ' ' + date.getHours() + ':' + minutes;
-    console.log('\n\n\n' + props.historyData.meeting_id + '\n\n\n');
     return(
         <View style={styles.container}>
             {props.historyData.params.photo ? (
