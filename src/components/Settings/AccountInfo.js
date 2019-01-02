@@ -151,11 +151,11 @@ export default class AccountInfo extends React.Component {
                             }}
                             dialogStyle={styles.dialog}
                             width={0.8}
-                            height={0.15}
+                            height={0.2}
                             dialogTitle={<DialogTitle hasTitleBar={false} title="Welcome to YouMeet application"/>}
                         >
-                            <DialogContent>
-                                <Text style={styles.dialogText}>Please set your personal information to find new
+                            <DialogContent style={{justifyContent:'center', alignItems:'center'}}>
+                                <Text style={{alignSelf: 'center', textAlign: 'center'}}>Please set your personal information to find new
                                     meetings!</Text>
                             </DialogContent>
                         </Dialog>
@@ -287,6 +287,7 @@ const styles = StyleSheet.create({
         flex: 1,
         borderRadius: 5,
         marginTop: 35,
+        marginBottom: 35,
         backgroundColor: 'white',
         padding: 15,
         width: '80%',

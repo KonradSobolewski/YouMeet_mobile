@@ -27,23 +27,21 @@ export default class App extends React.Component {
         this.setState({fontLoaded: true});
         isSignedIn()
             .then(res => {
-                if (res !== false) {
-                    let data = JSON.parse(res);
-                    ConstKeys.userInfo = data.userInfo;
-                    ConstKeys.auth = data.auth;
-                    ConstKeys.hobbies = data.hobbies;
-                    ConstKeys.categories = data.categories;
-                    loadAppData().then(appData => {
-                        let appDataJson = JSON.parse(appData);
-                        ConstKeys.gender = appDataJson.gender;
-                        ConstKeys.minAge = appDataJson.minAge;
-                        ConstKeys.maxAge = appDataJson.maxAge;
-                        this.setState({signedIn: true, data: data, checkedSignIn: true});
-                    }).catch(err => {
-                        console.log('Cant load app settings');
-                        this.setState({signedIn: true, data: data, checkedSignIn: true});
-                    });
-                }
+                let data = JSON.parse(res);
+                ConstKeys.userInfo = data.userInfo;
+                ConstKeys.auth = data.auth;
+                ConstKeys.hobbies = data.hobbies;
+                ConstKeys.categories = data.categories;
+                loadAppData().then(appData => {
+                    let appDataJson = JSON.parse(appData);
+                    ConstKeys.gender = appDataJson.gender;
+                    ConstKeys.minAge = appDataJson.minAge;
+                    ConstKeys.maxAge = appDataJson.maxAge;
+                    this.setState({signedIn: true, data: data, checkedSignIn: true});
+                }).catch(err => {
+                    console.log('Cant load app settings');
+                    this.setState({signedIn: true, data: data, checkedSignIn: true});
+                });
                 this.setState({checkedSignIn: true});
             })
             .catch(err => alert("An error occurred"));

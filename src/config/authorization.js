@@ -19,7 +19,7 @@ export const isSignedIn = () => {
                 if (res !== null) {
                     resolve(res);
                 } else {
-                    resolve(false);
+                    reject(res);
                 }
             })
             .catch(err => reject(err));

@@ -109,7 +109,7 @@ export default class NotificationScreen extends React.Component {
                     dialogStyle={styles.dialog}
                     width={0.8}
                     height={0.25}
-                    dialogTitle={<DialogTitle title={this.state.pickedMeeting.params.placeDescription}/>}
+                    dialogTitle={<DialogTitle title={this.state.pickedMeeting.params.placeDescription} hasTitleBar={false} />}
                     actions={[
                         <DialogButton
                             text="MODIFY"

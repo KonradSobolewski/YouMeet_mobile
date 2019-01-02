@@ -256,7 +256,7 @@ const styles = StyleSheet.create({
     },
     dialogText: {
         marginTop: 15,
-        fontSize: 12
+        fontSize: 12, alignSelf: 'center', textAlign: 'center'
     },
     spinner: {
         position: 'absolute',
