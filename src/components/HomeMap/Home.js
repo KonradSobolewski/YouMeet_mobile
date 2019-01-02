@@ -6,8 +6,6 @@ import InviteModal from "./InviteModal";
 import {signOut} from '../../services/user.service'
 import {getMeetingPlaces, joinMeeting} from "../../services/meeting.service";
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import {Font} from "expo";
-import {getCategories} from "../../services/category.service";
 import ConstKeys from "../../config/app.consts";
 import Dialog, {SlideAnimation, ScaleAnimation, DialogContent} from 'react-native-popup-dialog';
 
@@ -25,7 +23,7 @@ export default class Home extends React.Component {
                 latitudeDelta: 0.0522,
                 longitudeDelta: 0.0321
             },
-            categories: [],
+            categories: ConstKeys.categories,
             category: 0,
             chosenPlace: null,
             meetingsLoaded: false,
@@ -43,9 +41,9 @@ export default class Home extends React.Component {
 
     async componentDidMount() {
         this._isMounted = true;
+        this.getAllCategories();
         this.getUserLocationHandler();
         this.getPlaces();
-        this.getAllCategories();
     }
 
     componentWillUnmount() {
@@ -95,15 +93,15 @@ export default class Home extends React.Component {
     };
 
     getAllCategories = () => {
-        if (this._isMounted) {
-            let categories = ConstKeys.categories;
+        if (!this.state.categoryLoaded) {
+            let categories = this.state.categories;
             categories.unshift({id: 0, type: 'Select category: All'});
             this.setState({categories: categories, categoryLoaded: true});
         }
     };
 
     isAllLoaded = () => {
-        return this.state.meetingsLoaded && this.state.userPositionLoaded && this.state.categoryLoaded && this._isMounted;
+        return this.state.meetingsLoaded && this.state.userPositionLoaded && this._isMounted;
     };
 
     filterMeetings = (index) => {

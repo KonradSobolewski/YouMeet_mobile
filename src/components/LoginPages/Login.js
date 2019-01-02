@@ -9,7 +9,7 @@ import {
     TouchableOpacity,
     View
 } from 'react-native';
-import {Font, LinearGradient} from 'expo';
+import {LinearGradient} from 'expo';
 import ConstKeys from '../../config/app.consts'
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {getUserNameAndLastName, validateEmail} from '../../services/string.service'

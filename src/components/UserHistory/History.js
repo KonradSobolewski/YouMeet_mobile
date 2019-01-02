@@ -1,6 +1,5 @@
 import React from 'react';
 import {StyleSheet, FlatList, Text, View, RefreshControl, ActivityIndicator} from "react-native";
-import {Font} from 'expo';
 import HistoryItem from './HistoryItem';
 import {getMeetingHistory} from "../../services/meeting.service";
 import {signOut} from "../../services/user.service";
