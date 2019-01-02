@@ -3,10 +3,8 @@ import {StyleSheet, Text, TouchableOpacity, View} from "react-native";
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
 const hobbyItem = props => {
-    let text = null;
-    if(props.fontLoaded) {
-        text =  <Text style={styles.text}>{props.itemName}</Text>;
-    }
+    let text =  <Text style={styles.text}>{props.itemName}</Text>;
+
     return (
         <View>
             <TouchableOpacity style={styles.buttonContainer} onPress={() => props.deleteHobby(props.itemName)}>

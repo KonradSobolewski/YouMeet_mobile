@@ -7,25 +7,13 @@ export default class SuccessfullCreate extends React.Component {
 
     constructor(props) {
         super(props);
-        this.state = {
-            fontLoaded: false,
-        }
-    }
-
-    async componentDidMount() {
-        await Font.loadAsync({
-            'Courgette': require('../../../assets/fonts/Courgette-Regular.ttf'),
-        });
-        this.setState({fontLoaded: true});
+        this.state = {}
     }
 
     render() {
-        let aboveImageText = null;
-        let underImageText = null;
-        if (this.state.fontLoaded) {
-            aboveImageText = <Text style={styles.goodByeText}>Thank you for creating a meeting!</Text>;
-            underImageText = <Text style={styles.goodByeText}>Double-Click to go back to main screen</Text>;
-        }
+        let aboveImageText = <Text style={styles.goodByeText}>Thank you for creating a meeting!</Text>;
+        let underImageText = <Text style={styles.goodByeText}>Double-Click to go back to main screen</Text>;
+
         return (
             <View style={styles.wrapper}>
                 <LinearGradient colors={['#b22b7d', '#FFF']} locations={[0, 0.8]} style={styles.gradient}>

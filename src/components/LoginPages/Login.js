@@ -13,23 +13,14 @@ import {Font, LinearGradient} from 'expo';
 import ConstKeys from '../../config/app.consts'
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {getUserNameAndLastName, validateEmail} from '../../services/string.service'
-import {getUserByEmail, signIn, matchResponseToUserInfo} from '../../services/user.service'
+import {getUserByEmail, signIn, matchResponseToUserInfo, signOut} from '../../services/user.service'
+import {getCategories} from "../../services/category.service";
+import {getAllHobbies} from "../../services/hobby.service";
 
 export default class Login extends React.Component {
-    async componentDidMount() {
-        await Font.loadAsync({
-            'Courgette': require('../../../assets/fonts/Courgette-Regular.ttf'),
-            'Dosis': require('../../../assets/fonts/Dosis-Regular.ttf'),
-            'Gloria': require('../../../assets/fonts/GloriaHallelujah.ttf'),
-            'Cabin': require('../../../assets/fonts/Cabin-Regular.ttf'),
-        });
-        this.setState({fontLoaded: true});
-    }
-
     state = {
         email: null,
         password: null,
-        fontLoaded: false,
         userInfo: null,
         errorDuringLog: false
     };
@@ -68,7 +59,7 @@ export default class Login extends React.Component {
                                 };
                                 ConstKeys.userInfo = data.userInfo;
                                 this.setState({errorDuringLog: false});
-                                signIn(data, this.props.navigation);
+                                this.getAllCategories(data);
                             })
                             .catch(err => this.setState({errorDuringLog: true}));
                     }
@@ -81,6 +72,30 @@ export default class Login extends React.Component {
         } else {
             this.setState({errorDuringLog: true});
         }
+    };
+
+    getAllCategories = (infoToSave) => {
+        getCategories().then(response => response.json().then(data => {
+                ConstKeys.categories = data;
+                infoToSave['categories'] = data;
+                this.getHobbies(infoToSave);
+            }).catch(err => this.setState({errorDuringLog: true}))
+        ).catch(err => {
+            this.setState({errorDuringLog: true});
+            console.log('lol');
+        });
+    };
+
+    getHobbies = (infoToSave) => {
+        getAllHobbies().then(res => res.json().then(data => {
+            ConstKeys.hobbies = data;
+            infoToSave['hobbies'] = data;
+            signIn(infoToSave, this.props.navigation);
+        }))
+            .catch(err => {
+                this.setState({errorDuringLog: true});
+                console.log('lol2');
+            })
     };
 
     createFbUserAccount = (userInfo) => {
@@ -126,7 +141,7 @@ export default class Login extends React.Component {
                         userInfo: userInfo,
                         auth: res._bodyInit
                     };
-                    signIn(data, this.props.navigation);
+                    this.getAllCategories(data);
                 }
                 else {
                     this.setState({errorDuringLog: true});
@@ -170,29 +185,21 @@ export default class Login extends React.Component {
     };
 
     render() {
-        let title = null;
-        let description = null;
-        let errorDuringUpload = null;
-        let informationalText = null;
-        let iconFB = null;
-        let login = null;
-        if (this.state.fontLoaded) {
-            title = <Text style={styles.title}> YouMeet </Text>;
-            description = <Text style={styles.description}>Meet new people in entertaining places</Text>;
-            errorDuringUpload = this.state.errorDuringLog ? (
-                <Text style={styles.errorMessage}> There was an error during loging.
-                </Text>
-            ) : null;
-            informationalText = this.props.navigation.getParam('regInfo') === true ? (
-                <Text style={styles.infoMessage}> You have successfully registered!
-                </Text>
-            ) : null;
-            iconFB = <Text style={styles.facebookTxt}>
-                <Ionicons name="logo-facebook" size={30} color={"white"}/>
-            </Text>;
-            login = <Text style={styles.buttonText}>LOGIN</Text>;
+        let title = <Text style={styles.title}> YouMeet </Text>;
+        let description = <Text style={styles.description}>Meet new people in entertaining places</Text>;
+        let errorDuringUpload = this.state.errorDuringLog ? (
+            <Text style={styles.errorMessage}> There was an error during loging.
+            </Text>
+        ) : null;
+        let informationalText = this.props.navigation.getParam('regInfo') === true ? (
+            <Text style={styles.infoMessage}> You have successfully registered!
+            </Text>
+        ) : null;
+        let iconFB = <Text style={styles.facebookTxt}>
+            <Ionicons name="logo-facebook" size={30} color={"white"}/>
+        </Text>;
+        let login = <Text style={styles.buttonText}>LOGIN</Text>;
 
-        }
         return (
             <LinearGradient colors={['#b22b7d', '#ddb6ca']} locations={[0, 0.8]} style={styles.gradient}>
                 <KeyboardAvoidingView behavior="padding" style={styles.container}>

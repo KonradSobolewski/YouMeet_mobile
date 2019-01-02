@@ -13,21 +13,13 @@ export default class History extends React.Component {
         this.state = {
             historyLoaded: false,
             history: [],
-            fontLoaded: false,
             refreshing: false,
         };
     }
     _isMounted = false;
 
-    async componentDidMount() {
+    componentDidMount() {
         this._isMounted = true;
-        await Font.loadAsync({
-            'Courgette': require('../../../assets/fonts/Courgette-Regular.ttf'),
-            'Dosis': require('../../../assets/fonts/Dosis-Regular.ttf'),
-            'Gloria': require('../../../assets/fonts/GloriaHallelujah.ttf'),
-            'Cabin': require('../../../assets/fonts/Cabin-Regular.ttf'),
-        });
-        this.setState({fontLoaded: true});
         this.getHistory();
     }
 
@@ -65,7 +57,7 @@ export default class History extends React.Component {
 
     render() {
         let history = null;
-        if (this.state.historyLoaded && this.state.fontLoaded && this.state.history.length > 0 ) {
+        if (this.state.historyLoaded && this.state.history.length > 0 ) {
             history =
                     <FlatList style={styles.flatList}
                                 data={this.state.history}
@@ -80,12 +72,12 @@ export default class History extends React.Component {
                                 }
                     />
 
-        } else if (this.state.fontLoaded){
+        } else {
             history = <View style={styles.noMeetingsContainer}><Text style={styles.noMeetings}>You haven't met yet</Text></View>;
         }
         return (
             <View style={styles.container}>
-                <UserInfo showHamburger={true} navigator={this.props.navigation} fontLoaded={this.state.fontLoaded}/>
+                <UserInfo showHamburger={true} navigator={this.props.navigation}/>
                 {this.state.historyLoaded ? null : (<ActivityIndicator size={90} color="#B22B7D" style={styles.spinner}/>)}
                 {history}
             </View>

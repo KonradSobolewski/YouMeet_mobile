@@ -10,12 +10,13 @@ import {
 } from "react-native";
 import {Font, LinearGradient} from "expo";
 import ConstKeys from '../../config/app.consts'
-import {getAllHobbies, getAllUserHobbies} from "../../services/hobby.service";
+import {getAllUserHobbies} from "../../services/hobby.service";
 import {matchResponseToUserInfo, updateUser} from "../../services/user.service";
 import {validateLength} from "../../services/string.service";
 import UserInfo from "../HomeMap/UserInfo";
 import HobbyItem from './HobbyItem';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import Dialog, {DialogContent, ScaleAnimation, DialogTitle} from "react-native-popup-dialog";
 
 export default class AccountInfo extends React.Component {
     constructor(props) {
@@ -31,32 +32,12 @@ export default class AccountInfo extends React.Component {
             },
             selectedValue: 1,
             switchState: ConstKeys.userInfo.gender !== 'male',
-            hobbies: [],
-            fontLoaded: false,
+            hobbies: ConstKeys.hobbies,
             valid: true,
+            dialogVisible: ConstKeys.userInfo.firstTimeLogging === true
         };
         this.getUserHobbies();
-        this.getHobbies();
     }
-
-    async componentDidMount() {
-        await Font.loadAsync({
-            'Courgette': require('../../../assets/fonts/Courgette-Regular.ttf'),
-            'Dosis': require('../../../assets/fonts/Dosis-Regular.ttf'),
-            'Gloria': require('../../../assets/fonts/GloriaHallelujah.ttf'),
-            'Cabin': require('../../../assets/fonts/Cabin-Regular.ttf'),
-        });
-        this.setState({fontLoaded: true});
-    }
-
-    getHobbies = () => {
-        getAllHobbies().then(res => res.json().then(data => {
-            this.setState({hobbies: data});
-        }))
-            .catch(err => {
-                this.props.navigation.navigate('homePage')
-            })
-    };
 
     getUserHobbies = () => {
         getAllUserHobbies(ConstKeys.userInfo.email).then(res => res.json().then(data => {
@@ -128,35 +109,25 @@ export default class AccountInfo extends React.Component {
     };
 
     render() {
-        let firstName = null;
-        let lastName = null;
-        let age = null;
-        let gender = null;
-        let chooseHobby = null;
-        let yourHobby = null;
-        let update = null;
-
-        if (this.state.fontLoaded) {
-            firstName = <Text style={styles.label}>
-                First Name:
-            </Text>;
-            lastName = <Text style={styles.label}>
-                Last Name:
-            </Text>;
-            age = <Text style={styles.label}>
-                Your age: {this.state.userInfo.age}
-            </Text>;
-            gender = <Text style={styles.label}>
-                Your gender:
-            </Text>;
-            yourHobby = <Text style={styles.label}>
-                Your hobbies:
-            </Text>;
-            chooseHobby = <Text style={styles.label}>
-                Choose hobby:
-            </Text>;
-            update = <Text style={styles.submitText}>UPDATE</Text>;
-        }
+        let firstName = <Text style={styles.label}>
+            First Name:
+        </Text>;
+        let lastName = <Text style={styles.label}>
+            Last Name:
+        </Text>;
+        let age = <Text style={styles.label}>
+            Your age: {this.state.userInfo.age}
+        </Text>;
+        let gender = <Text style={styles.label}>
+            Your gender:
+        </Text>;
+        let yourHobby = <Text style={styles.label}>
+            Your hobbies:
+        </Text>;
+        let chooseHobby = <Text style={styles.label}>
+            Choose hobby:
+        </Text>;
+        let update = <Text style={styles.submitText}>UPDATE</Text>;
 
         let hobbies = this.state.hobbies.map(hobby => {
             return (
@@ -166,9 +137,28 @@ export default class AccountInfo extends React.Component {
 
         return (
             <LinearGradient colors={['#b22b7d', '#ddb6ca']} locations={[0, 0.8]} style={styles.gradient}>
-                <UserInfo navigator={this.props.navigation} showHamburger={false} fontLoaded={this.state.fontLoaded}/>
+                <UserInfo navigator={this.props.navigation} showHamburger={false}/>
                 <KeyboardAvoidingView behavior="padding" style={styles.container}>
                     <ScrollView>
+                        <Dialog
+                            visible={this.state.dialogVisible}
+                            dialogAnimation={new ScaleAnimation({
+                                toValue: 0, // optional
+                                useNativeDriver: true, // optional
+                            })}
+                            onTouchOutside={() => {
+                                this.setState({dialogVisible: false});
+                            }}
+                            dialogStyle={styles.dialog}
+                            width={0.8}
+                            height={0.15}
+                            dialogTitle={<DialogTitle hasTitleBar={false} title="Welcome to YouMeet application"/>}
+                        >
+                            <DialogContent>
+                                <Text style={styles.dialogText}>Please set your personal information to find new
+                                    meetings!</Text>
+                            </DialogContent>
+                        </Dialog>
                         <View style={styles.scrollView}>
                             {firstName}
                             <TextInput
@@ -223,7 +213,7 @@ export default class AccountInfo extends React.Component {
                                 {this.state.userInfo.userHobbies.map(hobby => {
                                     return (
                                         <HobbyItem itemName={hobby} deleteHobby={(value) => this.deleteUserHobby(value)}
-                                                   fontLoaded={this.state.fontLoaded} showDeleteButton={true}/>
+                                                   showDeleteButton={true}/>
                                     )
                                 })
                                 }
@@ -241,7 +231,7 @@ export default class AccountInfo extends React.Component {
 
 const styles = StyleSheet.create({
     container: {
-        flex:1
+        flex: 1
     },
     gradient: {
         position: 'absolute',
@@ -255,6 +245,11 @@ const styles = StyleSheet.create({
         flexGrow: 1,
         justifyContent: 'center',
         marginTop: 100
+    },
+    dialog: {
+        justifyContent: 'center',
+        alignItems: 'center',
+        margin: 10,
     },
     label: {
         marginTop: 5,
@@ -289,7 +284,7 @@ const styles = StyleSheet.create({
         backgroundColor: 'rgba(255,51,0,0.2)'
     },
     submitButton: {
-        flex:1,
+        flex: 1,
         borderRadius: 5,
         marginTop: 35,
         backgroundColor: 'white',

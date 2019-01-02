@@ -30,19 +30,8 @@ export default class App extends React.Component {
         gender: 'male',
         account: 'personal',
         genderState: false,
-        accountTypeState: false,
-        fontLoaded: false
+        accountTypeState: false
     };
-
-    async componentDidMount() {
-        await Font.loadAsync({
-            'Courgette': require('../../../assets/fonts/Courgette-Regular.ttf'),
-            'Dosis': require('../../../assets/fonts/Dosis-Regular.ttf'),
-            'Gloria': require('../../../assets/fonts/GloriaHallelujah.ttf'),
-            'Cabin': require('../../../assets/fonts/Cabin-Regular.ttf'),
-        });
-        this.setState({fontLoaded: true});
-    }
 
     updateState = (key, value) => {
         let result = validateLength(value);
@@ -126,20 +115,15 @@ export default class App extends React.Component {
     };
 
     render() {
-        let age = null;
-        let gender = null;
-        let register = null;
-        let accountType = null;
-        if (this.state.fontLoaded) {
-            age = <Text style={styles.label}>
-                Your age: {this.state.age}
-            </Text>;
-            gender = <Text style={styles.switchLabel}>
-                Gender:
-            </Text>;
-            accountType = <Text style={styles.switchLabel}>Account type: </Text>;
-            register = <Text style={styles.registerText}>REGISTER</Text>;
-        }
+        let age = <Text style={styles.label}>
+            Your age: {this.state.age}
+        </Text>;
+        let gender = <Text style={styles.switchLabel}>
+            Gender:
+        </Text>;
+        let accountType = <Text style={styles.switchLabel}>Account type: </Text>;
+        let register = <Text style={styles.registerText}>REGISTER</Text>;
+
         return (
             <LinearGradient colors={['#b22b7d', '#ddb6ca']} locations={[0, 0.8]} style={styles.gradient}>
                 <KeyboardAvoidingView behavior="padding" style={styles.container}>

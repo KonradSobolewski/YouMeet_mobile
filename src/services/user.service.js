@@ -39,7 +39,8 @@ export const updateUser = (userInfo) => {
                     photo: userInfo.photo,
                     hobbies: userInfo.userHobbies,
                     age: userInfo.age,
-                    gender: userInfo.gender
+                    gender: userInfo.gender,
+                    firstTimeLogging: ConstKeys.userInfo.firstTimeLogging
                 }
             })
         })
@@ -65,7 +66,12 @@ export const signOut = (navigator) => {
 
 export const signIn = (data, navigator) => {
     onSignIn(JSON.stringify(data))
-        .then(() => navigator.navigate('homePage', data))
+        .then(() => {
+            if (ConstKeys.userInfo.firstTimeLogging === true)
+                navigator.navigate('accountInfo');
+            else
+                navigator.navigate('homePage', data)
+        })
         .catch(err => console.log(err));
 };
 
@@ -79,7 +85,8 @@ export const matchResponseToUserInfo = (userData) => {
         photo: userData.params.photo,
         age: userData.params.age,
         gender: userData.params.gender,
-        meetingCounter: ConstKeys.meetingCounter - userData.params.meetingCounter
+        meetingCounter: ConstKeys.meetingCounter - userData.params.meetingCounter,
+        firstTimeLogging: userData.params.firstTimeLogging
     }
 };
 

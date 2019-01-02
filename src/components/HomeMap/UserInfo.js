@@ -5,12 +5,9 @@ import humburger from '../../../assets/images/humburger.png'
 import {getUserIcon} from "../../services/user.service";
 
 const userInfo = props => {
-    let info = null;
-    if (props.fontLoaded) {
-        info = <Text style={styles.userNick}>
+    let info = <Text style={styles.userNick}>
             {ConstKeys.userInfo.name}, {ConstKeys.userInfo.age}
         </Text>;
-    }
     return (
         <View style={styles.userView}>
             <View style={styles.container}>

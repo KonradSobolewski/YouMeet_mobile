@@ -18,6 +18,7 @@ import NotificationScreen from '../components/Notifications/NotificationScreen'
 import OwnMeetingsScreen from '../components/OwnMeetingsPanel/OwnMeetingsScreen'
 import History from "../components/UserHistory/History"
 import SuccessfullCreate from "../components/MeetingCreator/SuccessfullCreate"
+import ConstKeys from "./app.consts";
 
 export const createRootNavigator = (signedIn = false, data) => {
     return createStackNavigator({
@@ -161,9 +162,16 @@ export const createRootNavigator = (signedIn = false, data) => {
             },
         },
         {
-            initialRouteName: signedIn ? 'homePage' : 'loginPage',
+            initialRouteName: whatScreenShouldGo(signedIn),
             initialRouteParams: signedIn ? {userInfo: data.userInfo, auth: data.auth} : null,
             mode: 'modal',
             headerMode: 'none',
         });
+};
+
+export const whatScreenShouldGo = (signedIn) => {
+    if (signedIn) {
+        return ConstKeys.userInfo.firstTimeLogging ? 'accountInfo' : 'homePage';
+    }
+    return 'loginPage';
 };

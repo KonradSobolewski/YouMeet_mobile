@@ -3,6 +3,7 @@ import {StatusBar} from 'react-native';
 import {createRootNavigator} from './src/config/router'
 import {isSignedIn, loadAppData} from "./src/config/authorization";
 import ConstKeys from './src/config/app.consts'
+import {Font} from "expo";
 
 export default class App extends React.Component {
     constructor(props) {
@@ -11,17 +12,27 @@ export default class App extends React.Component {
             signedIn: false,
             data: null,
             checkedSignIn: false,
+            fontLoaded: false
         };
     }
 
-    componentDidMount() {
+    async componentDidMount() {
         StatusBar.setHidden(true);
+        await Font.loadAsync({
+            'Courgette': require('./assets/fonts/Courgette-Regular.ttf'),
+            'Dosis': require('./assets/fonts/Dosis-Regular.ttf'),
+            'Gloria': require('./assets/fonts/GloriaHallelujah.ttf'),
+            'Cabin': require('./assets/fonts/Cabin-Regular.ttf'),
+        });
+        this.setState({fontLoaded: true});
         isSignedIn()
             .then(res => {
                 if (res !== false) {
                     let data = JSON.parse(res);
                     ConstKeys.userInfo = data.userInfo;
                     ConstKeys.auth = data.auth;
+                    ConstKeys.hobbies = data.hobbies;
+                    ConstKeys.categories = data.categories;
                     loadAppData().then(appData => {
                         let appDataJson = JSON.parse(appData);
                         ConstKeys.gender = appDataJson.gender;
@@ -39,7 +50,7 @@ export default class App extends React.Component {
     }
 
     render() {
-        if (!this.state.checkedSignIn) {
+        if (!this.state.checkedSignIn || !this.state.fontLoaded) {
             return null;
         }
         const Layout = createRootNavigator(this.state.signedIn, this.state.data);

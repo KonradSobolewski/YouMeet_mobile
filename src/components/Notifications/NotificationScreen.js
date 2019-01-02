@@ -15,7 +15,6 @@ export default class NotificationScreen extends React.Component {
             history: [],
             newJoinersMeetings: [],
             newJoinersLoaded: false,
-            fontLoaded: false,
             refreshing: false,
         };
     }
@@ -23,13 +22,6 @@ export default class NotificationScreen extends React.Component {
 
     async componentDidMount() {
         this._isMounted = true;
-        await Font.loadAsync({
-            'Courgette': require('../../../assets/fonts/Courgette-Regular.ttf'),
-            'Dosis': require('../../../assets/fonts/Dosis-Regular.ttf'),
-            'Gloria': require('../../../assets/fonts/GloriaHallelujah.ttf'),
-            'Cabin': require('../../../assets/fonts/Cabin-Regular.ttf'),
-        });
-        this.setState({fontLoaded: true});
         this.getSubscribedTo();
         this.getNewJoiners();
     }
@@ -88,7 +80,7 @@ export default class NotificationScreen extends React.Component {
     render() {
         let history = null;
         let newJoiners = null;
-        if (this.state.newJoinersLoaded && this.state.fontLoaded && this.state.newJoinersMeetings.length > 0 ) {
+        if (this.state.newJoinersLoaded  && this.state.newJoinersMeetings.length > 0 ) {
             newJoiners =
                     <FlatList style={styles.flatList}
                                 data={this.state.newJoinersMeetings}
@@ -104,7 +96,7 @@ export default class NotificationScreen extends React.Component {
                     />
 
         }
-        if (this.state.historyLoaded && this.state.fontLoaded && this.state.history.length > 0 ) {
+        if (this.state.historyLoaded && this.state.history.length > 0 ) {
             history =
                     <FlatList style={styles.flatList}
                                 data={this.state.history}
@@ -119,7 +111,7 @@ export default class NotificationScreen extends React.Component {
                                 }
                     />
 
-        } else if (this.state.fontLoaded){
+        } else {
             history = <View style={styles.noMeetingsContainer}><Text style={styles.noMeetings}>You haven't joined to any meeting</Text></View>;
         }
         return (

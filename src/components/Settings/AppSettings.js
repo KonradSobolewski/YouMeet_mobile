@@ -13,21 +13,10 @@ export default class AppSettings extends React.Component {
         this.state = {
             switchState: ConstKeys.gender !== 'male',
             gender: ConstKeys.gender,
-            fontLoaded: false,
             minAge: ConstKeys.minAge,
             maxAge: ConstKeys.maxAge,
             bothGenders: ConstKeys.gender === 'all',
         };
-    }
-
-    async componentDidMount() {
-        await Font.loadAsync({
-            'Courgette': require('../../../assets/fonts/Courgette-Regular.ttf'),
-            'Dosis': require('../../../assets/fonts/Dosis-Regular.ttf'),
-            'Gloria': require('../../../assets/fonts/GloriaHallelujah.ttf'),
-            'Cabin': require('../../../assets/fonts/Cabin-Regular.ttf'),
-        });
-        this.setState({fontLoaded: true});
     }
 
     setMinAge = (value) => {
@@ -41,7 +30,7 @@ export default class AppSettings extends React.Component {
     };
 
     setBothGender = () => {
-        if(!this.state.bothGenders) {
+        if (!this.state.bothGenders) {
             this.setState({gender: 'all', bothGenders: true})
         } else {
             this.setState({gender: ConstKeys.gender, bothGenders: false})
@@ -67,23 +56,18 @@ export default class AppSettings extends React.Component {
     };
 
     render() {
-        let age = null;
-        let gender = null;
-        let update = null;
-        let all = null;
-        if (this.state.fontLoaded) {
-            age = <Text style={styles.label}>
-                Search age: {this.state.minAge} - {this.state.maxAge}
-            </Text>;
-            gender = <Text style={styles.label}>
-                Search gender: {this.state.gender}
-            </Text>;
-            update = <Text style={styles.submitText}>UPDATE</Text>;
-            all = <Text style={styles.labelCheck}>Both:</Text>;
-        }
+        let age = <Text style={styles.label}>
+            Search age: {this.state.minAge} - {this.state.maxAge}
+        </Text>;
+        let gender = <Text style={styles.label}>
+            Search gender: {this.state.gender}
+        </Text>;
+        let update = <Text style={styles.submitText}>UPDATE</Text>;
+        let all = <Text style={styles.labelCheck}>Both:</Text>;
+
         return (
             <LinearGradient colors={['#b22b7d', '#ddb6ca']} locations={[0, 0.8]} style={styles.gradient}>
-                <UserInfo showHamburger={false} navigator={this.props.navigation} fontLoaded={this.state.fontLoaded}/>
+                <UserInfo showHamburger={false} navigator={this.props.navigation}/>
                 <View style={styles.container}>
                     {age}
                     <MultiSlider values={[this.state.minAge, this.state.maxAge]}

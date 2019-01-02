@@ -1,7 +1,7 @@
 import React from 'react';
 
 export default class ConstKeys {
-    static apiUrl = 'http://192.168.8.100:8080';
+    static apiUrl = 'http://192.168.8.103:8080';
     static auth = '';
     static userInfo = {};
     static minLength = 3;
@@ -9,4 +9,6 @@ export default class ConstKeys {
     static maxAge = 50;
     static gender = 'male';
     static meetingCounter = 3;
+    static categories = {};
+    static hobbies = {};
 }

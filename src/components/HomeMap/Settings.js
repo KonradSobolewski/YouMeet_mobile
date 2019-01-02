@@ -5,17 +5,8 @@ import {Font, LinearGradient} from "expo";
 import UserInfo from "./UserInfo";
 
 export default class Settings extends React.Component {
-    state = {
-      fontLoaded: false
-    };
-    async componentDidMount() {
-        await Font.loadAsync({
-            'Courgette': require('../../../assets/fonts/Courgette-Regular.ttf'),
-            'Dosis': require('../../../assets/fonts/Dosis-Regular.ttf'),
-            'Gloria': require('../../../assets/fonts/GloriaHallelujah.ttf'),
-        });
-        this.setState({fontLoaded: true});
-    }
+    state = {};
+
     goToAccountInfo = () => {
         this.props.navigation.navigate('accountInfo');
     };
@@ -25,41 +16,36 @@ export default class Settings extends React.Component {
     };
 
     render() {
-        let edit = null;
-        let app = null;
-        let footerTxt= null;
-        let premium = null
-        if (this.state.fontLoaded) {
-            edit =  <Text style={styles.text}>
-                Edit account
-            </Text>;
-            app =  <Text style={styles.text}>
-                App settings
-            </Text>;
-            premium =  <Text style={styles.text}>
-                Buy premium
-            </Text>;
-            footerTxt = <Text style={styles.footerTxt}>
-                YouMeet &copy; version 0.2
-            </Text>;
-        }
+        let edit = <Text style={styles.text}>
+            Edit account
+        </Text>;
+        let app = <Text style={styles.text}>
+            App settings
+        </Text>;
+        let premium = <Text style={styles.text}>
+            Buy premium
+        </Text>;
+        let footerTxt = <Text style={styles.footerTxt}>
+            YouMeet &copy; version 0.2
+        </Text>;
+
         return (
             <LinearGradient colors={['#b22b7d', '#ddb6ca']} locations={[0, 0.8]} style={styles.gradient}>
                 <KeyboardAvoidingView behavior="padding" style={styles.container}>
                     <ScrollView>
-                        <UserInfo showHamburger={true} navigator={this.props.navigation} fontLoaded={this.state.fontLoaded}/>
+                        <UserInfo showHamburger={true} navigator={this.props.navigation}/>
                         <View style={styles.area}>
                             <TouchableOpacity style={styles.button} onPress={this.goToAccountInfo}>
                                 <Ionicons name="md-person" size={70} color={'white'} style={styles.icon}/>
                                 {edit}
                             </TouchableOpacity>
-                            <View style={{borderWidth:1, borderColor:'white', width:150}}></View>
+                            <View style={{borderWidth: 1, borderColor: 'white', width: 150}}></View>
                             <TouchableOpacity style={styles.button} onPress={this.goToAppSettings}>
                                 <Ionicons name="md-settings" size={70} color={'white'} style={styles.icon}/>
                                 {app}
                             </TouchableOpacity>
 
-                            <View style={{borderWidth:1, borderColor:'white', width:150}}></View>
+                            <View style={{borderWidth: 1, borderColor: 'white', width: 150}}></View>
                             <TouchableOpacity style={styles.button} onPress={this.goToAppSettings}>
                                 <Ionicons name="md-cash" size={70} color={'white'} style={styles.icon}/>
                                 {premium}
@@ -93,7 +79,7 @@ const styles = StyleSheet.create({
         marginTop: 130,
         margin: 20,
         padding: 20,
-        justifyContent: 'center', alignItems: 'center',elevation: 1
+        justifyContent: 'center', alignItems: 'center', elevation: 1
     },
     button: {
         margin: 20,
@@ -117,7 +103,7 @@ const styles = StyleSheet.create({
     },
     footer: {
         padding: 10,
-        position: 'absolute', left: 0, right: 0, bottom: 0,  justifyContent: 'center', alignItems: 'center',
+        position: 'absolute', left: 0, right: 0, bottom: 0, justifyContent: 'center', alignItems: 'center',
     },
     footerTxt: {
         color: 'white',

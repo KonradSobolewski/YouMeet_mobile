@@ -9,7 +9,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import {Font} from "expo";
 import {getCategories} from "../../services/category.service";
 import ConstKeys from "../../config/app.consts";
-import Dialog, {SlideAnimation,ScaleAnimation, DialogContent} from 'react-native-popup-dialog';
+import Dialog, {SlideAnimation, ScaleAnimation, DialogContent} from 'react-native-popup-dialog';
 
 export default class Home extends React.Component {
 
@@ -31,7 +31,6 @@ export default class Home extends React.Component {
             meetingsLoaded: false,
             meetings: [],
             filteredMeetings: [],
-            fontLoaded: false,
             userPositionLoaded: false,
             categoryLoaded: false,
             modalVisible: false,
@@ -47,13 +46,6 @@ export default class Home extends React.Component {
         this.getUserLocationHandler();
         this.getPlaces();
         this.getAllCategories();
-        await Font.loadAsync({
-            'Courgette': require('../../../assets/fonts/Courgette-Regular.ttf'),
-            'Dosis': require('../../../assets/fonts/Dosis-Regular.ttf'),
-            'Gloria': require('../../../assets/fonts/GloriaHallelujah.ttf'),
-            'Cabin': require('../../../assets/fonts/Cabin-Regular.ttf'),
-        });
-        this.state.fontLoaded = true;
     }
 
     componentWillUnmount() {
@@ -104,16 +96,14 @@ export default class Home extends React.Component {
 
     getAllCategories = () => {
         if (this._isMounted) {
-            getCategories().then(response => response.json().then(data => {
-                    data.unshift({id: 0, type: 'Select category: All'});
-                    this.setState({categories: data, categoryLoaded: true});
-                }).catch(err => signOut(this.props.navigation))
-            ).catch(err => signOut(this.props.navigation));
+            let categories = ConstKeys.categories;
+            categories.unshift({id: 0, type: 'Select category: All'});
+            this.setState({categories: categories, categoryLoaded: true});
         }
     };
 
     isAllLoaded = () => {
-        return this.state.meetingsLoaded && this.state.fontLoaded && this.state.userPositionLoaded && this.state.categoryLoaded && this._isMounted;
+        return this.state.meetingsLoaded && this.state.userPositionLoaded && this.state.categoryLoaded && this._isMounted;
     };
 
     filterMeetings = (index) => {
@@ -200,7 +190,6 @@ export default class Home extends React.Component {
                          modalVisible={this.state.modalVisible}
                          inviteUser={() => this.joinUser(meeting.meeting_id)}
                          closeModal={() => this.closeModal()}
-                         fontLoaded={this.state.fontLoaded}
             />
         );
     };
@@ -229,7 +218,7 @@ export default class Home extends React.Component {
                                                  }}
                                                  setDialogVisibility={() => this.setState({dialogVisible: true})}
                                                  style={styles.map}/>) : null}
-                <UserInfo showHamburger={true} navigator={this.props.navigation} fontLoaded={this.state.fontLoaded}/>
+                <UserInfo showHamburger={true} navigator={this.props.navigation}/>
                 <Dialog
                     visible={this.state.dialogVisible}
                     dialogAnimation={new ScaleAnimation({

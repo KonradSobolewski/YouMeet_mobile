@@ -5,25 +5,20 @@ import {LinearGradient} from "expo";
 import HobbyItem from "../Settings/HobbyItem";
 
 const inviteModal = props => {
-    let name = null;
-    let place = null;
-    let description = null;
-    let cancel = null;
-    let invite = null;
     let additionalInformation = null;
-    let time = null;
-    let commonHobbies = null;
-    if(props.fontLoaded) {
-        name =  <Text style={styles.name}>{props.meeting.params.firstName + ' '+ props.meeting.params.lastName + ', ' + props.meeting.params.age}</Text>;
-        place =  <Text style={styles.place}>Place: {props.meeting.params.placeDescription}</Text>;
-        description =  <Text style={styles.description}>Description: {props.meeting.params.description}</Text>;
-        cancel =  <Text style={styles.textButton}>Cancel</Text>;
-        invite =  <Text style={styles.textButton}>Join</Text>;
-        if(props.meeting.additionalInformation)
-          additionalInformation = <Text style={styles.place}>Invitation status: {props.meeting.additionalInformation}</Text>;
-        time =  <Text style={styles.name}>Meeting hour: {props.meeting.params.pickedTime}</Text>;
-        commonHobbies =  <Text style={styles.place}>Common Hobbies: </Text>;
-    }
+
+    let name = <Text
+        style={styles.name}>{props.meeting.params.firstName + ' ' + props.meeting.params.lastName + ', ' + props.meeting.params.age}</Text>;
+    let place = <Text style={styles.place}>Place: {props.meeting.params.placeDescription}</Text>;
+    let description = <Text style={styles.description}>Description: {props.meeting.params.description}</Text>;
+    let cancel = <Text style={styles.textButton}>Cancel</Text>;
+    let invite = <Text style={styles.textButton}>Join</Text>;
+    if (props.meeting.additionalInformation)
+        additionalInformation =
+            <Text style={styles.place}>Invitation status: {props.meeting.additionalInformation}</Text>;
+    let time = <Text style={styles.name}>Meeting hour: {props.meeting.params.pickedTime}</Text>;
+    let commonHobbies = <Text style={styles.place}>Common Hobbies: </Text>;
+
     return (
         <Modal
             style={styles.modal}
@@ -50,7 +45,7 @@ const inviteModal = props => {
                             {props.meeting.params.commonHobbies.map(hobby => {
                                 return (
                                     <HobbyItem itemName={hobby} deleteHobby={(value) => console.log(value)}
-                                               fontLoaded={props.fontLoaded} showDeleteButton={false}/>
+                                              showDeleteButton={false}/>
                                 )
                             })
                             }
@@ -73,15 +68,15 @@ const inviteModal = props => {
 export default inviteModal;
 
 const styles = StyleSheet.create({
-   container: {
-       marginTop: 100,
-       marginLeft: 'auto',
-       marginRight: 'auto',
-       height: 550,
-       width: 350,
-       zIndex: 5,
-       elevation: 10,
-   },
+    container: {
+        marginTop: 100,
+        marginLeft: 'auto',
+        marginRight: 'auto',
+        height: 550,
+        width: 350,
+        zIndex: 5,
+        elevation: 10,
+    },
     hobbyContainer: {
         alignItems: 'center',
         flexDirection: 'row',
@@ -109,7 +104,7 @@ const styles = StyleSheet.create({
     },
     userIcon: {
         padding: 10,
-        margin:15,
+        margin: 15,
         width: 120, height: 120, borderRadius: 60,
         borderWidth: 2,
         borderColor: 'white'
@@ -142,8 +137,8 @@ const styles = StyleSheet.create({
         textShadowOffset: {width: 0, height: 1},
         textShadowRadius: 5
     },
-    buttonContainer:{
-       flexDirection: 'row',
+    buttonContainer: {
+        flexDirection: 'row',
         padding: 10,
     },
     button: {

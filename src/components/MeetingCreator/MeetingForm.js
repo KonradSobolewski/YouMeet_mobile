@@ -33,18 +33,8 @@ export default class MeetingForm extends React.Component {
             category: 1,
             place: props.navigation.getParam('place'),
             pickedTime: null,
-            fontLoaded: false,
         };
         this.getAllCategories();
-    }
-
-    async componentDidMount() {
-        await Font.loadAsync({
-            'Courgette': require('../../../assets/fonts/Courgette-Regular.ttf'),
-            'Dosis': require('../../../assets/fonts/Dosis-Regular.ttf'),
-            'Gloria': require('../../../assets/fonts/GloriaHallelujah.ttf'),
-        });
-        this.setState({fontLoaded: true});
     }
 
     getAllCategories = () => {

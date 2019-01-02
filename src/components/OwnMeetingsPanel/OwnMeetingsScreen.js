@@ -11,7 +11,6 @@ export default class NotificationScreen extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            fontLoaded: false,
             meetings: [],
             refreshing: false,
             meetingsLoaded: false,
@@ -26,16 +25,9 @@ export default class NotificationScreen extends React.Component {
 
     _isMounted = false;
 
-    async componentDidMount() {
+    componentDidMount() {
         this._isMounted = true;
         this.getOwnMeetings();
-        await Font.loadAsync({
-            'Courgette': require('../../../assets/fonts/Courgette-Regular.ttf'),
-            'Dosis': require('../../../assets/fonts/Dosis-Regular.ttf'),
-            'Gloria': require('../../../assets/fonts/GloriaHallelujah.ttf'),
-            'Cabin': require('../../../assets/fonts/Cabin-Regular.ttf'),
-        });
-        this.setState({fontLoaded: true});
     }
 
     componentWillUnmount() {
@@ -81,7 +73,7 @@ export default class NotificationScreen extends React.Component {
 
     render() {
         let meetings = null;
-        if (this.state.meetingsLoaded && this.state.fontLoaded && this.state.meetings.length > 0) {
+        if (this.state.meetingsLoaded && this.state.meetings.length > 0) {
             meetings =
                 <FlatList style={styles.flatList}
                           data={this.state.meetings}
@@ -96,7 +88,7 @@ export default class NotificationScreen extends React.Component {
                           }
                 />
 
-        } else if (this.state.fontLoaded) {
+        } else {
             meetings = <View style={styles.noMeetingsContainer}><Text style={styles.noMeetings}>You haven't created
                 meeting</Text></View>;
         }

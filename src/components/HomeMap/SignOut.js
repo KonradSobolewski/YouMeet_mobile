@@ -6,28 +6,13 @@ import {signOut} from '../../services/user.service'
 import UserInfo from "./UserInfo";
 
 export default class SignOut extends React.Component {
-    state = {
-        fontLoaded: false
-    };
-
-    async componentDidMount() {
-        await Font.loadAsync({
-            'Courgette': require('../../../assets/fonts/Courgette-Regular.ttf'),
-            'Dosis': require('../../../assets/fonts/Dosis-Regular.ttf'),
-            'Gloria': require('../../../assets/fonts/GloriaHallelujah.ttf'),
-            'Cabin': require('../../../assets/fonts/Cabin-Regular.ttf'),
-        });
-        this.setState({fontLoaded: true});
-    }
+    state = {};
 
     render() {
-        let byebye = null;
-        if (this.state.fontLoaded) {
-            byebye = <Text style={styles.goodByeText}>Double-Click to say Goodbye</Text>;
-        }
+        let byebye = <Text style={styles.goodByeText}>Double-Click to say Goodbye</Text>;
         return (
             <View style={styles.wrapper}>
-                <UserInfo showHamburger={true} navigator={this.props.navigation} fontLoaded={this.state.fontLoaded}/>
+                <UserInfo showHamburger={true} navigator={this.props.navigation}/>
                 <LinearGradient colors={['#b22b7d', '#DDB6CA']} locations={[0, 0.8]} style={styles.gradient}>
                     <View style={styles.container}>
                         <DoubleClick onClick={() => signOut(this.props.navigation)}>

@@ -7,26 +7,15 @@ export default class MeetingScreen extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            fontLoaded: false,
             place: props.navigation.getParam('place')
         };
     }
 
-    async componentDidMount() {
-        await Font.loadAsync({
-            'Courgette': require('../../../assets/fonts/Courgette-Regular.ttf'),
-        });
-        this.setState({fontLoaded: true});
-    }
-
     render() {
         let aboveImageText = null;
-        let underImageText = null;
-        if (this.state.fontLoaded) {
-            if (this.props.navigation.getParam('isSuccessfullCreate') === true)
-                aboveImageText = <Text style={styles.goodByeText}>Thank you for creating a meeting!</Text>;
-            underImageText = <Text style={styles.goodByeText}>Double-Click to start a meeting</Text>;
-        }
+        if (this.props.navigation.getParam('isSuccessfullCreate') === true)
+            aboveImageText = <Text style={styles.goodByeText}>Thank you for creating a meeting!</Text>;
+        let underImageText = <Text style={styles.goodByeText}>Double-Click to start a meeting</Text>;
         return (
             <View style={styles.wrapper}>
                 <LinearGradient colors={['#b22b7d', '#ddb6ca']} locations={[0, 0.8]} style={styles.gradient}>
