@@ -86,7 +86,7 @@ export const matchResponseToUserInfo = (userData) => {
         age: userData.params.age,
         gender: userData.params.gender,
         meetingCounter: ConstKeys.meetingCounter - userData.params.meetingCounter,
-        firstTimeLogging: userData.params.firstTimeLogging
+        firstTimeLogging: false
     }
 };
 

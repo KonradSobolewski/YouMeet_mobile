@@ -210,12 +210,12 @@ export default class AccountInfo extends React.Component {
                             </Picker>
                             {yourHobby}
                             <View style={styles.hobbyContainer}>
-                                {this.state.userInfo.userHobbies.map(hobby => {
+                                { this.state.userInfo.userHobbies.length > 0 ? this.state.userInfo.userHobbies.map(hobby => {
                                     return (
                                         <HobbyItem itemName={hobby} deleteHobby={(value) => this.deleteUserHobby(value)}
                                                    showDeleteButton={true}/>
                                     )
-                                })
+                                }) : (<Text style={styles.label}>You have no hobbies - please add to find related people</Text>)
                                 }
                             </View>
                             <TouchableOpacity style={styles.submitButton} onPress={() => this.updateUserInfo()}>
