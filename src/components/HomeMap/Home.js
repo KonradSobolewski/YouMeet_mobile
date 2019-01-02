@@ -94,9 +94,7 @@ export default class Home extends React.Component {
 
     getAllCategories = () => {
         if (!this.state.categoryLoaded) {
-            let categories = this.state.categories;
-            categories.unshift({id: 0, type: 'Select category: All'});
-            this.setState({categories: categories, categoryLoaded: true});
+            this.setState({categories: [{id: 0, type: 'Select category: All'}, ...this.state.categories], categoryLoaded: true});
         }
     };
 
@@ -120,7 +118,7 @@ export default class Home extends React.Component {
 
     getFilter = () => {
         let categories = [];
-        if (this.state.categories.length > 0) {
+        if (this.state.categoryLoaded) {
             categories.push(this.state.categories.map(category => {
                     return (
                         <Picker.Item key={category.id} label={category.type} value={category.id}/>
