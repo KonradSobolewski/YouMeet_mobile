@@ -3,6 +3,7 @@ import {StyleSheet, View, Text, TouchableOpacity, Modal, Image} from 'react-nati
 import {getMetUserIcon} from "../../services/user.service";
 import {LinearGradient} from "expo";
 import HobbyItem from "../Settings/HobbyItem";
+import Colors from '../../config/colors'
 
 const inviteModal = props => {
     let additionalInformation = null;
@@ -29,7 +30,7 @@ const inviteModal = props => {
                 console.log('closed');
             }}>
             <View style={styles.container}>
-                <LinearGradient colors={['#b22b7d', '#ddb6ca']} locations={[0, 0.8]} style={styles.gradient}>
+                <LinearGradient colors={['white', '#ddb6ca']} locations={[0, 0.8]} style={styles.gradient}>
                     <View style={styles.textContainer}>
                         {props.meeting.params.photo !== null ?
                             (<Image source={{uri: props.meeting.params.photo}} style={styles.userIcon}/>) :
@@ -107,35 +108,26 @@ const styles = StyleSheet.create({
         margin: 15,
         width: 120, height: 120, borderRadius: 60,
         borderWidth: 2,
-        borderColor: 'white'
+        borderColor: Colors.theme
     },
     name: {
         margin: 8,
-        color: 'white',
+        color: Colors.theme,
         fontSize: 20,
-        fontFamily: 'Cabin',
-        textShadowColor: 'rgba(0, 0, 0, 0.4)',
-        textShadowOffset: {width: 0, height: 1},
-        textShadowRadius: 5
+        fontFamily: 'Cabin'
     },
     place: {
         margin: 2,
-        color: 'white',
+        color: Colors.black,
         fontSize: 15,
-        fontFamily: 'Cabin',
-        textShadowColor: 'rgba(0, 0, 0, 0.4)',
-        textShadowOffset: {width: 0, height: 1},
-        textShadowRadius: 5
+        fontFamily: 'Cabin'
     },
     description: {
         margin: 2,
         marginBottom: 15,
-        color: 'white',
+        color: Colors.black,
         fontSize: 15,
-        fontFamily: 'Cabin',
-        textShadowColor: 'rgba(0, 0, 0, 0.4)',
-        textShadowOffset: {width: 0, height: 1},
-        textShadowRadius: 5
+        fontFamily: 'Cabin'
     },
     buttonContainer: {
         flexDirection: 'row',
@@ -144,7 +136,7 @@ const styles = StyleSheet.create({
     button: {
         borderRadius: 5,
         marginTop: 10,
-        backgroundColor: 'white',
+        backgroundColor: Colors.theme,
         padding: 5,
         marginVertical: 10,
         marginHorizontal: 10,
@@ -153,7 +145,7 @@ const styles = StyleSheet.create({
     },
     textButton: {
         fontSize: 15,
-        color: '#373D3F',
+        color: 'white',
         textAlign: 'center',
         fontFamily: 'Cabin',
         letterSpacing: 3

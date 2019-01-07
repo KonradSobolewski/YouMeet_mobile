@@ -6,6 +6,7 @@ import NotificationSubscribedItem from './NotificationSubscribedItem';
 import {getSubscribedToMeetings, getMeetingWithNewJoiners, acceptJoinerMeeting} from "../../services/meeting.service";
 import {signOut} from "../../services/user.service";
 import ConstKeys from "../../config/app.consts";
+import Colors from '../../config/colors'
 
 export default class NotificationScreen extends React.Component {
     constructor(props) {
@@ -116,7 +117,7 @@ export default class NotificationScreen extends React.Component {
         }
         return (
             <View style={styles.container}>
-                {this.state.historyLoaded ? null : (<ActivityIndicator size={90} color="#B22B7D" style={styles.spinner}/>)}
+                {this.state.historyLoaded ? null : (<ActivityIndicator size={90} color={Colors.theme} style={styles.spinner}/>)}
                 {history}
                 {newJoiners}
             </View>
@@ -159,7 +160,7 @@ const styles = StyleSheet.create({
     },
     noMeetings:{
         fontSize: 15,
-        color: '#373D3F',
+        color: Colors.black,
         fontFamily: 'Cabin',
         alignSelf: 'center',
         textAlign: 'center',

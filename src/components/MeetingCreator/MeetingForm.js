@@ -19,6 +19,7 @@ import {getCategories} from "../../services/category.service";
 import DatePicker from 'react-native-datepicker'
 import ConstKeys from "../../config/app.consts";
 import {updateUserData} from "../../config/authorization";
+import Colors from '../../config/colors'
 
 export default class MeetingForm extends React.Component {
 
@@ -80,7 +81,7 @@ export default class MeetingForm extends React.Component {
         }
         return (
             <View style={styles.wrapper}>
-                <LinearGradient colors={['#b22b7d', '#ddb6ca']} locations={[0, 0.8]} style={styles.gradient}>
+                <LinearGradient colors={['white', '#ddb6ca']} locations={[0, 0.8]} style={styles.gradient}>
                     <View style={styles.container}>
                         <DoubleClick onClick={() => this.props.navigation.navigate('meetingForm')}>
                             <Image style={styles.hand} source={require('../../../assets/images/meetingPerson.png')}/>
@@ -162,29 +163,27 @@ const styles = StyleSheet.create({
     buttonContainer: {
         borderRadius: 5,
         marginTop: 15,
-        backgroundColor: '#FFF',
+        backgroundColor: Colors.theme,
         paddingVertical: 15,
         elevation: 2,
         width: '80%'
     },
     buttonText: {
-        color: 'black',
+        color: 'white',
         textAlign: 'center',
-        fontFamily: 'Courgette',
+        fontFamily: 'Cabin',
+        letterSpacing: 2
     },
     hand: {
         width: 50,
         height: 50,
-        tintColor: 'white'
+        tintColor: Colors.theme
     },
     goodByeText: {
         marginTop: 5,
         fontSize: 20,
-        color: 'white',
-        textShadowColor: 'rgba(0, 0, 0, 0.4)',
-        textShadowOffset: {width: 0, height: 1},
-        textShadowRadius: 5,
-        fontFamily: 'Courgette'
+        color: Colors.black,
+        fontFamily: 'Cabin'
     },
 
     gradient: {
@@ -201,9 +200,9 @@ const styles = StyleSheet.create({
         fontSize: 15,
         marginTop: 15,
         borderRadius: 5,
-        backgroundColor: 'rgba(255,255,255,0.2)',
+        backgroundColor: 'rgba(255,255,255,0.4)',
         height: 40,
-        color: 'white',
+        color: Colors.black,
         padding: 10,
         width: '80%',
         textAlign: 'center'
@@ -211,9 +210,9 @@ const styles = StyleSheet.create({
     picker: {
         marginTop: 15,
         borderRadius: 15,
-        backgroundColor: 'rgba(255,255,255,0.2)',
+        backgroundColor: 'rgba(255,255,255,0.4)',
         height: 40,
-        color: 'white',
+        color: Colors.black,
         padding: 10,
         width: '80%'
     },
@@ -232,19 +231,13 @@ const styles = StyleSheet.create({
     textStyle: {
         marginTop: 35,
         fontSize: 20,
-        color: 'white',
-        textShadowColor: 'rgba(0, 0, 0, 0.4)',
-        textShadowOffset: {width: 0, height: 1},
-        textShadowRadius: 5,
-        fontFamily: 'Courgette'
+        color: Colors.black,
+        fontFamily: 'Cabin'
     },
     place: {
         marginTop: 30,
         fontSize: 25,
-        color: 'white',
-        textShadowColor: 'rgba(0, 0, 0, 0.4)',
-        textShadowOffset: {width: 0, height: 1},
-        textShadowRadius: 5,
-        fontFamily: 'Courgette'
+        color: Colors.black,
+        fontFamily: 'Cabin'
     }
 });

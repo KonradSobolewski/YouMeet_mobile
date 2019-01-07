@@ -12,13 +12,13 @@ import AppSettings from "../components/Settings/AppSettings"
 import SignOut from "../components/HomeMap/SignOut";
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import CustomDrawerContentComponent from './DrawerComponent';
-import MeetingScreen from "../components/MeetingCreator/MeetingScreen"
 import MeetingForm from "../components/MeetingCreator/MeetingForm"
 import NotificationScreen from '../components/Notifications/NotificationScreen'
 import OwnMeetingsScreen from '../components/OwnMeetingsPanel/OwnMeetingsScreen'
 import History from "../components/UserHistory/History"
 import SuccessfullCreate from "../components/MeetingCreator/SuccessfullCreate"
 import ConstKeys from "./app.consts";
+import Colors from '../config/colors'
 
 export const createRootNavigator = (signedIn = false, data) => {
     return createStackNavigator({
@@ -30,7 +30,7 @@ export const createRootNavigator = (signedIn = false, data) => {
                                 tabBarLabel: 'Login',
                                 showIcon: true,
                                 tabBarIcon: () => {
-                                    return <Ionicons name="md-contact" size={20} color={"white"}/>
+                                    return <Ionicons name="md-contact" size={20} color={Colors.theme}/>
                                 }
                             }
                         },
@@ -40,7 +40,7 @@ export const createRootNavigator = (signedIn = false, data) => {
                                 tabBarLabel: 'Register',
                                 showIcon: true,
                                 tabBarIcon: () => {
-                                    return <Ionicons name="md-create" size={20} color={"white"}/>
+                                    return <Ionicons name="md-create" size={20} color={Colors.theme}/>
                                 }
                             }
                         }
@@ -50,8 +50,15 @@ export const createRootNavigator = (signedIn = false, data) => {
                             showLabel: true, // hide labels
                             showIcon: true,
                             style: {
-                                backgroundColor: '#B22B7D' // TabBar background
-                            }
+                                backgroundColor: 'white',
+                            },
+                            labelStyle: {
+                                color: Colors.black
+                            },
+                            indicatorStyle: {
+                                backgroundColor: Colors.theme
+                            },
+                            pressColor: Colors.theme
                         }
                     }
                 )
@@ -78,7 +85,7 @@ export const createRootNavigator = (signedIn = false, data) => {
                                             tabBarLabel: 'Requested Meetings',
                                             showIcon: true,
                                             tabBarIcon: () => {
-                                                return <Ionicons name="md-mail-open" size={20} color={"white"}/>
+                                                return <Ionicons name="md-mail-open" size={20} color={Colors.theme}/>
                                             }
                                         }
                                     },
@@ -88,7 +95,7 @@ export const createRootNavigator = (signedIn = false, data) => {
                                             tabBarLabel: 'Own Meetings',
                                             showIcon: true,
                                             tabBarIcon: () => {
-                                                return <Ionicons name="md-list" size={20} color={"white"}/>
+                                                return <Ionicons name="md-list" size={20} color={Colors.theme}/>
                                             }
                                         }
                                     }
@@ -98,8 +105,15 @@ export const createRootNavigator = (signedIn = false, data) => {
                                         showLabel: true, // hide labels
                                         showIcon: true,
                                         style: {
-                                            backgroundColor: '#B22B7D' // TabBar background
-                                        }
+                                            backgroundColor: 'white',
+                                        },
+                                        labelStyle: {
+                                            color: Colors.black
+                                        },
+                                        indicatorStyle: {
+                                            backgroundColor: Colors.theme
+                                        },
+                                        pressColor: Colors.theme
                                     }
                                 }
                             ),
@@ -156,10 +170,7 @@ export const createRootNavigator = (signedIn = false, data) => {
             },
             appSettings: {
                 screen: AppSettings
-            },
-            createMeeting: {
-                screen: MeetingScreen
-            },
+            }
         },
         {
             initialRouteName: whatScreenShouldGo(signedIn),

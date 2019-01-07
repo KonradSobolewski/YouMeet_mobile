@@ -4,6 +4,7 @@ import {MapView} from 'expo'
 import markerImage from '../../../assets/images/marker.png'
 import ConstKeys from '../../config/app.consts'
 import {getMetUserIcon, getUserIcon} from "../../services/user.service";
+import Colors from '../../config/colors'
 
 let mapStyle = require('../../config/map.style.json');
 
@@ -45,7 +46,7 @@ const usersMap = props => {
             <MapView.Callout tooltip
                              onPress={() => {
                                  if(ConstKeys.userInfo.meetingCounter > 0)
-                                    props.navigator.navigate('createMeeting', {place: props.chosenPlace});
+                                    props.navigator.navigate('meetingForm', {place: props.chosenPlace});
                                  else
                                      props.setDialogVisibility();
                              }}>
@@ -115,7 +116,7 @@ const styles = StyleSheet.create({
         color: 'white',
     },
     toolTipButton: {
-        backgroundColor: '#B22B7D',
+        backgroundColor: Colors.theme,
         alignItems: 'center',
         width: 120,
         padding: 5,

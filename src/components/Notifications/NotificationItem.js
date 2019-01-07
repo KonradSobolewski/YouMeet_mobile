@@ -3,6 +3,7 @@ import {Image, StyleSheet, Text, View, TouchableOpacity} from "react-native";
 import {getMetUserIcon} from "../../services/user.service";
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import styles from '../../config/ListItemStyle';
+import Colors from '../../config/colors'
 
 const notificationItem = props => {
     let date = new Date(Date.parse(props.historyData.params.creationDate));
@@ -10,7 +11,7 @@ const notificationItem = props => {
     return(
         <View style={styles.container}>
             <TouchableOpacity style={styles.userIcon} onPress={() => props.acceptMeeting(props.historyData.meeting_id, props.historyData.params.joinerId[0])}>
-                <Ionicons name="md-add-circle" size={30} color={'#373D3F'} style={styles.icon}/>
+                <Ionicons name="md-add-circle" size={30} color={Colors.black} style={styles.icon}/>
             </TouchableOpacity>
             <View style={styles.rightBox}>
                 <Text style={styles.person}>{peopleWaiting}</Text>

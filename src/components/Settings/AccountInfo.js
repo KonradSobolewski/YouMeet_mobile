@@ -17,6 +17,7 @@ import UserInfo from "../HomeMap/UserInfo";
 import HobbyItem from './HobbyItem';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Dialog, {DialogContent, ScaleAnimation, DialogTitle} from "react-native-popup-dialog";
+import Colors from '../../config/colors'
 
 export default class AccountInfo extends React.Component {
     constructor(props) {
@@ -129,14 +130,16 @@ export default class AccountInfo extends React.Component {
         </Text>;
         let update = <Text style={styles.submitText}>UPDATE</Text>;
 
-        let hobbies = this.state.hobbies.map(hobby => {
-            return (
-                <Picker.Item key={hobby.id} label={hobby.name} value={hobby.name}/>
-            )
-        });
-
+        let hobbies = null;
+        if ( this.state.hobbies.length > 0  ) {
+            hobbies = this.state.hobbies.map(hobby => {
+                return (
+                    <Picker.Item key={hobby.id} label={hobby.name} value={hobby.name}/>
+                )
+            });
+        }
         return (
-            <LinearGradient colors={['#b22b7d', '#ddb6ca']} locations={[0, 0.8]} style={styles.gradient}>
+            <LinearGradient colors={['white', '#ddb6ca']} locations={[0, 0.8]} style={styles.gradient}>
                 <UserInfo navigator={this.props.navigation} showHamburger={false}/>
                 <KeyboardAvoidingView behavior="padding" style={styles.container}>
                     <ScrollView>
@@ -164,7 +167,7 @@ export default class AccountInfo extends React.Component {
                             <TextInput
                                 style={[styles.input, this.state.valid ? null : styles.inputInvalid]}
                                 placeholder="First name"
-                                placeholderTextColor="rgba(255,255,255,0.5)"
+                                placeholderTextColor="rgba(0,0,0,0.4)"
                                 autoCorrect={false}
                                 onChangeText={(value) => this.setFirstName(value)}
                                 defaultValue={this.state.userInfo.firstName}
@@ -173,7 +176,7 @@ export default class AccountInfo extends React.Component {
                             <TextInput
                                 style={[styles.input, this.state.valid ? null : styles.inputInvalid]}
                                 placeholder="Last name"
-                                placeholderTextColor="rgba(255,255,255,0.5)"
+                                placeholderTextColor="rgba(0,0,0,0.4)"
                                 autoCorrect={false}
                                 onChangeText={(value) => this.setLastName(value)}
                                 defaultValue={this.state.userInfo.lastName}
@@ -184,17 +187,17 @@ export default class AccountInfo extends React.Component {
                                     maximumValue={50}
                                     minimumValue={18}
                                     onSlidingComplete={(value) => this.setAge(value)}
-                                    minimumTrackTintColor='white'
-                                    thumbTintColor={'white'}
+                                    minimumTrackTintColor={Colors.black}
+                                    thumbTintColor={Colors.black}
                                     style={styles.slider}/>
                             {gender}
                             <View style={styles.switchContainer}>
-                                <Ionicons name="md-male" size={23} color={"white"} style={styles.genderIcon}/>
+                                <Ionicons name="md-male" size={23} color={Colors.black} style={styles.genderIcon}/>
                                 <Switch trackColor={{false: 'blue', true: 'red'}}
                                         thumbColor={'white'}
                                         value={this.state.switchState}
                                         onValueChange={(value) => this.setGender(value)}/>
-                                <Ionicons name="md-female" size={23} color={"white"} style={styles.genderIcon}/>
+                                <Ionicons name="md-female" size={23} color={Colors.black} style={styles.genderIcon}/>
                             </View>
                             {chooseHobby}
                             <Picker
@@ -255,18 +258,15 @@ const styles = StyleSheet.create({
         marginTop: 5,
         padding: 5,
         paddingBottom: 0,
-        color: 'white',
+        color: Colors.black,
         fontSize: 15,
-        fontFamily: 'Cabin',
-        textShadowColor: 'rgba(0, 0, 0, 0.4)',
-        textShadowOffset: {width: 0, height: 1},
-        textShadowRadius: 5
+        fontFamily: 'Cabin'
     },
     picker: {
         marginTop: 15,
-        backgroundColor: 'rgba(255,255,255,0.2)',
+        backgroundColor: 'rgba(255,255,255,0.5)',
         height: 40,
-        color: 'white',
+        color: Colors.black,
         padding: 10,
         width: '80%',
         elevation: 1,
@@ -275,9 +275,9 @@ const styles = StyleSheet.create({
         width: '80%',
         borderRadius: 5,
         borderBottomWidth: 1,
-        borderBottomColor: 'white',
+        borderBottomColor: Colors.black,
         height: 40,
-        color: '#FFF',
+        color: Colors.black,
         padding: 10
     },
     inputInvalid: {
@@ -288,14 +288,14 @@ const styles = StyleSheet.create({
         borderRadius: 5,
         marginTop: 35,
         marginBottom: 35,
-        backgroundColor: 'white',
+        backgroundColor: Colors.theme,
         padding: 15,
         width: '80%',
         elevation: 2,
     },
     submitText: {
         fontSize: 15,
-        color: 'black',
+        color: 'white',
         textAlign: 'center',
         letterSpacing: 2
     },
@@ -315,7 +315,7 @@ const styles = StyleSheet.create({
     },
     genderIcon: {
         padding: 10,
-        textShadowColor: 'rgba(0, 0, 0, 0.4)',
+        textShadowColor: 'rgba(255, 255, 255, 0.4)',
         textShadowOffset: {width: 0, height: 1},
         textShadowRadius: 5
     }

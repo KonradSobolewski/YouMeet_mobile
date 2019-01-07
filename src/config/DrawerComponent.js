@@ -9,16 +9,17 @@ import {Font, LinearGradient} from 'expo';
 import {DrawerItems} from 'react-navigation';
 import {Container, Content, Icon, Header, Body} from 'native-base';
 import ConstKeys from "./app.consts";
+import Colors from '../config/colors'
 
 const CustomDrawerContentComponent = (props) => (
     <Container>
         <Header style={styles.drawerHeader}>
-            <LinearGradient colors={['#DDB6CA', '#b22b7d']} style={styles.gradient}
+            <LinearGradient colors={['white', '#DDB6CA']} style={styles.gradient}
                             locations={[0, 1]} start={[0.2, 0]} end={[0.8, 1.2]}>
                 <Body style={styles.body}>
                 <Image
                     style={styles.drawerImage}
-                    source={require('../../assets/images/logo.gif')}/>
+                    source={require('../../assets/images/logo2.gif')}/>
                 <Text style={styles.text}>Welcome {ConstKeys.userInfo.firstName}</Text>
                 </Body>
             </LinearGradient>
@@ -54,10 +55,7 @@ const styles = StyleSheet.create({
     text: {
         fontSize: 15,
         padding: 10,
-        color: 'white',
-        textShadowColor: 'rgba(0, 0, 0, 0.4)',
-        textShadowOffset: {width: 0, height: 1},
-        textShadowRadius: 5
+        color: Colors.black
     }
 });
 

@@ -1,5 +1,6 @@
 import {Image, Text, View, TouchableOpacity, StyleSheet} from "react-native";
 import React from "react";
+import Colors from '../../config/colors'
 
 const meetingItem = props => {
     return(
@@ -11,7 +12,7 @@ const meetingItem = props => {
                 <Text style={styles.text}>Multi Meeting: {props.meetingItem.is_one_to_one ? 'No' : 'Yes'}</Text>
                 <Text style={styles.text}>Category: {props.meetingItem.params.categoryName}</Text>
             </View>
-            <View style={{borderLeftWidth:1, borderColor:'#373D3F', height: '85%'}}></View>
+            <View style={{borderLeftWidth:1, borderColor:Colors.black, height: '85%'}}></View>
             <View style={styles.rightBox}>
                 <Text style={styles.category}>Empty meeting</Text>
             </View>

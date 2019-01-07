@@ -8,6 +8,7 @@ import {getMeetingPlaces, joinMeeting} from "../../services/meeting.service";
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import ConstKeys from "../../config/app.consts";
 import Dialog, {SlideAnimation, ScaleAnimation, DialogContent} from 'react-native-popup-dialog';
+import Colors from '../../config/colors'
 
 export default class Home extends React.Component {
 
@@ -151,7 +152,7 @@ export default class Home extends React.Component {
         return (
             <View style={styles.buttonContainer}>
                 <TouchableOpacity onPress={this.refresh}>
-                    <Ionicons name="md-locate" size={30} color={'#373D3F'} style={styles.icon}/>
+                    <Ionicons name="md-locate" size={30} color={Colors.black} style={styles.icon}/>
                 </TouchableOpacity>
             </View>
         )
@@ -294,7 +295,7 @@ const styles = StyleSheet.create({
     picker: {
         backgroundColor: 'rgba(255,255,255,0.7)',
         height: 40,
-        color: '#373D3F',
+        color: Colors.black,
         padding: 10,
         width: 250
     }

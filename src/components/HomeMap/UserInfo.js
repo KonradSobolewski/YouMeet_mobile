@@ -3,6 +3,7 @@ import {Image, StyleSheet, Text, View, TouchableOpacity, KeyboardAvoidingView} f
 import ConstKeys from '../../config/app.consts'
 import humburger from '../../../assets/images/humburger.png'
 import {getUserIcon} from "../../services/user.service";
+import Colors from '../../config/colors'
 
 const userInfo = props => {
     let info = <Text style={styles.userNick}>
@@ -43,10 +44,10 @@ const styles = StyleSheet.create({
         top: 0,
         height: 80,
         borderBottomWidth: 2,
-        borderBottomColor: 'white',
+        borderBottomColor: Colors.theme,
         width: '100%',
-        backgroundColor: '#B22B7D',
-        elevation: 8
+        backgroundColor: 'white',
+        elevation: 5
     },
     humburgerContainer: {
         position: 'absolute', top: 0, left: 0
@@ -55,7 +56,7 @@ const styles = StyleSheet.create({
         padding: 10,
         margin: 10,
         width: 40, height: 40,
-        tintColor: 'white'
+        tintColor: Colors.black
     },
     userIcon: {
         zIndex: 2,
@@ -65,7 +66,7 @@ const styles = StyleSheet.create({
         padding: 10,
         width: 70, height: 70, borderRadius: 35,
         borderWidth: 2,
-        borderColor: 'white'
+        borderColor: Colors.theme
     },
     userNick: {
         top: 45,
@@ -73,9 +74,6 @@ const styles = StyleSheet.create({
         position: 'absolute',
         fontSize: 20,
         fontFamily: 'Cabin',
-        color: 'white',
-        textShadowColor: 'rgba(0, 0, 0, 0.4)',
-        textShadowOffset: {width: 0, height: 1},
-        textShadowRadius: 5
+        color: Colors.black,
     }
 });

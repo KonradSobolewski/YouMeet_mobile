@@ -3,6 +3,7 @@ import {StyleSheet, Text, View, TouchableOpacity, ScrollView, KeyboardAvoidingVi
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {Font, LinearGradient} from "expo";
 import UserInfo from "./UserInfo";
+import Colors from '../../config/colors'
 
 export default class Settings extends React.Component {
     state = {};
@@ -30,24 +31,24 @@ export default class Settings extends React.Component {
         </Text>;
 
         return (
-            <LinearGradient colors={['#b22b7d', '#ddb6ca']} locations={[0, 0.8]} style={styles.gradient}>
+            <LinearGradient colors={['white', '#ddb6ca']} locations={[0, 0.8]} style={styles.gradient}>
                 <KeyboardAvoidingView behavior="padding" style={styles.container}>
                     <ScrollView>
                         <UserInfo showHamburger={true} navigator={this.props.navigation}/>
                         <View style={styles.area}>
                             <TouchableOpacity style={styles.button} onPress={this.goToAccountInfo}>
-                                <Ionicons name="md-person" size={70} color={'white'} style={styles.icon}/>
+                                <Ionicons name="md-person" size={70} color={Colors.theme} style={styles.icon}/>
                                 {edit}
                             </TouchableOpacity>
-                            <View style={{borderWidth: 1, borderColor: 'white', width: 150}}></View>
+                            <View style={{borderWidth: 1, borderColor: Colors.theme, width: 150}}></View>
                             <TouchableOpacity style={styles.button} onPress={this.goToAppSettings}>
-                                <Ionicons name="md-settings" size={70} color={'white'} style={styles.icon}/>
+                                <Ionicons name="md-settings" size={70} color={Colors.theme} style={styles.icon}/>
                                 {app}
                             </TouchableOpacity>
 
-                            <View style={{borderWidth: 1, borderColor: 'white', width: 150}}></View>
+                            <View style={{borderWidth: 1, borderColor: Colors.theme, width: 150}}></View>
                             <TouchableOpacity style={styles.button} onPress={this.goToAppSettings}>
-                                <Ionicons name="md-cash" size={70} color={'white'} style={styles.icon}/>
+                                <Ionicons name="md-cash" size={70} color={Colors.theme} style={styles.icon}/>
                                 {premium}
                             </TouchableOpacity>
 
@@ -74,7 +75,7 @@ const styles = StyleSheet.create({
         height: '100%',
     },
     area: {
-        backgroundColor: 'rgba(255,255,255,0.2)',
+        backgroundColor: 'rgba(0,0,0,0.05)',
         borderRadius: 10,
         marginTop: 130,
         margin: 20,
@@ -89,11 +90,8 @@ const styles = StyleSheet.create({
     text: {
         fontSize: 20,
         fontFamily: 'Dosis',
-        color: 'white',
+        color: Colors.black,
         letterSpacing: 1,
-        textShadowColor: 'rgba(0, 0, 0, 0.4)',
-        textShadowOffset: {width: 0, height: 1},
-        textShadowRadius: 5
     },
     icon: {
         alignSelf: 'center',
@@ -106,7 +104,7 @@ const styles = StyleSheet.create({
         position: 'absolute', left: 0, right: 0, bottom: 0, justifyContent: 'center', alignItems: 'center',
     },
     footerTxt: {
-        color: 'white',
+        color: Colors.black,
         fontFamily: 'Dosis',
         fontSize: 13,
     },

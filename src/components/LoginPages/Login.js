@@ -16,6 +16,7 @@ import {getUserNameAndLastName, validateEmail} from '../../services/string.servi
 import {getUserByEmail, signIn, matchResponseToUserInfo, signOut} from '../../services/user.service'
 import {getCategories} from "../../services/category.service";
 import {getAllHobbies} from "../../services/hobby.service";
+import Colors from '../../config/colors'
 
 export default class Login extends React.Component {
     state = {
@@ -201,19 +202,19 @@ export default class Login extends React.Component {
         let login = <Text style={styles.buttonText}>LOGIN</Text>;
 
         return (
-            <LinearGradient colors={['#b22b7d', '#ddb6ca']} locations={[0, 0.8]} style={styles.gradient}>
+            <LinearGradient colors={['white', '#ddb6ca']} locations={[0, 0.8]} style={styles.gradient}>
                 <KeyboardAvoidingView behavior="padding" style={styles.container}>
                     <ScrollView>
                         <View style={styles.logoContainer}>
                             {errorDuringUpload}
                             {informationalText}
-                            <Image style={styles.logo} source={require('../../../assets/images/logo.gif')}/>
+                            <Image style={styles.logo} source={require('../../../assets/images/logo2.gif')}/>
                             {title}
                             {description}
                             <View style={styles.loginContainer}>
                                 <TextInput style={styles.input}
                                            placeholder="Email"
-                                           placeholderTextColor="rgba(255,255,255,0.5)"
+                                           placeholderTextColor="rgba(0,0,0,0.4)"
                                            onSubmitEditing={() => this.passwordInput.focus()}
                                            keyboardType="email-address"
                                            autoCapitalize="none"
@@ -227,7 +228,7 @@ export default class Login extends React.Component {
                                 <TextInput style={styles.input}
                                            placeholder="Password"
                                            secureTextEntry
-                                           placeholderTextColor="rgba(255,255,255,0.5)"
+                                           placeholderTextColor="rgba(0,0,0,0.4)"
                                            ref={(input) => this.passwordInput = input}
                                            onChangeText={(password) => {
                                                this.setState({errorDuringLog: false});
@@ -272,16 +273,14 @@ const styles = StyleSheet.create({
     title: {
         marginTop: 5,
         fontSize: 20,
-        color: '#FFF',
-        fontFamily: 'Gloria',
-        textShadowColor: 'rgba(0, 0, 0, 0.5)',
-        textShadowOffset: {width: 0, height: 2},
-        textShadowRadius: 5
+        color: Colors.black,
+        fontFamily: 'Gloria'
     },
     description: {
         marginTop: 5,
         fontSize: 12,
-        fontFamily: 'Gloria'
+        fontFamily: 'Gloria',
+        color: Colors.theme
     },
     facebookBtn: {
         flexDirection: 'row',
@@ -292,7 +291,7 @@ const styles = StyleSheet.create({
         elevation: 3
     },
     facebookTxt: {
-        color: '#FFF',
+        color: 'white',
         padding: 5,
         fontFamily: 'Cabin'
     },
@@ -306,7 +305,7 @@ const styles = StyleSheet.create({
         fontFamily: 'Cabin'
     },
     infoMessage: {
-        backgroundColor: '#B22B7D',
+        backgroundColor: Colors.theme,
         opacity: 0.3,
         borderRadius: 10,
         color: 'rgba(255,255,255,1)',
@@ -329,20 +328,20 @@ const styles = StyleSheet.create({
         marginTop: 15,
         borderRadius: 15,
         borderBottomWidth: 1,
-        borderBottomColor: 'white',
+        borderBottomColor: Colors.black,
         height: 40,
-        color: '#FFF',
+        color: Colors.theme,
         padding: 10,
     },
     buttonContainer: {
         borderRadius: 5,
         marginTop: 15,
-        backgroundColor: '#FFF',
+        backgroundColor: Colors.theme,
         paddingVertical: 15,
         elevation: 2
     },
     buttonText: {
-        color: '#373D3F',
+        color: 'white',
         textAlign: 'center',
         fontFamily: 'Cabin',
         letterSpacing: 3

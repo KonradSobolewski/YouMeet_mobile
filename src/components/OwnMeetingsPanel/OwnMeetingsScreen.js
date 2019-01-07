@@ -6,6 +6,7 @@ import ConstKeys from "../../config/app.consts";
 import MeetingItem from "./MeetingItem";
 import {updateUserData} from "../../config/authorization";
 import Dialog, {SlideAnimation,ScaleAnimation, DialogContent, DialogTitle, DialogButton} from 'react-native-popup-dialog';
+import Colors from '../../config/colors'
 
 export default class NotificationScreen extends React.Component {
     constructor(props) {
@@ -95,7 +96,7 @@ export default class NotificationScreen extends React.Component {
         return (
             <View style={styles.container}>
                 {this.state.meetingsLoaded ? null : (
-                    <ActivityIndicator size={90} color="#B22B7D" style={styles.spinner}/>)}
+                    <ActivityIndicator size={90} color={Colors.theme} style={styles.spinner}/>)}
                 {meetings}
                 <View style={styles.footer}>
                     <Text styke={styles.noMeetings}>Possible meetings to create: {ConstKeys.userInfo.meetingCounter}</Text>
@@ -167,7 +168,7 @@ const styles = StyleSheet.create({
     },
     noMeetings: {
         fontSize: 15,
-        color: '#373D3F',
+        color: Colors.black,
         fontFamily: 'Cabin',
         alignSelf: 'center',
         textAlign: 'center',

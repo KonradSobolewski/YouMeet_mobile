@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native';
-
+import Colors from '../config/colors'
 
 export default StyleSheet.create({
     container: {
@@ -19,14 +19,14 @@ export default StyleSheet.create({
         margin: 10,
         marginBottom: 5,
         fontSize: 15,
-        color: '#373D3F',
+        color: Colors.black,
         fontFamily: 'Cabin',
     },
     description: {
         margin: 10,
         marginBottom : 15,
         fontSize: 12,
-        color: '#373D3F',
+        color: Colors.black,
         fontFamily: 'Cabin',
     },
     rightBox: {
@@ -40,7 +40,7 @@ export default StyleSheet.create({
     date: {
         margin: 5,
         fontSize: 10,
-        color: '#373D3F',
+        color: Colors.black,
         fontFamily: 'Cabin',
         alignSelf: 'center',
         textAlign: 'center',
@@ -48,7 +48,7 @@ export default StyleSheet.create({
     category: {
         margin: 15,
         fontSize: 10,
-        color: '#373D3F',
+        color: Colors.black,
         fontFamily: 'Cabin',
         alignSelf: 'center',
         textAlign: 'center',

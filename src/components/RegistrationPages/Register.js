@@ -14,6 +14,7 @@ import {Font, LinearGradient} from 'expo';
 import ConstKeys from '../../config/app.consts'
 import {validateEmail, validateLength} from "../../services/string.service";
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import Colors from '../../config/colors'
 
 export default class App extends React.Component {
     state = {
@@ -125,16 +126,16 @@ export default class App extends React.Component {
         let register = <Text style={styles.registerText}>REGISTER</Text>;
 
         return (
-            <LinearGradient colors={['#b22b7d', '#ddb6ca']} locations={[0, 0.8]} style={styles.gradient}>
+            <LinearGradient colors={['white', '#ddb6ca']} locations={[0, 0.8]} style={styles.gradient}>
                 <KeyboardAvoidingView behavior="padding" style={styles.container}>
 
                     <ScrollView contentContainerStyle={styles.scrollView}>
                         <View style={styles.fieldsContainer}>
-                            <Image style={styles.logo} source={require('../../../assets/images/logo.gif')}/>
+                            <Image style={styles.logo} source={require('../../../assets/images/logo2.gif')}/>
                             <TextInput
                                 style={[styles.input, this.state.firstNameValid === true ? null : styles.inputInvalid]}
                                 placeholder="First name"
-                                placeholderTextColor="rgba(255,255,255,0.5)"
+                                placeholderTextColor="rgba(0,0,0,0.4)"
                                 onSubmitEditing={() => this.lastNameInput.focus()}
                                 autoCorrect={false}
                                 onChangeText={(value) => this.updateState('firstName', value)}
@@ -142,7 +143,7 @@ export default class App extends React.Component {
                             <TextInput
                                 style={[styles.input, this.state.lastNameValid === true ? null : styles.inputInvalid]}
                                 placeholder="Last name"
-                                placeholderTextColor="rgba(255,255,255,0.5)"
+                                placeholderTextColor="rgba(0,0,0,0.4)"
                                 onSubmitEditing={() => this.emailInput.focus()}
                                 autoCorrect={false}
                                 onChangeText={(value) => this.updateState('lastName', value)}
@@ -151,7 +152,7 @@ export default class App extends React.Component {
                             <TextInput
                                 style={[styles.input, this.state.emailValid === true ? null : styles.inputInvalid]}
                                 placeholder="Email"
-                                placeholderTextColor="rgba(255,255,255,0.5)"
+                                placeholderTextColor="rgba(0,0,0,0.4)"
                                 onSubmitEditing={() => this.passwordInput.focus()}
                                 keyboardType="email-address"
                                 autoCapitalize="none"
@@ -164,7 +165,7 @@ export default class App extends React.Component {
                                 style={[styles.input, this.state.passwordValid === true ? null : styles.inputInvalid]}
                                 placeholder="Password"
                                 secureTextEntry
-                                placeholderTextColor="rgba(255,255,255,0.5)"
+                                placeholderTextColor="rgba(0,0,0,0.4)"
                                 ref={(input) => this.passwordInput = input}
                                 onChangeText={(value) => this.updateState('password', value)}
                             />
@@ -231,9 +232,8 @@ const styles = StyleSheet.create({
         marginTop: 12,
         borderRadius: 15,
         borderBottomWidth: 1,
-        borderBottomColor: 'white',
+        borderBottomColor: Colors.black,
         height: 40,
-        color: '#FFF',
         padding: 10,
     },
     inputInvalid: {
@@ -242,14 +242,15 @@ const styles = StyleSheet.create({
     registerBtn: {
         borderRadius: 5,
         marginTop: 15,
-        backgroundColor: 'white',
+        marginBottom: 35,
+        backgroundColor: Colors.theme,
         padding: 15,
         elevation: 2,
         width: '80%'
     },
     registerText: {
         fontSize: 15,
-        color: 'black',
+        color: 'white',
         textAlign: 'center',
         fontFamily: 'Cabin',
         letterSpacing: 3
@@ -273,21 +274,15 @@ const styles = StyleSheet.create({
         marginTop: 5,
         padding: 5,
         paddingBottom: 0,
-        color: 'white',
+        color: Colors.black,
         fontSize: 15,
-        fontFamily: 'Cabin',
-        textShadowColor: 'rgba(0, 0, 0, 0.4)',
-        textShadowOffset: {width: 0, height: 1},
-        textShadowRadius: 5
+        fontFamily: 'Cabin'
     },
     switchLabel: {
         padding: 5,
-        color: 'white',
+        color: Colors.black,
         fontSize: 15,
         marginRight: 10,
-        fontFamily: 'Cabin',
-        textShadowColor: 'rgba(0, 0, 0, 0.4)',
-        textShadowOffset: {width: 0, height: 1},
-        textShadowRadius: 5
+        fontFamily: 'Cabin'
     }
 });

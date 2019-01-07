@@ -44,7 +44,10 @@ export default class App extends React.Component {
                 });
                 this.setState({checkedSignIn: true});
             })
-            .catch(err => alert("An error occurred"));
+            .catch(err => {
+                this.setState({checkedSignIn: true});
+                this.navigation.navigator.navigate('loginPage')
+            });
     }
 
     render() {

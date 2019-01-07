@@ -2,6 +2,7 @@ import React from 'react';
 import {StyleSheet, Text, View, Image} from 'react-native';
 import {Font, LinearGradient} from 'expo';
 import DoubleClick from 'react-native-double-click';
+import Colors from '../../config/colors'
 
 export default class SuccessfullCreate extends React.Component {
 
@@ -16,7 +17,7 @@ export default class SuccessfullCreate extends React.Component {
 
         return (
             <View style={styles.wrapper}>
-                <LinearGradient colors={['#b22b7d', '#FFF']} locations={[0, 0.8]} style={styles.gradient}>
+                <LinearGradient colors={['white','#ddb6ca']} locations={[0, 0.8]} style={styles.gradient}>
                     <View style={styles.container}>
                         {aboveImageText}
                         <DoubleClick
@@ -51,8 +52,8 @@ const styles = StyleSheet.create({
         textAlign: 'center'
     },
     hand: {
-        width: 250,
-        height: 250
+        width: 200,
+        height: 200
     },
     goodByeText: {
         marginTop: 5,

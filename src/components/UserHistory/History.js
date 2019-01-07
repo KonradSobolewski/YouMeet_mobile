@@ -5,6 +5,7 @@ import {getMeetingHistory} from "../../services/meeting.service";
 import {signOut} from "../../services/user.service";
 import UserInfo from "../HomeMap/UserInfo";
 import ConstKeys from "../../config/app.consts";
+import Colors from '../../config/colors'
 
 export default class History extends React.Component {
     constructor(props) {
@@ -77,7 +78,7 @@ export default class History extends React.Component {
         return (
             <View style={styles.container}>
                 <UserInfo showHamburger={true} navigator={this.props.navigation}/>
-                {this.state.historyLoaded ? null : (<ActivityIndicator size={90} color="#B22B7D" style={styles.spinner}/>)}
+                {this.state.historyLoaded ? null : (<ActivityIndicator size={90} color={Colors.theme} style={styles.spinner}/>)}
                 {history}
             </View>
         )
@@ -114,7 +115,7 @@ const styles = StyleSheet.create({
     },
     noMeetings:{
         fontSize: 15,
-        color: '#373D3F',
+        color: Colors.black,
         fontFamily: 'Cabin',
         alignSelf: 'center',
         textAlign: 'center',

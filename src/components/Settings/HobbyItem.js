@@ -1,6 +1,7 @@
 import React from "react";
 import {StyleSheet, Text, TouchableOpacity, View} from "react-native";
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import Colors from '../../config/colors'
 
 const hobbyItem = props => {
     let text =  <Text style={styles.text}>{props.itemName}</Text>;
@@ -25,7 +26,7 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         borderColor: 'white',
         backgroundColor: 'rgba(255,104,104,0.1)',
-        color: '#FFF',
+        color: 'white',
         padding: 5,
         flexDirection: 'row',
         alignSelf: 'flex-start',

@@ -6,6 +6,7 @@ import ConstKeys from "../../config/app.consts";
 import MultiSlider from '@ptomasroos/react-native-multi-slider'
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {setAppData} from "../../config/authorization";
+import Colors from '../../config/colors'
 
 export default class AppSettings extends React.Component {
     constructor(props) {
@@ -66,7 +67,7 @@ export default class AppSettings extends React.Component {
         let all = <Text style={styles.labelCheck}>Both:</Text>;
 
         return (
-            <LinearGradient colors={['#b22b7d', '#ddb6ca']} locations={[0, 0.8]} style={styles.gradient}>
+            <LinearGradient colors={['white', '#ddb6ca']} locations={[0, 0.8]} style={styles.gradient}>
                 <UserInfo showHamburger={false} navigator={this.props.navigation}/>
                 <View style={styles.container}>
                     {age}
@@ -80,18 +81,18 @@ export default class AppSettings extends React.Component {
                                  }}
                                  valuePrefix={'Minimum'}
                                  valueSuffix={'Maximum'}
-                                 minimumTrackTintColor='white'
-                                 thumbTintColor={'white'}
+                                 minimumTrackTintColor={Colors.black}
+                                 thumbTintColor={Colors.black}
                                  style={styles.slider}/>
                     {gender}
                     <View style={styles.switchContainer}>
-                        <Ionicons name="md-male" size={23} color={"white"} style={styles.genderIcon}/>
+                        <Ionicons name="md-male" size={23} color={Colors.theme} style={styles.genderIcon}/>
                         <Switch trackColor={{false: 'blue', true: 'red'}}
                                 thumbColor={'white'}
                                 disabled={this.state.bothGenders}
                                 value={this.state.switchState}
                                 onValueChange={(value) => this.setGender(value)}/>
-                        <Ionicons name="md-female" size={23} color={"white"} style={styles.genderIcon}/>
+                        <Ionicons name="md-female" size={23} color={Colors.theme} style={styles.genderIcon}/>
                         {all}
                         <CheckBox
                             value={this.state.bothGenders}
@@ -124,29 +125,23 @@ const styles = StyleSheet.create({
     },
     labelCheck: {
         padding: 10,
-        color: 'white',
+        color: Colors.black,
         fontSize: 15,
         fontFamily: 'Cabin',
-        textShadowColor: 'rgba(0, 0, 0, 0.4)',
-        textShadowOffset: {width: 0, height: 1},
-        textShadowRadius: 5
     },
     label: {
         marginTop: 5,
         padding: 5,
         paddingBottom: 0,
-        color: 'white',
+        color: Colors.black,
         fontSize: 15,
         fontFamily: 'Cabin',
-        textShadowColor: 'rgba(0, 0, 0, 0.4)',
-        textShadowOffset: {width: 0, height: 1},
-        textShadowRadius: 5
     },
     submitButton: {
         borderRadius: 5,
         margin: 10,
         marginTop: 35,
-        backgroundColor: 'white',
+        backgroundColor: Colors.theme,
         padding: 15,
         width: '80%',
         height: 70,
@@ -156,14 +151,14 @@ const styles = StyleSheet.create({
     },
     submitText: {
         fontSize: 15,
-        color: 'black',
+        color: 'white',
         textAlign: 'center',
         letterSpacing: 2
     },
     slider: {
         width: '80%',
         padding: 10,
-        backgroundColor: 'white',
+        backgroundColor: Colors.theme,
         color: 'white'
     },
     switchContainer: {
