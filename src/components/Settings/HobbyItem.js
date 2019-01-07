@@ -35,7 +35,7 @@ const styles = StyleSheet.create({
     },
     text: {
         fontSize: 12,
-        color: 'black',
+        color: Colors.black,
         textAlign: 'center'
     },
     icon: {

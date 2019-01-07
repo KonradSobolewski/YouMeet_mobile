@@ -43,7 +43,7 @@ const styles = StyleSheet.create({
         padding: 15
     },
     buttonText: {
-        color: 'black',
+        color: Colors.black,
         textAlign: 'center'
     },
     hand: {
@@ -53,7 +53,7 @@ const styles = StyleSheet.create({
     goodByeText: {
         marginTop: 5,
         fontSize: 20,
-        color: 'black',
+        color: Colors.black,
         fontFamily: 'Courgette'
     },
     gradient: {
