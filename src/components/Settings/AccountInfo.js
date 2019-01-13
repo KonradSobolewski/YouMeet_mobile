@@ -36,9 +36,19 @@ export default class AccountInfo extends React.Component {
             switchState: ConstKeys.userInfo.gender !== 'male',
             hobbies: ConstKeys.hobbies,
             valid: true,
-            dialogVisible: ConstKeys.userInfo.firstTimeLogging === true
+            dialogVisible: ConstKeys.userInfo.firstTimeLogging === true,
+            uriImage: null
         };
         this.getUserHobbies();
+    }
+
+    pickImage = async () => {
+      const result = await ImagePicker.launchImageLibraryAsync({
+        allowsEditing: true,
+        aspect: [4,3],
+      });
+      if(!result.cancelled)
+        this.setState({uriImage: result.uri});
     }
 
     getUserHobbies = () => {
