@@ -14,6 +14,8 @@
     "native-base": "^2.8.1",
     "react": "16.5.0",
     "react-native": "https://github.com/expo/react-native/archive/sdk-31.0.0.tar.gz",
+    "react-native-aws3": "0.0.8",
+    "react-native-camera": "^1.8.0",
     "react-native-datepicker": "^1.7.2",
     "react-native-double-click": "^1.0.5",
     "react-native-elements": "^1.0.0-beta7",

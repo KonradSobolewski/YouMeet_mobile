@@ -8,7 +8,7 @@ import {
     KeyboardAvoidingView,
     Text, Picker, Slider, Switch
 } from "react-native";
-import {Font, LinearGradient} from "expo";
+import {Font, LinearGradient, ImagePicker} from "expo";
 import ConstKeys from '../../config/app.consts'
 import {getAllUserHobbies} from "../../services/hobby.service";
 import {matchResponseToUserInfo, updateUser} from "../../services/user.service";
@@ -18,6 +18,7 @@ import HobbyItem from './HobbyItem';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Dialog, {DialogContent, ScaleAnimation, DialogTitle} from "react-native-popup-dialog";
 import Colors from '../../config/colors'
+import {RNS3} from 'react-native-aws3';
 
 export default class AccountInfo extends React.Component {
     constructor(props) {
@@ -35,9 +36,41 @@ export default class AccountInfo extends React.Component {
             switchState: ConstKeys.userInfo.gender !== 'male',
             hobbies: ConstKeys.hobbies,
             valid: true,
-            dialogVisible: ConstKeys.userInfo.firstTimeLogging === true
+            dialogVisible: ConstKeys.userInfo.firstTimeLogging === true,
+            uriImage: null
         };
         this.getUserHobbies();
+    }
+
+    pickImage = async () => {
+      const result = await ImagePicker.launchImageLibraryAsync({
+        allowsEditing: true,
+        aspect: [4,3],
+      });
+      if(!result.cancelled)
+        this.setState({uriImage: result.uri});
+    }
+
+    uploadToS3 =  () => {
+      const file = {
+        uri: this.state.uriImage,
+        name: ConstKeys.fileName,
+        type: ConstKeys.format
+      }
+      const config = {
+        bucket: ConstKeys.bucketName,
+        region: ConstKeys.regio ,
+        accessKey: ConstKeys.accessKey,
+        secretKey: ConstKeys.secretKey,
+        successActionStatus: 201
+      }
+
+      RNS3.put(file,config)
+        .then(response => {
+          console.log(response);
+        }).catch(err => {
+          console.log(err);
+        })
     }
 
     getUserHobbies = () => {
@@ -129,8 +162,14 @@ export default class AccountInfo extends React.Component {
             Choose hobby:
         </Text>;
         let update = <Text style={styles.submitText}>UPDATE</Text>;
-
+        let getImage = <Text style={styles.submitText}>GET IMAGE</Text>;
         let hobbies = null;
+        let s3component = null;
+        if(this.state.uriImage !== null) {
+          s3component = (<TouchableOpacity style={styles.submitButton} onPress={() => this.uploadToS3()}>
+               <Text style={styles.submitText}>UPLOAD TO S3</Text>;
+          </TouchableOpacity>);
+        }
         if ( this.state.hobbies.length > 0  ) {
             hobbies = this.state.hobbies.map(hobby => {
                 return (
@@ -221,9 +260,14 @@ export default class AccountInfo extends React.Component {
                                 }) : (<Text style={styles.label}>You have no hobbies - please add to find related people</Text>)
                                 }
                             </View>
+                            <TouchableOpacity style={styles.submitButton} onPress={() => this.pickImage()}>
+                                {getImage}
+                            </TouchableOpacity>
+                            {s3component}
                             <TouchableOpacity style={styles.submitButton} onPress={() => this.updateUserInfo()}>
                                 {update}
                             </TouchableOpacity>
+
                         </View>
                     </ScrollView>
                 </KeyboardAvoidingView>
