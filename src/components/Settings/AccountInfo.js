@@ -8,7 +8,7 @@ import {
     KeyboardAvoidingView,
     Text, Picker, Slider, Switch
 } from "react-native";
-import {Font, LinearGradient} from "expo";
+import {Font, LinearGradient, ImagePicker} from "expo";
 import ConstKeys from '../../config/app.consts'
 import {getAllUserHobbies} from "../../services/hobby.service";
 import {matchResponseToUserInfo, updateUser} from "../../services/user.service";
@@ -18,6 +18,7 @@ import HobbyItem from './HobbyItem';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Dialog, {DialogContent, ScaleAnimation, DialogTitle} from "react-native-popup-dialog";
 import Colors from '../../config/colors'
+import {RNS3} from 'react-native-aws3';
 
 export default class AccountInfo extends React.Component {
     constructor(props) {
