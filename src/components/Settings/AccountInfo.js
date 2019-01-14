@@ -47,31 +47,29 @@ export default class AccountInfo extends React.Component {
         allowsEditing: true,
         aspect: [4,3],
       });
-      if(!result.cancelled)
+      if(!result.cancelled) {
         this.setState({uriImage: result.uri});
+        const file = {
+          uri: this.state.uriImage,
+          name: ConstKeys.fileName,
+          type: ConstKeys.format
+        }
+        const config = {
+          bucket: ConstKeys.bucketName,
+          region: ConstKeys.region,
+          accessKey: ConstKeys.accessKey,
+          secretKey: ConstKeys.secretKey,
+          successActionStatus: 201
+        }
+        const response = await RNS3.put(file,config)
+          .then(response => {
+            console.log(response);
+          }).catch(err => {
+            console.log(err);
+          })
+      }
     }
 
-    uploadToS3 =  () => {
-      const file = {
-        uri: this.state.uriImage,
-        name: ConstKeys.fileName,
-        type: ConstKeys.format
-      }
-      const config = {
-        bucket: ConstKeys.bucketName,
-        region: ConstKeys.regio ,
-        accessKey: ConstKeys.accessKey,
-        secretKey: ConstKeys.secretKey,
-        successActionStatus: 201
-      }
-
-      RNS3.put(file,config)
-        .then(response => {
-          console.log(response);
-        }).catch(err => {
-          console.log(err);
-        })
-    }
 
     getUserHobbies = () => {
         getAllUserHobbies(ConstKeys.userInfo.email).then(res => res.json().then(data => {
@@ -162,14 +160,8 @@ export default class AccountInfo extends React.Component {
             Choose hobby:
         </Text>;
         let update = <Text style={styles.submitText}>UPDATE</Text>;
-        let getImage = <Text style={styles.submitText}>GET IMAGE</Text>;
+        let getImage = <Text style={styles.submitText}>SET LOGO</Text>;
         let hobbies = null;
-        let s3component = null;
-        if(this.state.uriImage !== null) {
-          s3component = (<TouchableOpacity style={styles.submitButton} onPress={() => this.uploadToS3()}>
-               <Text style={styles.submitText}>UPLOAD TO S3</Text>;
-          </TouchableOpacity>);
-        }
         if ( this.state.hobbies.length > 0  ) {
             hobbies = this.state.hobbies.map(hobby => {
                 return (
@@ -263,7 +255,6 @@ export default class AccountInfo extends React.Component {
                             <TouchableOpacity style={styles.submitButton} onPress={() => this.pickImage()}>
                                 {getImage}
                             </TouchableOpacity>
-                            {s3component}
                             <TouchableOpacity style={styles.submitButton} onPress={() => this.updateUserInfo()}>
                                 {update}
                             </TouchableOpacity>
