@@ -27,7 +27,7 @@ export const isSignedIn = () => {
 };
 
 export const updateUserData = () => {
-    return AsyncStorage.setItem(USER_KEY, JSON.stringify({ auth: ConstKeys.auth, userInfo: ConstKeys.userInfo}));
+    return AsyncStorage.setItem(USER_KEY, JSON.stringify({ auth: ConstKeys.auth, userInfo: ConstKeys.userInfo, categories: ConstKeys.categories, hobbies: ConstKeys.hobbies}));
 };
 
 export const setAppData = (value) => {

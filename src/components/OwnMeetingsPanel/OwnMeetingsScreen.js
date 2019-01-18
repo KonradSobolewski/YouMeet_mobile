@@ -1,12 +1,20 @@
 import React from 'react';
 import {StyleSheet, FlatList, Text, View, RefreshControl, ActivityIndicator} from "react-native";
 import {Font} from 'expo';
-import {deleteMeeting, getRecentMeetings} from "../../services/meeting.service";
+import {
+    acceptJoinerMeeting,
+    deleteMeeting,
+    getJoinersToOwnMeetings,
+    getRecentMeetings
+} from "../../services/meeting.service";
 import ConstKeys from "../../config/app.consts";
 import MeetingItem from "./MeetingItem";
 import {updateUserData} from "../../config/authorization";
 import Dialog, {SlideAnimation,ScaleAnimation, DialogContent, DialogTitle, DialogButton} from 'react-native-popup-dialog';
 import Colors from '../../config/colors'
+import {signOut} from "../../services/user.service";
+import JoinerModal from './JoinerModal'
+import InviteModal from "../HomeMap/InviteModal";
 
 export default class NotificationScreen extends React.Component {
     constructor(props) {
@@ -15,6 +23,10 @@ export default class NotificationScreen extends React.Component {
             meetings: [],
             refreshing: false,
             meetingsLoaded: false,
+            newJoinersMeetings: [],
+            newJoinersLoaded: false,
+            modalVisible: false,
+            meetingJoiners: [],
             pickedMeeting: {
                 params: {
                     placeDescription: 'Place'
@@ -29,6 +41,7 @@ export default class NotificationScreen extends React.Component {
     componentDidMount() {
         this._isMounted = true;
         this.getOwnMeetings();
+        this.getNewJoiners();
     }
 
     componentWillUnmount() {
@@ -46,11 +59,32 @@ export default class NotificationScreen extends React.Component {
         ).catch(err => console.log(err));
     };
 
+    getNewJoiners = () => {
+        getJoinersToOwnMeetings(ConstKeys.userInfo.id).then(response => response.json().then(data => {
+                if (this._isMounted) {
+                    console.log(data);
+                    this.setState({newJoinersMeetings: data, newJoinersLoaded: true, refreshing: false});
+                }
+            }).catch(err => signOut(this.props.navigation))
+        ).catch(err => signOut(this.props.navigation));
+    };
+
+    acceptMeeting = (meetingId, joinerId) => {
+        acceptJoinerMeeting(meetingId, joinerId).then(response => response.json().then(data => {
+
+            }).catch(err => signOut(this.props.navigation))
+        ).catch(err => signOut(this.props.navigation));
+    };
+
+    cancelJoiner = (meetingId, joinerId) => {
+    };
+
     deleteMeeting = (meeting) => {
         this.setState({refreshing: true});
         deleteMeeting(meeting.meeting_id).then(res=> res.json().then(data => console.log(data))).catch(err => console.log(err));
-        this.getOwnMeetings();
-        this.setState({dialogVisible: false});
+        let newMeetings = this.state.meetings.filter(data => data.meeting_id !== meeting.meeting_id);
+        ConstKeys.userInfo.meetingCounter =  ConstKeys.userInfo.meetingCounter + 1;
+        this.setState({dialogVisible: false, meetings: newMeetings, refreshing: false});
     };
 
     renderSeparator = () => {
@@ -72,14 +106,32 @@ export default class NotificationScreen extends React.Component {
         );
     };
 
+    showJoinersModal = (joiners) => {
+        return (
+            <JoinerModal joiners={joiners}
+                         acceptJoiner={(joinerId) => this.acceptMeeting(this.state.pickedMeeting.meeting_id, joinerId)}
+                         cancelJoiner={(joinerId) => this.cancelJoiner(this.state.pickedMeeting.meeting_id, joinerId)}
+                         modalVisible={this.state.modalVisible}
+                         closeModal={() => this.closeModal()}
+            />
+        );
+    };
+
+    closeModal = () => {
+        this.setState({modalVisible: false});
+    };
+
     render() {
         let meetings = null;
-        if (this.state.meetingsLoaded && this.state.meetings.length > 0) {
+        if (this.state.meetingsLoaded && this.state.newJoinersLoaded && this.state.meetings.length > 0) {
             meetings =
                 <FlatList style={styles.flatList}
                           data={this.state.meetings}
                           renderItem={({item}) => (
-                              <MeetingItem meetingItem={item} pressAction={(data) => this.setState({pickedMeeting: data, dialogVisible: true})} />
+                              <MeetingItem showJoinModal={(data, meeting) => this.setState({modalVisible: true, meetingJoiners: data, pickedMeeting: meeting})}
+                                           joiners={this.state.newJoinersMeetings}
+                                           meetingItem={item}
+                                           pressAction={(data) => this.setState({pickedMeeting: data, dialogVisible: true})} />
                           )}
                           keyExtractor={item => item.meeting_id.toString()}
                           ItemSeparatorComponent={this.renderSeparator}
@@ -101,6 +153,7 @@ export default class NotificationScreen extends React.Component {
                 <View style={styles.footer}>
                     <Text styke={styles.noMeetings}>Possible meetings to create: {ConstKeys.userInfo.meetingCounter}</Text>
                 </View>
+                {this.state.meetingJoiners.length > 0 && this.state.modalVisible ? this.showJoinersModal(this.state.meetingJoiners) : null}
                 <Dialog
                     visible={this.state.dialogVisible}
                     dialogAnimation={new SlideAnimation({ slideFrom: 'bottom' })}
@@ -112,10 +165,6 @@ export default class NotificationScreen extends React.Component {
                     height={0.25}
                     dialogTitle={<DialogTitle title={this.state.pickedMeeting.params.placeDescription} hasTitleBar={false} />}
                     actions={[
-                        <DialogButton
-                            text="MODIFY"
-                            onPress={() => {}}
-                        />,
                         <DialogButton
                             text="DELETE"
                             onPress={() => {this.deleteMeeting(this.state.pickedMeeting)}}

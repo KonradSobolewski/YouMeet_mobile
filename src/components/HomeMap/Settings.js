@@ -75,7 +75,7 @@ const styles = StyleSheet.create({
         height: '100%',
     },
     area: {
-        backgroundColor: 'rgba(0,0,0,0.05)',
+        backgroundColor: 'rgba(255,255,255,0.2)',
         borderRadius: 10,
         marginTop: 130,
         margin: 20,

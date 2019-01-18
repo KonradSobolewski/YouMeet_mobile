@@ -64,13 +64,19 @@ export const signOut = (navigator) => {
         .catch(err => console.log(err));
 };
 
-export const signIn = (data, navigator) => {
-    onSignIn(JSON.stringify(data))
+export const signIn = (navigator) => {
+    onSignIn(JSON.stringify({
+            auth: ConstKeys.auth,
+            userInfo: ConstKeys.userInfo,
+            categories: ConstKeys.categories,
+            hobbies: ConstKeys.hobbies
+        })
+    )
         .then(() => {
             if (ConstKeys.userInfo.firstTimeLogging === true)
                 navigator.navigate('accountInfo');
             else
-                navigator.navigate('homePage', data)
+                navigator.navigate('homePage')
         })
         .catch(err => console.log(err));
 };
@@ -91,7 +97,7 @@ export const matchResponseToUserInfo = (userData) => {
 };
 
 export const getUserIcon = () => {
-  return ConstKeys.userInfo.gender === 'male' ? man : girl;
+    return ConstKeys.userInfo.gender === 'male' ? man : girl;
 };
 
 export const getMetUserIcon = (gender) => {

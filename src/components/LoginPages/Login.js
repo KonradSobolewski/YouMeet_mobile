@@ -60,7 +60,7 @@ export default class Login extends React.Component {
                                 };
                                 ConstKeys.userInfo = data.userInfo;
                                 this.setState({errorDuringLog: false});
-                                this.getAllCategories(data);
+                                this.getAllCategories();
                             })
                             .catch(err => this.setState({errorDuringLog: true}));
                     }
@@ -75,11 +75,10 @@ export default class Login extends React.Component {
         }
     };
 
-    getAllCategories = (infoToSave) => {
+    getAllCategories = () => {
         getCategories().then(response => response.json().then(data => {
                 ConstKeys.categories = data;
-                infoToSave['categories'] = data;
-                this.getHobbies(infoToSave);
+                this.getHobbies();
             }).catch(err => this.setState({errorDuringLog: true}))
         ).catch(err => {
             this.setState({errorDuringLog: true});
@@ -87,11 +86,10 @@ export default class Login extends React.Component {
         });
     };
 
-    getHobbies = (infoToSave) => {
+    getHobbies = () => {
         getAllHobbies().then(res => res.json().then(data => {
             ConstKeys.hobbies = data;
-            infoToSave['hobbies'] = data;
-            signIn(infoToSave, this.props.navigation);
+            signIn(this.props.navigation);
         }))
             .catch(err => {
                 this.setState({errorDuringLog: true});
@@ -138,11 +136,7 @@ export default class Login extends React.Component {
             .then(res => {
                 if (res.status === 200) {
                     ConstKeys.auth = res._bodyInit;
-                    let data = {
-                        userInfo: userInfo,
-                        auth: res._bodyInit
-                    };
-                    this.getAllCategories(data);
+                    this.getAllCategories();
                 }
                 else {
                     this.setState({errorDuringLog: true});

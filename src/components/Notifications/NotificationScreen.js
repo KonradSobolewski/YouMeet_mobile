@@ -1,12 +1,11 @@
 import React from 'react';
 import {StyleSheet, FlatList, Text, View, RefreshControl, ActivityIndicator} from "react-native";
-import {Font} from 'expo';
-import NotificationItem from './NotificationItem';
 import NotificationSubscribedItem from './NotificationSubscribedItem';
-import {getSubscribedToMeetings, getMeetingWithNewJoiners, acceptJoinerMeeting} from "../../services/meeting.service";
+import {getSubscribedToMeetings, cancelSubsciptionForMeeting} from "../../services/meeting.service";
 import {signOut} from "../../services/user.service";
 import ConstKeys from "../../config/app.consts";
 import Colors from '../../config/colors'
+import Dialog, {SlideAnimation,ScaleAnimation, DialogContent, DialogTitle, DialogButton} from 'react-native-popup-dialog';
 
 export default class NotificationScreen extends React.Component {
     constructor(props) {
@@ -14,9 +13,13 @@ export default class NotificationScreen extends React.Component {
         this.state = {
             historyLoaded: false,
             history: [],
-            newJoinersMeetings: [],
-            newJoinersLoaded: false,
             refreshing: false,
+            pickedMeeting: {
+                params: {
+                    placeDescription: 'Place'
+                }
+            },
+            dialogVisible: false
         };
     }
     _isMounted = false;
@@ -31,28 +34,10 @@ export default class NotificationScreen extends React.Component {
         this._isMounted = false
     }
 
-    getNewJoiners = () => {
-        getMeetingWithNewJoiners(ConstKeys.userInfo.id).then(response => response.json().then(data => {
-                if (this._isMounted) {
-                    this.setState({newJoinersMeetings: data, newJoinersLoaded: true, refreshing: false});
-                }
-            }).catch(err => signOut(this.props.navigation))
-        ).catch(err => signOut(this.props.navigation));
-    };
-
     getSubscribedTo = () => {
       getSubscribedToMeetings(ConstKeys.userInfo.id).then(response => response.json().then(data => {
               if (this._isMounted) {
                   this.setState({history: data, historyLoaded: true, refreshing: false});
-              }
-          }).catch(err => signOut(this.props.navigation))
-      ).catch(err => signOut(this.props.navigation));
-    };
-
-    acceptMeeting = (meetingId, joinerId) => {
-      acceptJoinerMeeting(meetingId, joinerId).then(response => response.json().then(data => {
-              if (this._isMounted) {
-                  this.setState({refreshing: false});
               }
           }).catch(err => signOut(this.props.navigation))
       ).catch(err => signOut(this.props.navigation));
@@ -67,7 +52,6 @@ export default class NotificationScreen extends React.Component {
     refresh = () => {
         this.setState({refreshing: true});
         this.getSubscribedTo();
-        this.getNewJoiners();
     };
 
     renderHeader = (text) => {
@@ -78,31 +62,21 @@ export default class NotificationScreen extends React.Component {
         );
     };
 
+    cancelSubscription = () => {
+        cancelSubsciptionForMeeting(this.state.pickedMeeting.meeting_id, ConstKeys.userInfo.id).then(response => response.json().then(
+            data => console.log(data)
+        ))
+    };
+
     render() {
         let history = null;
         let newJoiners = null;
-        if (this.state.newJoinersLoaded  && this.state.newJoinersMeetings.length > 0 ) {
-            newJoiners =
-                    <FlatList style={styles.flatList}
-                                data={this.state.newJoinersMeetings}
-                                renderItem={({ item }) => (
-                                    <NotificationItem acceptMeeting={(meeting_id, joinerId) => this.acceptMeeting(meeting_id, joinerId)} historyData={item}/>
-                                )}
-                                keyExtractor={item => item.meeting_id.toString()}
-                                ItemSeparatorComponent={this.renderSeparator}
-                                ListHeaderComponent={this.renderHeader('New joiners in your meetigs: ')}
-                                refreshControl={
-                                    <RefreshControl refreshing={this.state.refreshing} onRefresh={this.refresh}/>
-                                }
-                    />
-
-        }
         if (this.state.historyLoaded && this.state.history.length > 0 ) {
             history =
                     <FlatList style={styles.flatList}
                                 data={this.state.history}
                                 renderItem={({ item }) => (
-                                    <NotificationSubscribedItem historyData={item}/>
+                                    <NotificationSubscribedItem historyData={item} pressAction={(data) => this.setState({pickedMeeting: data, dialogVisible: true})}/>
                                 )}
                                 keyExtractor={item => item.meeting_id.toString()}
                                 ItemSeparatorComponent={this.renderSeparator}
@@ -120,6 +94,32 @@ export default class NotificationScreen extends React.Component {
                 {this.state.historyLoaded ? null : (<ActivityIndicator size={90} color={Colors.theme} style={styles.spinner}/>)}
                 {history}
                 {newJoiners}
+                <Dialog
+                    visible={this.state.dialogVisible}
+                    dialogAnimation={new SlideAnimation({ slideFrom: 'bottom' })}
+                    onTouchOutside={() => {
+                        this.setState({dialogVisible: false});
+                    }}
+                    dialogStyle={styles.dialog}
+                    width={0.8}
+                    height={0.25}
+                    dialogTitle={<DialogTitle title={'Are you sure to cancel meeting?'} hasTitleBar={false} />}
+                    actions={[
+                        <DialogButton
+                            text="CANCEL"
+                            onPress={() => {
+                                this.cancelSubscription();
+                                let filteredItems = this.state.history.filter(item => {
+                                    return item.meeting_id !== this.state.pickedMeeting.meeting_id;
+                                });
+                                this.setState({dialogVisible: false, history: filteredItems})
+                            }}
+                        />,
+                    ]}
+                >
+                    <DialogContent>
+                    </DialogContent>
+                </Dialog>
             </View>
         )
     }
@@ -129,6 +129,15 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: '#ddd'
+    },
+    dialog: {
+        justifyContent: 'center',
+        alignItems: 'center',
+        margin: 10,
+    },
+    dialogText: {
+        marginTop: 15,
+        fontSize: 12
     },
     header: {
         flex:1 ,

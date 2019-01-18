@@ -235,6 +235,7 @@ const styles = StyleSheet.create({
         fontFamily: 'Cabin'
     },
     place: {
+        textAlign:'center',
         marginTop: 30,
         fontSize: 25,
         color: Colors.black,

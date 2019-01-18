@@ -15,8 +15,8 @@ export default class Home extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            userInfo: props.navigation.getParam('userInfo'),
-            auth: props.navigation.getParam('auth'),
+            userInfo: ConstKeys.userInfo,
+            auth: ConstKeys.auth,
             isSuccessfulCreated: props.navigation.getParam('isSuccessfulCreate'),
             location: {
                 latitude: 52.22967,
