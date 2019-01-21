@@ -16,7 +16,7 @@ const joinerModal = props => {
                 props.closeModal();
             }}>
             <View style={styles.container}>
-                <LinearGradient colors={['#FFF', '#ddb6ca']} locations={[0, 0.8]} style={styles.gradient}>
+                <LinearGradient colors={['#FFF', '#ddb6ca']} locations={[0.3, 1]} style={styles.gradient}>
                     <FlatList style={styles.flatList}
                               data={props.joiners}
                               renderItem={({item}) => (

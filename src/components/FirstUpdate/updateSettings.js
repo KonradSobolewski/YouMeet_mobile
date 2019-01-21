@@ -1,37 +1,32 @@
 import React from "react";
-import {CheckBox, Slider, StyleSheet, Switch, Text, TouchableOpacity, View} from "react-native";
-import {Font, LinearGradient} from "expo";
-import UserInfo from "../HomeMap/UserInfo";
 import ConstKeys from "../../config/app.consts";
-import MultiSlider from '@ptomasroos/react-native-multi-slider'
+import {CheckBox, Picker, StyleSheet, Switch, Text, TouchableOpacity, View} from "react-native";
+import {LinearGradient} from "expo";
+import Colors from "../../config/colors";
+import MultiSlider from "@ptomasroos/react-native-multi-slider";
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import {setAppData} from "../../config/authorization";
-import Colors from '../../config/colors'
 
-export default class AppSettings extends React.Component {
+export default class UpdateSettings extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             switchState: ConstKeys.gender !== 'male',
-            gender: ConstKeys.gender,
-            minAge: ConstKeys.minAge,
-            maxAge: ConstKeys.maxAge,
             bothGenders: ConstKeys.gender === 'all',
-        };
-    }
-
+        }
+    };
     setMinAge = (value) => {
-        this.state.minAge = value;
+        ConstKeys.minAge = value;
         this.forceUpdate();
     };
 
     setMaxAge = (value) => {
-        this.state.maxAge = value;
+        ConstKeys.maxAge = value;
         this.forceUpdate();
     };
 
     setBothGender = () => {
         if (!this.state.bothGenders) {
+            ConstKeys.gender = 'all';
             this.setState({gender: 'all', bothGenders: true})
         } else {
             this.setState({gender: ConstKeys.gender, bothGenders: false})
@@ -40,38 +35,31 @@ export default class AppSettings extends React.Component {
 
     setGender = (value) => {
         if (value) {
-            this.state.gender = 'female';
+            ConstKeys.gender = 'female';
         } else {
-            this.state.gender = 'male'
+            ConstKeys.gender = 'male'
         }
         this.state.switchState = !this.state.switchState;
         this.forceUpdate();
     };
 
-    updateApp = () => {
-        ConstKeys.gender = this.state.gender;
-        ConstKeys.minAge = this.state.minAge;
-        ConstKeys.maxAge = this.state.maxAge;
-        setAppData({gender: ConstKeys.gender, minAge: ConstKeys.minAge, maxAge: ConstKeys.maxAge});
-        this.props.navigation.navigate('homePage');
-    };
-
     render() {
         let age = <Text style={styles.label}>
-            Search age: {this.state.minAge} - {this.state.maxAge}
+            Search age: {ConstKeys.minAge} - {ConstKeys.maxAge}
         </Text>;
         let gender = <Text style={styles.label}>
-            Search gender: {this.state.gender}
+            Search gender: {ConstKeys.gender}
         </Text>;
-        let update = <Text style={styles.submitText}>UPDATE</Text>;
         let all = <Text style={styles.labelCheck}>Both:</Text>;
 
         return (
             <LinearGradient colors={['white', '#ddb6ca']} locations={[0.3, 1]} style={styles.gradient}>
-                <UserInfo showHamburger={false} navigator={this.props.navigation}/>
-                <View style={styles.container}>
+                <Text style={styles.header}>
+                    Update application settings
+                </Text>
+                <View style={styles.contentContainer}>
                     {age}
-                    <MultiSlider values={[this.state.minAge, this.state.maxAge]}
+                    <MultiSlider values={[ConstKeys.minAge, ConstKeys.maxAge]}
                                  step={1}
                                  max={50}
                                  min={18}
@@ -100,34 +88,38 @@ export default class AppSettings extends React.Component {
                             onChange={(v) => this.setBothGender()}
                         />
                     </View>
+                    <Text style={styles.description}>
+                        Please choose the age and gender of people you would like to meet in real life!
+                    </Text>
                 </View>
-                <TouchableOpacity style={styles.submitButton} onPress={() => this.updateApp()}>
-                    {update}
-                </TouchableOpacity>
             </LinearGradient>
-        );
+        )
     }
 }
 
 const styles = StyleSheet.create({
-    container: {
-        marginTop: 100,
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
     gradient: {
-        height: '100%',
-        alignItems: 'center',
-        justifyContent: 'center',
+        height: '100%'
     },
-    checbkox: {
-        padding: 10
-    },
-    labelCheck: {
-        padding: 10,
+    header: {
         color: Colors.black,
-        fontSize: 15,
+        textAlign: 'center',
+        fontSize: 20,
+        padding: 15,
+        fontFamily: 'Cabin'
+    },
+    contentContainer: {
+        padding: 15,
+        marginTop: 30,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    description: {
+        color: Colors.black,
+        padding: 30,
+        marginTop: 30,
         fontFamily: 'Cabin',
+        fontSize: 15,
     },
     label: {
         marginTop: 5,
@@ -135,25 +127,16 @@ const styles = StyleSheet.create({
         paddingBottom: 0,
         color: Colors.black,
         fontSize: 15,
+        fontFamily: 'Cabin'
+    },
+    labelCheck: {
+        padding: 10,
+        color: Colors.black,
+        fontSize: 15,
         fontFamily: 'Cabin',
     },
-    submitButton: {
-        borderRadius: 5,
-        margin: 10,
-        marginTop: 35,
-        backgroundColor: Colors.theme,
-        padding: 15,
-        width: '80%',
-        height: 70,
-        elevation: 2,
-        justifyContent: 'center',
-        alignItems: 'center'
-    },
-    submitText: {
-        fontSize: 15,
-        color: 'white',
-        textAlign: 'center',
-        letterSpacing: 2
+    checbkox: {
+        padding: 10
     },
     slider: {
         width: '80%',

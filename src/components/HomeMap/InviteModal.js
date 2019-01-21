@@ -31,6 +31,7 @@ const inviteModal = props => {
             }}>
             <View style={styles.container}>
                 <LinearGradient colors={['white', '#ddb6ca']} locations={[0, 0.8]} style={styles.gradient}>
+                <LinearGradient colors={['white', '#ddb6ca']} locations={[0.3, 1]} style={styles.gradient}>
                     <View style={styles.textContainer}>
                         {props.meeting.params.photo !== null ?
                             (<Image source={{uri: props.meeting.params.photo}} style={styles.userIcon}/>) :

@@ -19,4 +19,5 @@ export default class ConstKeys {
     static categories = {};
     static hobbies = {};
     static profilePic = '';
+    static userHobbies = [];
 }
