@@ -22,6 +22,25 @@ export const getUserByEmail = (email) => {
     });
 };
 
+export const uploadToS3 = (url) => {
+    return new Promise((resolve, reject) => {
+        fetch(ConstKeys.apiUrl + '/uploadToSThree?id=' + ConstKeys.userInfo.id + '&url=' + url, {
+            credentials: 'include',
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: ConstKeys.auth
+            }
+        })
+            .then(res => {
+                if (res.status === 200)
+                    resolve(res);
+                reject(res);
+            })
+            .catch(err => reject(err))
+    });
+};
+
 export const updateUser = (userInfo) => {
     return new Promise((resolve, reject) => {
         fetch(ConstKeys.apiUrl + '/api/updateUser', {
@@ -88,7 +107,7 @@ export const matchResponseToUserInfo = (userData) => {
         firstName: userData.firstName,
         lastName: userData.lastName,
         name: userData.firstName + ' ' + userData.lastName,
-        photo: userData.params.photo,
+        photo: userData.params.photo == null ? userData.params.pictureUrl : userData.params.photo,
         age: userData.params.age,
         gender: userData.params.gender,
         meetingCounter: ConstKeys.meetingCounter - userData.params.meetingCounter,

@@ -1,13 +1,14 @@
 import React from 'react';
 
 export default class ConstKeys {
-    static apiUrl = 'http://192.168.8.103:8080';
-    static bucketName = 'xxx';
-    static region = 'xxx';
-    static accessKey = 'xxx';
-    static secretKey = 'xxx';
-    static fileName = 'xxx';
-    static format = 'xxx';
+    static apiUrl = 'http://192.168.0.73:7777';
+    static bucketName = "xxx";
+    static region = "xxx";
+    static accessKey = "xxx";
+    static secretKey = "xxx";
+    static fileName = "ProfilePic";
+    static extension = ".jpg"
+    static format = "image/png";
     static auth = '';
     static userInfo = {};
     static minLength = 3;
@@ -17,4 +18,5 @@ export default class ConstKeys {
     static meetingCounter = 3;
     static categories = {};
     static hobbies = {};
+    static profilePic = '';
 }

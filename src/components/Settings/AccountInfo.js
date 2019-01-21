@@ -11,7 +11,7 @@ import {
 import {Font, LinearGradient, ImagePicker} from "expo";
 import ConstKeys from '../../config/app.consts'
 import {getAllUserHobbies} from "../../services/hobby.service";
-import {matchResponseToUserInfo, updateUser} from "../../services/user.service";
+import {matchResponseToUserInfo, updateUser, uploadToS3} from "../../services/user.service";
 import {validateLength} from "../../services/string.service";
 import UserInfo from "../HomeMap/UserInfo";
 import HobbyItem from './HobbyItem';
@@ -19,6 +19,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import Dialog, {DialogContent, ScaleAnimation, DialogTitle} from "react-native-popup-dialog";
 import Colors from '../../config/colors'
 import {RNS3} from 'react-native-aws3';
+import {updateUserData} from '../../config/authorization'
 
 export default class AccountInfo extends React.Component {
     constructor(props) {
@@ -51,7 +52,7 @@ export default class AccountInfo extends React.Component {
         this.setState({uriImage: result.uri});
         const file = {
           uri: this.state.uriImage,
-          name: ConstKeys.fileName,
+          name: ConstKeys.fileName + ConstKeys.userInfo.id + ConstKeys.extension,
           type: ConstKeys.format
         }
         const config = {
@@ -62,11 +63,10 @@ export default class AccountInfo extends React.Component {
           successActionStatus: 201
         }
         const response = await RNS3.put(file,config)
-          .then(response => {
-            console.log(response);
-          }).catch(err => {
-            console.log(err);
-          })
+        ConstKeys.userInfo.photo = response.body.postResponse.location;
+        const uriToDBResponse = await uploadToS3(ConstKeys.userInfo.photo);
+        updateUserData();
+
       }
     }
 
