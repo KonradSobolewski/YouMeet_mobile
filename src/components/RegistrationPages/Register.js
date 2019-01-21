@@ -126,7 +126,7 @@ export default class App extends React.Component {
         let register = <Text style={styles.registerText}>REGISTER</Text>;
 
         return (
-            <LinearGradient colors={['white', '#ddb6ca']} locations={[0, 0.8]} style={styles.gradient}>
+            <LinearGradient colors={['white', '#ddb6ca']} locations={[0.3, 1]} style={styles.gradient}>
                 <KeyboardAvoidingView behavior="padding" style={styles.container}>
 
                     <ScrollView contentContainerStyle={styles.scrollView}>

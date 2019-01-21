@@ -23,6 +23,7 @@
     "react-native-maps": "^0.22.1",
     "react-native-popup-dialog": "^0.16.6",
     "react-native-shake": "^3.2.3",
+    "react-native-swiper": "^1.5.14",
     "react-navigation": "^2.18.2"
   },
   "devDependencies": {

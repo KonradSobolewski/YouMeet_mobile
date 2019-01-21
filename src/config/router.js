@@ -18,7 +18,11 @@ import OwnMeetingsScreen from '../components/OwnMeetingsPanel/OwnMeetingsScreen'
 import History from "../components/UserHistory/History"
 import SuccessfullCreate from "../components/MeetingCreator/SuccessfullCreate"
 import ConstKeys from "./app.consts";
-import Colors from '../config/colors'
+import Colors from '../config/colors';
+import UpdateSettings from'../components/FirstUpdate/updateSettings';
+import UpdateHobbies from'../components/FirstUpdate/updateHobbies';
+import UpdatePersnoalInfo from'../components/FirstUpdate/updatePeronalInfo';
+import SwiperUpdate from "../components/FirstUpdate/SwiperUpdate";
 
 export const createRootNavigator = (signedIn = false, data) => {
     return createStackNavigator({
@@ -170,6 +174,18 @@ export const createRootNavigator = (signedIn = false, data) => {
             },
             appSettings: {
                 screen: AppSettings
+            },
+            updateHobbies: {
+                screen: UpdateHobbies
+            },
+            updateSettings: {
+                screen: UpdateSettings
+            },
+            updatePersonalInfo: {
+                screen: UpdatePersnoalInfo
+            },
+            swiperUpdate: {
+                screen: SwiperUpdate
             }
         },
         {
@@ -182,7 +198,7 @@ export const createRootNavigator = (signedIn = false, data) => {
 
 export const whatScreenShouldGo = (signedIn) => {
     if (signedIn) {
-        return ConstKeys.userInfo.firstTimeLogging ? 'accountInfo' : 'homePage';
+        return ConstKeys.userInfo.firstTimeLogging ? 'swiperUpdate' : 'homePage';
     }
     return 'loginPage';
 };

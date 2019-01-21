@@ -1,7 +1,7 @@
 import React from 'react';
 
 export default class ConstKeys {
-    static apiUrl = 'http://192.168.8.103:8080';
+    static apiUrl = 'http://192.168.8.101:8080';
     static bucketName = 'xxx';
     static region = 'xxx';
     static accessKey = 'xxx';
@@ -17,4 +17,5 @@ export default class ConstKeys {
     static meetingCounter = 3;
     static categories = {};
     static hobbies = {};
+    static userHobbies = [];
 }

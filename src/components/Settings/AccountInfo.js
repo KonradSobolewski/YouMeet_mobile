@@ -16,7 +16,6 @@ import {validateLength} from "../../services/string.service";
 import UserInfo from "../HomeMap/UserInfo";
 import HobbyItem from './HobbyItem';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import Dialog, {DialogContent, ScaleAnimation, DialogTitle} from "react-native-popup-dialog";
 import Colors from '../../config/colors'
 import {RNS3} from 'react-native-aws3';
 
@@ -36,7 +35,6 @@ export default class AccountInfo extends React.Component {
             switchState: ConstKeys.userInfo.gender !== 'male',
             hobbies: ConstKeys.hobbies,
             valid: true,
-            dialogVisible: ConstKeys.userInfo.firstTimeLogging === true,
             uriImage: null
         };
         this.getUserHobbies();
@@ -68,7 +66,7 @@ export default class AccountInfo extends React.Component {
             console.log(err);
           })
       }
-    }
+    };
 
 
     getUserHobbies = () => {
@@ -170,29 +168,10 @@ export default class AccountInfo extends React.Component {
             });
         }
         return (
-            <LinearGradient colors={['white', '#ddb6ca']} locations={[0, 0.8]} style={styles.gradient}>
+            <LinearGradient colors={['white', '#ddb6ca']} locations={[0.3, 1]} style={styles.gradient}>
                 <UserInfo navigator={this.props.navigation} showHamburger={false}/>
                 <KeyboardAvoidingView behavior="padding" style={styles.container}>
                     <ScrollView>
-                        <Dialog
-                            visible={this.state.dialogVisible}
-                            dialogAnimation={new ScaleAnimation({
-                                toValue: 0, // optional
-                                useNativeDriver: true, // optional
-                            })}
-                            onTouchOutside={() => {
-                                this.setState({dialogVisible: false});
-                            }}
-                            dialogStyle={styles.dialog}
-                            width={0.8}
-                            height={0.2}
-                            dialogTitle={<DialogTitle hasTitleBar={false} title="Welcome to YouMeet application"/>}
-                        >
-                            <DialogContent style={{justifyContent:'center', alignItems:'center'}}>
-                                <Text style={{alignSelf: 'center', textAlign: 'center'}}>Please set your personal information to find new
-                                    meetings!</Text>
-                            </DialogContent>
-                        </Dialog>
                         <View style={styles.scrollView}>
                             {firstName}
                             <TextInput
@@ -283,11 +262,6 @@ const styles = StyleSheet.create({
         flexGrow: 1,
         justifyContent: 'center',
         marginTop: 100
-    },
-    dialog: {
-        justifyContent: 'center',
-        alignItems: 'center',
-        margin: 10,
     },
     label: {
         marginTop: 5,

@@ -196,7 +196,7 @@ export default class Login extends React.Component {
         let login = <Text style={styles.buttonText}>LOGIN</Text>;
 
         return (
-            <LinearGradient colors={['white', '#ddb6ca']} locations={[0, 0.8]} style={styles.gradient}>
+            <LinearGradient colors={['white', '#ddb6ca']} locations={[0.3, 1]} style={styles.gradient}>
                 <KeyboardAvoidingView behavior="padding" style={styles.container}>
                     <ScrollView>
                         <View style={styles.logoContainer}>

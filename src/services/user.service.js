@@ -74,7 +74,7 @@ export const signIn = (navigator) => {
     )
         .then(() => {
             if (ConstKeys.userInfo.firstTimeLogging === true)
-                navigator.navigate('accountInfo');
+                navigator.navigate('swiperUpdate');
             else
                 navigator.navigate('homePage')
         })
@@ -92,7 +92,7 @@ export const matchResponseToUserInfo = (userData) => {
         age: userData.params.age,
         gender: userData.params.gender,
         meetingCounter: ConstKeys.meetingCounter - userData.params.meetingCounter,
-        firstTimeLogging: false
+        firstTimeLogging: userData.params.firstTimeLogging
     }
 };
 
