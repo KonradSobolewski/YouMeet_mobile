@@ -7,7 +7,7 @@ export default class ConstKeys {
     static accessKey = "xxx";
     static secretKey = "xxx";
     static fileName = "ProfilePic";
-    static extension = ".jpg"
+    static extension = ".jpg";
     static format = "image/png";
     static auth = '';
     static userInfo = {};
