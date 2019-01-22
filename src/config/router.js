@@ -16,15 +16,15 @@ import MeetingForm from "../components/MeetingCreator/MeetingForm"
 import NotificationScreen from '../components/Notifications/NotificationScreen'
 import OwnMeetingsScreen from '../components/OwnMeetingsPanel/OwnMeetingsScreen'
 import History from "../components/UserHistory/History"
-import SuccessfullCreate from "../components/MeetingCreator/SuccessfullCreate"
 import ConstKeys from "./app.consts";
 import Colors from '../config/colors';
 import UpdateSettings from'../components/FirstUpdate/updateSettings';
 import UpdateHobbies from'../components/FirstUpdate/updateHobbies';
 import UpdatePersnoalInfo from'../components/FirstUpdate/updatePeronalInfo';
 import SwiperUpdate from "../components/FirstUpdate/SwiperUpdate";
+import Loading from "../components/Loading/loading";
 
-export const createRootNavigator = (signedIn = false, data) => {
+export const createRootNavigator = (signedIn = false) => {
     return createStackNavigator({
             loginPage: {
                 screen: createMaterialTopTabNavigator({
@@ -66,9 +66,6 @@ export const createRootNavigator = (signedIn = false, data) => {
                         }
                     }
                 )
-            },
-            meetingCreated: {
-                screen: SuccessfullCreate
             },
             homePage: {
                 screen: createDrawerNavigator({
@@ -186,11 +183,13 @@ export const createRootNavigator = (signedIn = false, data) => {
             },
             swiperUpdate: {
                 screen: SwiperUpdate
+            },
+            loading: {
+                screen: Loading
             }
         },
         {
             initialRouteName: whatScreenShouldGo(signedIn),
-            initialRouteParams: signedIn ? {userInfo: data.userInfo, auth: data.auth} : null,
             mode: 'modal',
             headerMode: 'none',
         });
@@ -198,7 +197,7 @@ export const createRootNavigator = (signedIn = false, data) => {
 
 export const whatScreenShouldGo = (signedIn) => {
     if (signedIn) {
-        return ConstKeys.userInfo.firstTimeLogging ? 'swiperUpdate' : 'homePage';
+        return 'loading';
     }
     return 'loginPage';
 };

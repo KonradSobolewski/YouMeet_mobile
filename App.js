@@ -10,7 +10,6 @@ export default class App extends React.Component {
         super(props);
         this.state = {
             signedIn: false,
-            data: null,
             checkedSignIn: false,
             fontLoaded: false
         };
@@ -32,17 +31,8 @@ export default class App extends React.Component {
                 ConstKeys.auth = data.auth;
                 ConstKeys.hobbies = data.hobbies;
                 ConstKeys.categories = data.categories;
-                loadAppData().then(appData => {
-                    let appDataJson = JSON.parse(appData);
-                    ConstKeys.gender = appDataJson.gender;
-                    ConstKeys.minAge = appDataJson.minAge;
-                    ConstKeys.maxAge = appDataJson.maxAge;
-                    this.setState({signedIn: true, data: data, checkedSignIn: true});
-                }).catch(err => {
-                    console.log('Cant load app settings');
-                    this.setState({signedIn: true, data: data, checkedSignIn: true});
-                });
-                this.setState({checkedSignIn: true});
+                ConstKeys.userHobbies = data.userHobbies;
+                this.setState({signedIn: true, checkedSignIn: true});
             })
             .catch(err => {
                 this.setState({checkedSignIn: true});
@@ -54,7 +44,7 @@ export default class App extends React.Component {
         if (!this.state.checkedSignIn || !this.state.fontLoaded) {
             return null;
         }
-        const Layout = createRootNavigator(this.state.signedIn, this.state.data);
+        const Layout = createRootNavigator(this.state.signedIn);
         return (
             <Layout/>
         );

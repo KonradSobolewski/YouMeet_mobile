@@ -10,7 +10,6 @@ import {
 } from "react-native";
 import {Font, LinearGradient, ImagePicker} from "expo";
 import ConstKeys from '../../config/app.consts'
-import {getAllUserHobbies} from "../../services/hobby.service";
 import {matchResponseToUserInfo, updateUser, uploadToS3} from "../../services/user.service";
 import {validateLength} from "../../services/string.service";
 import UserInfo from "../HomeMap/UserInfo";
@@ -30,7 +29,7 @@ export default class AccountInfo extends React.Component {
                 photo: ConstKeys.userInfo.photo,
                 age: ConstKeys.userInfo.age,
                 gender: ConstKeys.userInfo.gender,
-                userHobbies: []
+                userHobbies: ConstKeys.userHobbies
             },
             selectedValue: 1,
             switchState: ConstKeys.userInfo.gender !== 'male',
@@ -38,7 +37,6 @@ export default class AccountInfo extends React.Component {
             valid: true,
             uriImage: null
         };
-        this.getUserHobbies();
     }
 
     pickImage = async () => {
@@ -68,19 +66,6 @@ export default class AccountInfo extends React.Component {
       }
     };
 
-
-    getUserHobbies = () => {
-        getAllUserHobbies(ConstKeys.userInfo.email).then(res => res.json().then(data => {
-            const tempHobbies = [];
-            data.map(hobby => tempHobbies.push(hobby.name));
-            this.state.userInfo.userHobbies = tempHobbies;
-            this.forceUpdate();
-        }))
-            .catch(err => {
-                console.log(err);
-            })
-    };
-
     addUserHobby = (hobby) => {
         if (this.state.userInfo.userHobbies.indexOf(hobby) < 0) {
             this.state.userInfo.userHobbies.push(hobby);
@@ -98,12 +83,19 @@ export default class AccountInfo extends React.Component {
 
     updateUserInfo = () => {
         if (this.validate()) {
-            updateUser(this.state.userInfo)
+            ConstKeys.userInfo.firstName = this.state.userInfo.firstName;
+            ConstKeys.userInfo.lastName = this.state.userInfo.lastName;
+            ConstKeys.userInfo.photo = this.state.userInfo.photo;
+            ConstKeys.userInfo.age = this.state.userInfo.age;
+            ConstKeys.userInfo.gender = this.state.userInfo.gender;
+            ConstKeys.userHobbies = this.state.userInfo.userHobbies;
+            updateUserData();
+            updateUser()
                 .then(res => {
                     res.json().then(data => {
                         ConstKeys.userInfo = matchResponseToUserInfo(data);
+                        this.props.navigation.navigate('homePage')
                     });
-                    this.props.navigation.navigate('homePage')
                 })
                 .catch(err => console.log(err));
         } else {
@@ -158,7 +150,7 @@ export default class AccountInfo extends React.Component {
             Choose hobby:
         </Text>;
         let update = <Text style={styles.submitText}>UPDATE</Text>;
-        let getImage = <Text style={styles.submitText}>SET LOGO</Text>;
+        let getImage = <Text style={styles.submitText}>SET IMAGE</Text>;
         let hobbies = null;
         if ( this.state.hobbies.length > 0  ) {
             hobbies = this.state.hobbies.map(hobby => {

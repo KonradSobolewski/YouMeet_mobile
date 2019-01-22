@@ -55,7 +55,7 @@ export default class UpdateSettings extends React.Component {
         return (
             <LinearGradient colors={['white', '#ddb6ca']} locations={[0.3, 1]} style={styles.gradient}>
                 <Text style={styles.header}>
-                    Update application settings
+                    Application settings
                 </Text>
                 <View style={styles.contentContainer}>
                     {age}

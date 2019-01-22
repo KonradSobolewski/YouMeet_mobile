@@ -2,7 +2,7 @@ import React from 'react';
 import {StyleSheet, FlatList, Text, View, RefreshControl, ActivityIndicator} from "react-native";
 import {Font} from 'expo';
 import {
-    acceptJoinerMeeting,
+    acceptJoinerMeeting, cancelSubscibtionForMeeting,
     deleteMeeting,
     getJoinersToOwnMeetings,
     getRecentMeetings
@@ -77,6 +77,19 @@ export default class NotificationScreen extends React.Component {
     };
 
     cancelJoiner = (meetingId, joinerId) => {
+        cancelSubscibtionForMeeting(meetingId, joinerId).then(response => response.json().then(data => {
+            }).catch(err => signOut(this.props.navigation))
+        ).catch(err => signOut(this.props.navigation));
+        this.refresh();
+
+        let newJoiners = [];
+        if(this.state.meetingJoiners.length > 0) {
+            newJoiners = this.state.meetingJoiners.filter(joiner => {
+                console.log(joiner);
+                return joiner.id !== joinerId;
+            });
+        }
+        this.setState({meetingJoiners: newJoiners});
     };
 
     deleteMeeting = (meeting) => {
@@ -96,6 +109,7 @@ export default class NotificationScreen extends React.Component {
     refresh = () => {
         this.setState({refreshing: true});
         this.getOwnMeetings();
+        this.getNewJoiners();
     };
 
     renderHeader = () => {
@@ -163,7 +177,7 @@ export default class NotificationScreen extends React.Component {
                     dialogStyle={styles.dialog}
                     width={0.8}
                     height={0.25}
-                    dialogTitle={<DialogTitle title={this.state.pickedMeeting.params.placeDescription} hasTitleBar={false} />}
+                    dialogTitle={<DialogTitle title={this.state.pickedMeeting.params.placeDescription} hasTitleBar={false} align={'center'}/>}
                     actions={[
                         <DialogButton
                             text="DELETE"

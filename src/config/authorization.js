@@ -31,7 +31,8 @@ export const updateUserData = () => {
         auth: ConstKeys.auth,
         userInfo: ConstKeys.userInfo,
         categories: ConstKeys.categories,
-        hobbies: ConstKeys.hobbies
+        hobbies: ConstKeys.hobbies,
+        userHobbies: ConstKeys.userHobbies
     }));
 };
 

@@ -27,7 +27,7 @@ export default class Settings extends React.Component {
             Buy premium
         </Text>;
         let footerTxt = <Text style={styles.footerTxt}>
-            YouMeet &copy; version 0.2
+            YouMeet &copy; version 1.0
         </Text>;
 
         return (

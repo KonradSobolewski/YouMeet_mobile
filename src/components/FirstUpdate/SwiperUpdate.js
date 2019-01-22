@@ -33,7 +33,7 @@ export default class SwiperUpdate extends React.Component {
         ConstKeys.userInfo.firstTimeLogging = false;
         updateUserData();
         setAppData({gender: ConstKeys.gender, minAge: ConstKeys.minAge, maxAge: ConstKeys.maxAge});
-        updateUser(this.state.userInfo)
+        updateUser()
             .then(res => {
                 res.json().then(data => {
                     ConstKeys.userInfo = matchResponseToUserInfo(data);
@@ -80,7 +80,7 @@ export default class SwiperUpdate extends React.Component {
                     <View style={styles.dotsContainer}>
                     </View>
                     <TouchableOpacity style={styles.button} onPress={() => this.updateInfo()}>
-                        <Text style={styles.buttonText}>NEXT</Text>
+                        <Text style={styles.buttonText}>UPDATE</Text>
                     </TouchableOpacity>
                 </View>
             </View>
@@ -100,7 +100,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     button: {
-        width: '20%',
+        width: '25%',
         padding: 10,
         borderRadius: 5,
         backgroundColor: Colors.theme,
@@ -116,7 +116,7 @@ const styles = StyleSheet.create({
         letterSpacing: 3
     },
     dotsContainer: {
-        width: '50%',
+        width: '40%',
         flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center',

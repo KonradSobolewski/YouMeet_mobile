@@ -38,7 +38,7 @@ export default class UpdatePersonalInfo extends React.Component {
         return (
             <LinearGradient colors={['white', '#ddb6ca']} locations={[0.3, 1]} style={styles.gradient}>
                 <Text style={styles.header}>
-                    Update personal information
+                    Personal information
                 </Text>
                 <View style={styles.contentContainer}>
                     {age}

@@ -41,7 +41,7 @@ export const uploadToS3 = (url) => {
     });
 };
 
-export const updateUser = (userInfo) => {
+export const updateUser = () => {
     return new Promise((resolve, reject) => {
         fetch(ConstKeys.apiUrl + '/api/updateUser', {
             credentials: 'include',
@@ -52,13 +52,13 @@ export const updateUser = (userInfo) => {
             },
             body: JSON.stringify({
                 email: ConstKeys.userInfo.email,
-                firstName: userInfo.firstName,
-                lastName: userInfo.lastName,
+                firstName: ConstKeys.userInfo.firstName,
+                lastName: ConstKeys.userInfo.lastName,
                 params: {
-                    photo: userInfo.photo,
-                    hobbies: userInfo.userHobbies,
-                    age: userInfo.age,
-                    gender: userInfo.gender,
+                    photo: ConstKeys.userInfo.photo,
+                    hobbies: ConstKeys.userHobbies,
+                    age: ConstKeys.userInfo.age,
+                    gender: ConstKeys.userInfo.gender,
                     firstTimeLogging: ConstKeys.userInfo.firstTimeLogging
                 }
             })
@@ -78,6 +78,9 @@ export const signOut = (navigator) => {
         .then(() => {
             ConstKeys.auth = '';
             ConstKeys.userInfo = '';
+            ConstKeys.userHobbies = [];
+            ConstKeys.meetings = [];
+            ConstKeys.meetingCounter = 3;
             navigator.navigate('loginPage')
         })
         .catch(err => console.log(err));
@@ -88,7 +91,8 @@ export const signIn = (navigator) => {
             auth: ConstKeys.auth,
             userInfo: ConstKeys.userInfo,
             categories: ConstKeys.categories,
-            hobbies: ConstKeys.hobbies
+            hobbies: ConstKeys.hobbies,
+            userHobbies: ConstKeys.userHobbies
         })
     )
         .then(() => {
@@ -107,7 +111,7 @@ export const matchResponseToUserInfo = (userData) => {
         firstName: userData.firstName,
         lastName: userData.lastName,
         name: userData.firstName + ' ' + userData.lastName,
-        photo: userData.params.photo == null ? userData.params.pictureUrl : userData.params.photo,
+        photo: userData.params.photo === null ? userData.params.pictureUrl : userData.params.photo,
         age: userData.params.age,
         gender: userData.params.gender,
         meetingCounter: ConstKeys.meetingCounter - userData.params.meetingCounter,

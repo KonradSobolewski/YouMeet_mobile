@@ -17,7 +17,6 @@ export default class Home extends React.Component {
         this.state = {
             userInfo: ConstKeys.userInfo,
             auth: ConstKeys.auth,
-            isSuccessfulCreated: props.navigation.getParam('isSuccessfulCreate'),
             location: {
                 latitude: 52.22967,
                 longitude: 21.01222,
@@ -28,28 +27,23 @@ export default class Home extends React.Component {
             category: 0,
             chosenPlace: null,
             meetingsLoaded: false,
-            meetings: [],
-            filteredMeetings: [],
+            meetings: ConstKeys.meetings,
+            filteredMeetings: ConstKeys.meetings,
             userPositionLoaded: false,
-            categoryLoaded: false,
             modalVisible: false,
             selectedMeeting: null,
-            dialogVisible: false
+            dialogVisible: false,
         };
     }
 
     _isMounted = false;
 
-    async componentDidMount() {
+    componentDidMount = () => {
         this._isMounted = true;
         this.getAllCategories();
         this.getUserLocationHandler();
-        this.getPlaces();
-    }
-
-    componentWillUnmount() {
-        this._isMounted = false;
-    }
+        console.log(this.state.meetings);
+    };
 
     getPlaces = () => {
         getMeetingPlaces().then(response => response.json().then(data => {
@@ -61,6 +55,7 @@ export default class Home extends React.Component {
                     }));
                     this.setState({meetings: data, filteredMeetings: data, meetingsLoaded: true});
                 }
+
             }).catch(err => signOut(this.props.navigation))
         ).catch(err => signOut(this.props.navigation));
     };
@@ -81,6 +76,16 @@ export default class Home extends React.Component {
         }
     };
 
+    getAllCategories = () => {
+        if (this._isMounted) {
+            this.setState({categories: [{id: 0, type: 'Select category: All'}, ...this.state.categories]});
+        }
+    };
+
+    isAllLoaded = () => {
+        return this.state.userPositionLoaded && this._isMounted;
+    };
+
     setTapedCoordinates = (data) => {
         if (this._isMounted) {
             this.setState({chosenPlace: data});
@@ -93,16 +98,6 @@ export default class Home extends React.Component {
         }
     };
 
-    getAllCategories = () => {
-        if (!this.state.categoryLoaded) {
-            this.setState({categories: [{id: 0, type: 'Select category: All'}, ...this.state.categories], categoryLoaded: true});
-        }
-    };
-
-    isAllLoaded = () => {
-        return this.state.meetingsLoaded && this.state.userPositionLoaded && this._isMounted;
-    };
-
     filterMeetings = (index) => {
         if (index === 0) {
             this.state.filteredMeetings = this.state.meetings;
@@ -111,22 +106,18 @@ export default class Home extends React.Component {
                 return index === item.category;
             });
         }
-        if (this._isMounted) {
-            this.forceUpdate();
-        }
+        this.forceUpdate();
     };
-
 
     getFilter = () => {
         let categories = [];
-        if (this.state.categoryLoaded) {
-            categories.push(this.state.categories.map(category => {
-                    return (
-                        <Picker.Item key={category.id} label={category.type} value={category.id}/>
-                    )
-                })
-            );
-        }
+        categories.push(this.state.categories.map(category => {
+                return (
+                    <Picker.Item key={category.id} label={category.type} value={category.id}/>
+                )
+            })
+        );
+
         return (
             <View style={styles.pickerContainer}>
                 <Picker
@@ -144,8 +135,9 @@ export default class Home extends React.Component {
     };
 
     refresh = () => {
-        this.setState({meetingsLoaded: false});
+        this.setState({userPositionLoaded: false});
         this.getPlaces();
+        this.getUserLocationHandler();
     };
 
     getButtons = () => {
@@ -160,18 +152,16 @@ export default class Home extends React.Component {
 
     joinUser = (meetingId) => {
         joinMeeting(meetingId).then(response => response.json().then(data => {
-                if (this._isMounted) {
-                    this.state.meetings
-                        .filter((item) => (item.meeting_id == meetingId))
-                        .map(item => {
-                            if (data.params.joinerId.includes(ConstKeys.userInfo.id))
-                                item.additionalInformation = 'Success';
-                            else
-                                item.additionalInformation = 'Failure';
-                            return item;
-                        });
-                    this.closeModal();
-                }
+                this.state.meetings
+                    .filter((item) => (item.meeting_id === meetingId))
+                    .map(item => {
+                        if (data.params.joinerId.includes(ConstKeys.userInfo.id))
+                            item.additionalInformation = 'Success';
+                        else
+                            item.additionalInformation = 'Failure';
+                        return item;
+                    });
+                this.closeModal();
             }).catch(err => signOut(this.props.navigation))
         ).catch(err => signOut(this.props.navigation));
 
@@ -192,11 +182,6 @@ export default class Home extends React.Component {
     };
 
     render() {
-        const {navigation} = this.props;
-        if (this.state.auth === null && !this.state.isSuccessfulCreated) {
-            // console.log('\n\n\n wy pierdolone kurwyyy!!!!!  \n\n\n');
-            // navigation.navigate('loginPage');
-        }
         let meetings = null;
         if (this.isAllLoaded()) {
             meetings = this.state.filteredMeetings;

@@ -187,9 +187,9 @@ export const deleteMeeting = (meeting_id) => {
 };
 
 
-export const cancelSubsciptionForMeeting = (meeting_id, userId) => {
+export const cancelSubscibtionForMeeting = (meetingId, userId) => {
     return new Promise((resolve, reject) => {
-        fetch(ConstKeys.apiUrl + '/api/cancelSubscription?id=' + meeting_id+'&userId='+userId, {
+        fetch(ConstKeys.apiUrl + '/api/cancelSubscription?id=' + meetingId+'&userId='+userId, {
             credentials: 'include',
             method: 'GET',
             headers: {

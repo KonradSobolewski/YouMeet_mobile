@@ -14,8 +14,6 @@ import ConstKeys from '../../config/app.consts'
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {getUserNameAndLastName, validateEmail} from '../../services/string.service'
 import {getUserByEmail, signIn, matchResponseToUserInfo, signOut} from '../../services/user.service'
-import {getCategories} from "../../services/category.service";
-import {getAllHobbies} from "../../services/hobby.service";
 import Colors from '../../config/colors'
 
 export default class Login extends React.Component {
@@ -54,13 +52,9 @@ export default class Login extends React.Component {
                         getUserByEmail(this.state.email)
                             .then(response => {
                                 let userData = JSON.parse(response._bodyInit);
-                                let data = {
-                                    userInfo: matchResponseToUserInfo(userData),
-                                    auth: ConstKeys.auth,
-                                };
-                                ConstKeys.userInfo = data.userInfo;
+                                ConstKeys.userInfo = matchResponseToUserInfo(userData);
                                 this.setState({errorDuringLog: false});
-                                this.getAllCategories();
+                                this.props.navigation.navigate('loading');
                             })
                             .catch(err => this.setState({errorDuringLog: true}));
                     }
@@ -73,28 +67,6 @@ export default class Login extends React.Component {
         } else {
             this.setState({errorDuringLog: true});
         }
-    };
-
-    getAllCategories = () => {
-        getCategories().then(response => response.json().then(data => {
-                ConstKeys.categories = data;
-                this.getHobbies();
-            }).catch(err => this.setState({errorDuringLog: true}))
-        ).catch(err => {
-            this.setState({errorDuringLog: true});
-            console.log('lol');
-        });
-    };
-
-    getHobbies = () => {
-        getAllHobbies().then(res => res.json().then(data => {
-            ConstKeys.hobbies = data;
-            signIn(this.props.navigation);
-        }))
-            .catch(err => {
-                this.setState({errorDuringLog: true});
-                console.log('lol2');
-            })
     };
 
     createFbUserAccount = (userInfo) => {
@@ -136,12 +108,11 @@ export default class Login extends React.Component {
             .then(res => {
                 if (res.status === 200) {
                     ConstKeys.auth = res._bodyInit;
-                    this.getAllCategories();
+                    this.props.navigation.navigate('loading');
                 }
                 else {
                     this.setState({errorDuringLog: true});
                 }
-
             })
             .catch(err => {
                     this.setState({errorDuringLog: true});

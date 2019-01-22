@@ -1,7 +1,7 @@
 import React from 'react';
 import {StyleSheet, FlatList, Text, View, RefreshControl, ActivityIndicator} from "react-native";
 import NotificationSubscribedItem from './NotificationSubscribedItem';
-import {getSubscribedToMeetings, cancelSubsciptionForMeeting} from "../../services/meeting.service";
+import {getSubscribedToMeetings, cancelSubscibtionForMeeting} from "../../services/meeting.service";
 import {signOut} from "../../services/user.service";
 import ConstKeys from "../../config/app.consts";
 import Colors from '../../config/colors'
@@ -63,7 +63,7 @@ export default class NotificationScreen extends React.Component {
     };
 
     cancelSubscription = () => {
-        cancelSubsciptionForMeeting(this.state.pickedMeeting.meeting_id, ConstKeys.userInfo.id).then(response => response.json().then(
+        cancelSubscibtionForMeeting(this.state.pickedMeeting.meeting_id, ConstKeys.userInfo.id).then(response => response.json().then(
             data => console.log(data)
         ))
     };

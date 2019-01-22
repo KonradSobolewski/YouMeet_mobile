@@ -26,7 +26,7 @@ export default class MeetingForm extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            categories: null,
+            categories: ConstKeys.categories,
             isChecked: true,
             selectedValue: 1,
             description: null,
@@ -35,15 +35,7 @@ export default class MeetingForm extends React.Component {
             place: props.navigation.getParam('place'),
             pickedTime: null,
         };
-        this.getAllCategories();
     }
-
-    getAllCategories = () => {
-        getCategories().then(response => response.json().then(data => {
-                this.setState({categories: data});
-            }).catch(err => signOut(this.props.navigation))
-        ).catch(err => signOut(this.props.navigation));
-    };
 
     createMyMeeting = () => {
         if (this.state.pickedTime === null)
@@ -53,7 +45,8 @@ export default class MeetingForm extends React.Component {
             .then(res => {
                 ConstKeys.userInfo.meetingCounter = ConstKeys.userInfo.meetingCounter - 1;
                 updateUserData();
-                this.props.navigation.navigate('meetingCreated')
+                ConstKeys.isSuccessfulCreated = true;
+                this.props.navigation.navigate('homePage')
             })
             .catch(err => console.log(err));
     };
