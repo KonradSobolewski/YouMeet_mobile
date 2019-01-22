@@ -111,12 +111,19 @@ export const matchResponseToUserInfo = (userData) => {
         firstName: userData.firstName,
         lastName: userData.lastName,
         name: userData.firstName + ' ' + userData.lastName,
-        photo: userData.params.photo === null ? userData.params.pictureUrl : userData.params.photo,
+        photo: userData.params.pictureUrl !== null ? userData.params.pictureUrl : image(userData.params.photo),
         age: userData.params.age,
         gender: userData.params.gender,
         meetingCounter: ConstKeys.meetingCounter - userData.params.meetingCounter,
         firstTimeLogging: userData.params.firstTimeLogging
     }
+};
+
+export const image = (photo) => {
+    if(photo !== null) {
+        return photo;
+    }
+    return null;
 };
 
 export const getUserIcon = () => {
