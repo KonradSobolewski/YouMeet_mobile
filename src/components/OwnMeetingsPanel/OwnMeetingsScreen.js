@@ -71,7 +71,7 @@ export default class NotificationScreen extends React.Component {
 
     acceptMeeting = (meetingId, joinerId) => {
         acceptJoinerMeeting(meetingId, joinerId).then(response => response.json().then(data => {
-
+                this.refresh();
             }).catch(err => signOut(this.props.navigation))
         ).catch(err => signOut(this.props.navigation));
     };
@@ -107,7 +107,7 @@ export default class NotificationScreen extends React.Component {
     };
 
     refresh = () => {
-        this.setState({refreshing: true});
+        this.setState({refreshing: true, meetingsLoaded: false, newJoinersLoaded: false});
         this.getOwnMeetings();
         this.getNewJoiners();
     };
@@ -142,7 +142,10 @@ export default class NotificationScreen extends React.Component {
                 <FlatList style={styles.flatList}
                           data={this.state.meetings}
                           renderItem={({item}) => (
-                              <MeetingItem showJoinModal={(data, meeting) => this.setState({modalVisible: true, meetingJoiners: data, pickedMeeting: meeting})}
+                              <MeetingItem showJoinModal={(data, meeting) => {
+                                  this.setState({modalVisible: true, meetingJoiners: data, pickedMeeting: meeting})
+                                  console.log('lol',this.state.meetingJoiners);
+                              }}
                                            joiners={this.state.newJoinersMeetings}
                                            meetingItem={item}
                                            pressAction={(data) => this.setState({pickedMeeting: data, dialogVisible: true})} />

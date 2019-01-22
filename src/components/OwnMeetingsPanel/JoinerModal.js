@@ -1,8 +1,6 @@
 import React from 'react';
-import {StyleSheet, View, Text, TouchableOpacity, Modal, Image, FlatList, RefreshControl} from 'react-native';
-import {getMetUserIcon} from "../../services/user.service";
+import {StyleSheet, View, Text, Modal, FlatList, VirtualizedList} from 'react-native';
 import {LinearGradient} from "expo";
-import Colors from '../../config/colors'
 import JoinerItem from "./JoinerItem";
 
 const joinerModal = props => {

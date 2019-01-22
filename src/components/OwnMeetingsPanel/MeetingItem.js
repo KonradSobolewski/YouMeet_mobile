@@ -17,7 +17,7 @@ const meetingItem = props => {
             </View>
             <View style={{borderLeftWidth:1, borderColor:Colors.black, height: '85%'}}></View>
             <View style={styles.rightBox}>
-                <TouchableOpacity style={styles.rightContent} onPress={() => props.showJoinModal(props.joiners[props.meetingItem.meeting_id], props.meetingItem)}>
+                <TouchableOpacity style={styles.rightContent} onPress={() => props.showJoinModal([props.joiners[props.meetingItem.meeting_id][0]], props.meetingItem)}>
                     {props.joiners[props.meetingItem.meeting_id].length > 0 ?
                         (getProperIcon(props.joiners[props.meetingItem.meeting_id])) :
                         (<Text style={styles.category}>Empty meeting</Text>) }
@@ -49,11 +49,11 @@ const styles = StyleSheet.create({
         flex: 1,
         width: '100%',
         height: 150,
-        backgroundColor: '#eee',
+        backgroundColor: '#FFF',
         flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center',
-        margin: 5
+        marginVertical: 5
     },
     leftBox: {
         width: '60%',
@@ -78,12 +78,13 @@ const styles = StyleSheet.create({
         height: 100,
         padding: 10,
         borderRadius : 50,
-        borderColor: 'white',
+        borderColor: Colors.theme,
         borderWidth: 1
     },
     text: {
         marginLeft: 5,
         marginTop: 4,
-        marginBottom: 3
+        marginBottom: 3,
+        fontFamily: 'Cabin'
     }
 });

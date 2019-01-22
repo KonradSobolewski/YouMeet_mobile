@@ -42,6 +42,7 @@ export default class Home extends React.Component {
         this._isMounted = true;
         this.getAllCategories();
         this.getUserLocationHandler();
+        this.getPlaces();
         console.log(this.state.meetings);
     };
 

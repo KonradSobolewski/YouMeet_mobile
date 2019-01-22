@@ -7,7 +7,6 @@ import {getCategories} from "../../services/category.service";
 import ConstKeys from "../../config/app.consts";
 import {getAllHobbies, getAllUserHobbies} from "../../services/hobby.service";
 import {signIn, signOut} from "../../services/user.service";
-import {getMeetingPlaces} from "../../services/meeting.service";
 import {loadAppData, setAppData} from "../../config/authorization";
 
 
@@ -18,7 +17,6 @@ export default class Loading extends React.Component {
             categoriesLoaded: false,
             hobbiesLoaded: false,
             userHobbiesLoaded: false,
-            meetingsLoaded: false,
         };
 
     };
@@ -53,39 +51,25 @@ export default class Loading extends React.Component {
         getCategories().then(response => response.json().then(data => {
                 ConstKeys.categories = data;
                 this.setState({categoriesLoaded: true});
-                this.getPlaces();
-            }).catch(err => signOut(this.props.navigation))
-        ).catch(err => signOut(this.props.navigation));
-    };
-
-    getPlaces = () => {
-        getMeetingPlaces().then(response => response.json().then(data => {
-                data.filter(item => item.params.joinerId != null).map((item => {
-                    if (item.params.joinerId.includes(ConstKeys.userInfo.id))
-                        item.additionalInformation = 'Success';
-                    return item;
-                }));
-                ConstKeys.meetings = data;
-                this.setState({meetingsLoaded: true});
-                this.forceUpdate();
+            this.forceUpdate();
             }).catch(err => signOut(this.props.navigation))
         ).catch(err => signOut(this.props.navigation));
     };
 
     render() {
-        if (this.state.categoriesLoaded && this.state.hobbiesLoaded && this.state.meetingsLoaded && this.state.userHobbiesLoaded){
+        if (this.state.categoriesLoaded && this.state.hobbiesLoaded && this.state.userHobbiesLoaded){
             loadAppData().then(appData => {
                 let appDataJson = JSON.parse(appData);
                 ConstKeys.gender = appDataJson.gender;
                 ConstKeys.minAge = appDataJson.minAge;
                 ConstKeys.maxAge = appDataJson.maxAge;
+                signIn(this.props.navigation);
             }).catch(err => {
                 console.log('Cant load app settings');
                 setAppData({gender: ConstKeys.gender, minAge: ConstKeys.minAge, maxAge: ConstKeys.maxAge});
+                signIn(this.props.navigation);
             });
-            signIn(this.props.navigation);
         }
-
 
         return (
             <LinearGradient colors={['white', '#ddb6ca']} locations={[0.3, 1]} style={styles.gradient}>
