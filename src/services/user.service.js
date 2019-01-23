@@ -111,7 +111,7 @@ export const matchResponseToUserInfo = (userData) => {
         firstName: userData.firstName,
         lastName: userData.lastName,
         name: userData.firstName + ' ' + userData.lastName,
-        photo: userData.params.pictureUrl !== null ? userData.params.pictureUrl : image(userData.params.photo),
+        photo: userData.params.photo !== undefined && userData.params.photo !== null ? userData.params.photo : image(userData.params.pictureUrl),
         age: userData.params.age,
         gender: userData.params.gender,
         meetingCounter: ConstKeys.meetingCounter - userData.params.meetingCounter,
@@ -120,7 +120,7 @@ export const matchResponseToUserInfo = (userData) => {
 };
 
 export const image = (photo) => {
-    if(photo !== null) {
+    if(photo !== null && photo !== undefined) {
         return photo;
     }
     return null;

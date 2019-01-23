@@ -17,11 +17,13 @@ const meetingItem = props => {
             </View>
             <View style={{borderLeftWidth:1, borderColor:Colors.black, height: '85%'}}></View>
             <View style={styles.rightBox}>
-                <TouchableOpacity style={styles.rightContent} onPress={() => props.showJoinModal([props.joiners[props.meetingItem.meeting_id][0]], props.meetingItem)}>
-                    {props.joiners[props.meetingItem.meeting_id].length > 0 ?
-                        (getProperIcon(props.joiners[props.meetingItem.meeting_id])) :
-                        (<Text style={styles.category}>Empty meeting</Text>) }
-                </TouchableOpacity>
+                {props.joiners[props.meetingItem.meeting_id].length > 0 ?
+                    ( <TouchableOpacity style={styles.rightContent} onPress={() => props.showJoinModal([props.joiners[props.meetingItem.meeting_id][0]], props.meetingItem)}>
+                        {getProperIcon(props.joiners[props.meetingItem.meeting_id])}
+                    </TouchableOpacity>):
+                        (<Text style={styles.category}>Empty meeting</Text>)
+                }
+
             </View>
         </TouchableOpacity>
     );

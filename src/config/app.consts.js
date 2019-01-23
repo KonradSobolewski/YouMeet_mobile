@@ -21,4 +21,6 @@ export default class ConstKeys {
     static profilePic = '';
     static userHobbies = [];
     static meetings = [];
+    static longitude = null;
+    static latitude = null;
 }

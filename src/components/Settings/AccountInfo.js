@@ -50,19 +50,20 @@ export default class AccountInfo extends React.Component {
           uri: this.state.uriImage,
           name: ConstKeys.fileName + ConstKeys.userInfo.id + ConstKeys.extension,
           type: ConstKeys.format
-        }
+        };
         const config = {
           bucket: ConstKeys.bucketName,
           region: ConstKeys.region,
           accessKey: ConstKeys.accessKey,
           secretKey: ConstKeys.secretKey,
           successActionStatus: 201
-        }
-        const response = await RNS3.put(file,config)
+        };
+        const response = await RNS3.put(file,config);
         ConstKeys.userInfo.photo = response.body.postResponse.location;
-        const uriToDBResponse = await uploadToS3(ConstKeys.userInfo.photo);
+        this.state.userInfo.photo = response.body.postResponse.location;
         updateUserData();
-
+        this.forceUpdate();
+        const uriToDBResponse = await uploadToS3(ConstKeys.userInfo.photo);
       }
     };
 

@@ -18,8 +18,8 @@ export default class Home extends React.Component {
             userInfo: ConstKeys.userInfo,
             auth: ConstKeys.auth,
             location: {
-                latitude: 52.22967,
-                longitude: 21.01222,
+                latitude: ConstKeys.latitude === null ? 52.22967 : ConstKeys.latitude,
+                longitude: ConstKeys.longitude === null ? 21.01222 : ConstKeys.longitude,
                 latitudeDelta: 0.0522,
                 longitudeDelta: 0.0321
             },
@@ -64,6 +64,8 @@ export default class Home extends React.Component {
     getUserLocationHandler = () => {
         if (this._isMounted) {
             navigator.geolocation.getCurrentPosition(position => {
+                ConstKeys.latitude = position.coords.latitude;
+                ConstKeys.longitude = position.coords.longitude;
                 this.setState({
                     location: {
                         latitude: position.coords.latitude,
@@ -73,7 +75,7 @@ export default class Home extends React.Component {
                     },
                     userPositionLoaded: true
                 });
-            }, err => console.log(err));
+            }, err => console.log(err), { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 });
         }
     };
 
@@ -84,7 +86,7 @@ export default class Home extends React.Component {
     };
 
     isAllLoaded = () => {
-        return this.state.userPositionLoaded && this._isMounted;
+        return this._isMounted && this.state.userPositionLoaded;
     };
 
     setTapedCoordinates = (data) => {
